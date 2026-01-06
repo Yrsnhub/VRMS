@@ -3,7 +3,7 @@ using VRMS.Database.StoredProcedures.Fleet.VehicleCategories;
 
 namespace VRMS.Database.Tables;
 
-public static class M_0019_CreateVehicleCategoryProcedures
+public static class M_1002_CreateVehicleCategoryProcedures
 {
     public static string Create() => $"""
                                       DROP PROCEDURE IF EXISTS sp_vehicle_categories_create;

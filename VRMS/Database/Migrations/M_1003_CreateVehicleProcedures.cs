@@ -2,7 +2,7 @@
 
 namespace VRMS.Database.Migrations;
 
-public static class M_0020_CreateVehicleProcedures
+public static class M_1003_CreateVehicleProcedures
 {
     public static string Create() => $"""
                                       DROP PROCEDURE IF EXISTS sp_vehicles_create;

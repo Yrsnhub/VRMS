@@ -2,7 +2,7 @@
 
 namespace VRMS.Database.Tables;
 
-public static class M_0018_CreateUserProcedures
+public static class M_1001_CreateUserProcedures
 {
     public static string Create() => $"""
                                       DROP PROCEDURE IF EXISTS sp_users_create;
