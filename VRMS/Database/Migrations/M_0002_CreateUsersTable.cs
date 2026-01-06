@@ -1,7 +1,7 @@
 ﻿using VRMS.Database.DBHelpers.EnumHelper;
 using VRMS.Enums;
 
-namespace VRMS.Database.Tables;
+namespace VRMS.Database.Migrations;
 
 public static class M_0002_CreateUsersTable
 {

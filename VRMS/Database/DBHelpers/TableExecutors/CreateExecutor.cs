@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Reflection;
-using VRMS.Database.Tables;
+using VRMS.Database.Migrations;
 
 namespace VRMS.Database.DBHelpers.TableExecutors;
 

@@ -1,4 +1,4 @@
-﻿namespace VRMS.Database.Tables;
+﻿namespace VRMS.Database.Migrations;
 
 public static class M_0017_CreateMaintenanceRecordsTable
 {

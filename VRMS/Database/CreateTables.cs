@@ -1,6 +1,6 @@
 ﻿using VRMS.Database.DBHelpers;
 using VRMS.Database.DBHelpers.TableExecutors;
-using VRMS.Database.Tables;
+using VRMS.Database.Migrations;
 
 namespace VRMS.Database;
 
