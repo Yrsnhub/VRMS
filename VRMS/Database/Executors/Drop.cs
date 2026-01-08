@@ -6,7 +6,7 @@ public static class Drop
 {
     public static void Run(Action<string> executeNonQuery)
     {
-        Console.WriteLine("\n[INFO] Dropping tables.\n");
+        Console.WriteLine("\n[INFO] Dropping tables and stored procedures.\n");
         // Drop all tables in reverse order
         DropExecutor.Execute(executeNonQuery);
 

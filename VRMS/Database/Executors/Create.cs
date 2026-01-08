@@ -8,7 +8,7 @@ public static class Create
         Func<string, object?> executeScalar,
         Action<string> executeNonQuery)
     {
-        Console.WriteLine("\n[INFO] Creating tables.\n");
+        Console.WriteLine("\n[INFO] Running migrations.\n");
         
         // Ensure schema_info exists
         executeNonQuery(M_0001_CreateSchemaInfoTable.Create());
