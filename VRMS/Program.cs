@@ -2,6 +2,7 @@
 using System.Windows.Forms;
 using Microsoft.Extensions.Configuration;
 using VRMS.Database;
+using VRMS.Database.Executors;
 using VRMS.Terminal;
 
 namespace VRMS
@@ -62,10 +63,10 @@ namespace VRMS
                 Application.Run(context);
                 return;
             }
-            
+
             //Uncomment for testing (Migration testing)
-            //  Drop.Run(DB.ExecuteNonQuery);
-            //  Create.Run(DB.ExecuteScalar, DB.ExecuteNonQuery);
+            //Drop.Run(DB.ExecuteNonQuery);
+            //Create.Run(DB.ExecuteScalar, DB.ExecuteNonQuery);
             //  return;
 
             // ----------------------------
