@@ -155,7 +155,7 @@
             lblTitle.ForeColor = Color.White;
             lblTitle.Location = new Point(70, 20);
             lblTitle.Name = "lblTitle";
-            lblTitle.Size = new Size(286, 41);
+            lblTitle.Size = new Size(285, 41);
             lblTitle.TabIndex = 1;
             lblTitle.Text = "Update Vehicle Info";
             // 
@@ -1050,7 +1050,7 @@
             lblImageStatus.AutoSize = true;
             lblImageStatus.Font = new Font("Segoe UI", 9F, FontStyle.Italic);
             lblImageStatus.ForeColor = Color.Gray;
-            lblImageStatus.Location = new Point(13, 312);
+            lblImageStatus.Location = new Point(325, 266);
             lblImageStatus.Name = "lblImageStatus";
             lblImageStatus.Size = new Size(0, 20);
             lblImageStatus.TabIndex = 4;
