@@ -1,23 +1,31 @@
-﻿using System;
+﻿
+using System;
 using System.Drawing;
 using System.Windows.Forms;
-using VRMS.Controls;
+using VRMS.Controls;      
+using VRMS.UI.Animation;  
 
-namespace VRMS
+namespace VRMS.UI.Forms
 {
-    public partial class Welcome : Form
+    public partial class Welcome : Form, IAnimationHost  /
     {
-        private UserControl currentUC;
-        private bool isAnimating, showingLogin = true;
-        private float slideProgress;
-        private int animationTime;
-
-        private const int TOTAL_ANIMATION_TIME = 800;
+        private UserControl _currentControl;
+        private bool _showingLogin = true;
+        private readonly IAnimationManager _animationManager;
 
         public Welcome()
         {
             InitializeComponent();
 
+           
+            _animationManager = new WelcomeFormAnimationManager(this);
+            _animationManager.AnimationCompleted += OnAnimationCompleted;
+
+            InitializeForm();
+        }
+
+        private void InitializeForm()
+        {
             DoubleBuffered = true;
 
             Load += (s, e) =>
@@ -29,124 +37,128 @@ namespace VRMS
             Resize += (s, e) => UpdateLayout();
         }
 
-        private void btnProceed_Click(object sender, EventArgs e)
+        public void OnAnimationStart()
         {
-            if (isAnimating) return;
+            if (InvokeRequired)
+            {
+                Invoke(new Action(OnAnimationStart));
+                return;
+            }
 
             btnProceed.Enabled = false;
-            isAnimating = true;
-
-            LoadControl(new LoginUserControl());
-
             panelLogin.Visible = true;
             panelLogin.Left = -panelLogin.Width;
-
-            animationTimer.Start();
         }
 
-        private void LoadControl(UserControl uc)
+        public void UpdateAnimationFrame(float easedProgress, float rawProgress)
+        {
+            if (InvokeRequired)
+            {
+                Invoke(new Action<float, float>(UpdateAnimationFrame), easedProgress, rawProgress);
+                return;
+            }
+
+            panelLeft.Left = (int)(ClientSize.Width * easedProgress);
+            panelLogin.Left = -panelLogin.Width + (int)(panelLogin.Width * easedProgress);
+
+            
+            UpdateBackgroundFade(rawProgress);
+        }
+
+        private void UpdateBackgroundFade(float progress)
+        {
+            if (progress <= 0.1f) return;
+
+            float normalizedProgress = (progress - 0.1f) / 0.9f;
+            int alpha = Math.Min(255, 30 + (int)(225 *
+                EasingFunctions.EaseOutQuad(normalizedProgress))); 
+
+            BackColor = panelRight.BackColor = Color.FromArgb(255, alpha, alpha, alpha);
+        }
+
+        public void OnAnimationComplete()
+        {
+            if (InvokeRequired)
+            {
+                Invoke(new Action(OnAnimationComplete));
+                return;
+            }
+
+            panelLeft.Visible = false;
+            BackColor = panelRight.BackColor = Color.White;
+            FocusContent();
+        }
+
+        private void btnProceed_Click(object sender, EventArgs e)
+        {
+          
+            if (_animationManager.IsAnimating) return;
+
+            LoadControl(new LoginUserControl());
+            _animationManager.StartSlideAnimation();
+        }
+
+        private void LoadControl(UserControl control)
         {
             panelLogin.Controls.Clear();
-            currentUC = uc;
+            _currentControl = control;
 
-            if (uc is LoginUserControl log)
+            if (control is LoginUserControl login)
             {
-                log.GoToRegisterRequest += (s, e) =>
+                login.GoToRegisterRequest += (s, e) =>
                 {
-                    showingLogin = false;
+                    _showingLogin = false;
                     LoadControl(new RegisterUserControl());
                 };
 
-                log.ExitApplication += (s, e) => Application.Exit();
-                log.LoginSuccess += LoginUC_LoginSuccess;
+                login.ExitApplication += (s, e) => Application.Exit();
+                login.LoginSuccess += OnLoginSuccess;
             }
-            else if (uc is RegisterUserControl reg)
+            else if (control is RegisterUserControl register)
             {
-                reg.GoBackToLoginRequest += (s, e) =>
+                register.GoBackToLoginRequest += (s, e) =>
                 {
-                    showingLogin = true;
+                    _showingLogin = true;
                     LoadControl(new LoginUserControl());
                 };
             }
 
-            panelLogin.Controls.Add(uc);
-            CenterUC(uc);
+            panelLogin.Controls.Add(control);
+            CenterControl(control);
             panelLogin.BringToFront();
             FocusContent();
         }
 
-        private void LoginUC_LoginSuccess(object sender, EventArgs e)
+        private void OnLoginSuccess(object sender, EventArgs e)
         {
-            var mainForm = new VRMS.Forms.MainForm();
-
+           
+            var mainForm = new VRMS.Forms.MainForm(); 
             mainForm.Show();
-            Hide();
 
+            Hide();
             mainForm.FormClosed += (s, args) => Application.Exit();
         }
 
-        private void animationTimer_Tick(object sender, EventArgs e)
+        private void OnAnimationCompleted(object sender, EventArgs e)
         {
-            animationTime += animationTimer.Interval;
-
-            if (animationTime < TOTAL_ANIMATION_TIME)
-            {
-                slideProgress = animationTime / (float)TOTAL_ANIMATION_TIME;
-
-                float eased = EaseOutCubic(slideProgress);
-
-                panelLeft.Left = (int)(ClientSize.Width * eased);
-                panelLogin.Left = -panelLogin.Width + (int)(panelLogin.Width * eased);
-
-                UpdateFade();
-            }
-            else
-            {
-                FinishAnimation();
-            }
-        }
-
-        private void FinishAnimation()
-        {
-            animationTimer.Stop();
-
-            panelLeft.Left = ClientSize.Width;
-            panelLogin.Left = 0;
-            panelLeft.Visible = false;
-
-            BackColor = panelRight.BackColor = Color.White;
-
             FocusContent();
-            isAnimating = false;
-        }
-
-        private void UpdateFade()
-        {
-            if (slideProgress <= 0.1f) return;
-
-            int val = Math.Min(
-                255,
-                30 + (int)(225 * EaseOutQuad((slideProgress - 0.1f) / 0.9f))
-            );
-
-            BackColor = panelRight.BackColor = Color.FromArgb(255, val, val, val);
         }
 
         private void FocusContent()
         {
-            if (currentUC is LoginUserControl log)
-                log.FocusUsername();
+            if (_currentControl is LoginUserControl login)
+                login.FocusUsername();
             else
-                currentUC?.Focus();
+                _currentControl?.Focus();
         }
 
-        private void CenterUC(Control c)
+        private void CenterControl(Control control)
         {
-            if (c == null) return;
+            if (control == null) return;
 
-            c.Location = new Point(
-                (panelLogin.Width - c.Width) / 2,
-                (panelLogin.Height - c.Height) / 2
+            control.Location = new Point(
+                (panelLogin.Width - control.Width) / 2,
+                (panelLogin.Height - control.Height) / 2
             );
         }
 
@@ -159,10 +171,18 @@ namespace VRMS
                 ClientSize.Height
             );
 
-            CenterUC(currentUC);
+            CenterControl(_currentControl);
         }
 
-        private float EaseOutCubic(float t) => 1 - (float)Math.Pow(1 - t, 3);
-        private float EaseOutQuad(float t) => 1 - (1 - t) * (1 - t);
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                
+                _animationManager?.Dispose();
+                components?.Dispose();
+            }
+            base.Dispose(disposing);
+        }
     }
 }

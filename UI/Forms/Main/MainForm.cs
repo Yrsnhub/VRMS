@@ -4,7 +4,8 @@ using System.Windows.Forms;
 using VRMS;
 using VRMS.Controls;
 using VRMS.Forms;
-using VRMS.Controls.UserProfile; // Add this for UserProfileView
+using VRMS.Controls.UserProfile;
+using VRMS.UI.Forms; // Add this for UserProfileView
 
 namespace VRMS.Forms
 {
