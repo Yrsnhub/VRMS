@@ -10,6 +10,11 @@ namespace VRMS.Services;
 
 public class CustomerService
 {
+    private const string DefaultCustomerPhotoPath = "Assets/profile_img.png";
+    private const string StorageRoot = "Storage";
+    private const string CustomerPhotoFolder = "Customers";
+    private const string CustomerPhotoFileName = "profile";
+    
     // ----------------------------
     // DRIVERS LICENSES
     // ----------------------------
@@ -92,30 +97,33 @@ public class CustomerService
         string phone,
         DateTime dateOfBirth,
         CustomerType customerType,
-        int driversLicenseId
+        int driversLicenseId,
+        string? photoPath = null
     )
     {
-        // Ensure license exists
         var license = GetDriversLicenseById(driversLicenseId);
 
-        // Domain: you may allow creation even if license expired, but typically disallowed.
         if (license.ExpiryDate < DateTime.UtcNow.Date)
             throw new InvalidOperationException("Drivers license is expired.");
 
+        var resolvedPhotoPath = photoPath ?? DefaultCustomerPhotoPath;
+
         var table = DB.ExecuteQuery($"""
-            CALL sp_customers_create(
-                '{Sql.Esc(firstName)}',
-                '{Sql.Esc(lastName)}',
-                '{Sql.Esc(email)}',
-                '{Sql.Esc(phone)}',
-                '{dateOfBirth:yyyy-MM-dd}',
-                '{customerType}',
-                {driversLicenseId}
-            );
-        """);
+                                         CALL sp_customers_create(
+                                             '{Sql.Esc(firstName)}',
+                                             '{Sql.Esc(lastName)}',
+                                             '{Sql.Esc(email)}',
+                                             '{Sql.Esc(phone)}',
+                                             '{dateOfBirth:yyyy-MM-dd}',
+                                             '{customerType}',
+                                             '{Sql.Esc(resolvedPhotoPath)}',
+                                             {driversLicenseId}
+                                         );
+                                     """);
 
         return Convert.ToInt32(table.Rows[0]["customer_id"]);
     }
+
 
     public void UpdateCustomer(
         int customerId,
@@ -123,20 +131,22 @@ public class CustomerService
         string lastName,
         string email,
         string phone,
-        CustomerType customerType
+        CustomerType customerType,
+        string? photoPath
     )
     {
         // If changing to Blacklisted, that's allowed here. Consumers should use ChangeCustomerType explicitly if desired.
         DB.ExecuteNonQuery($"""
-            CALL sp_customers_update(
-                {customerId},
-                '{Sql.Esc(firstName)}',
-                '{Sql.Esc(lastName)}',
-                '{Sql.Esc(email)}',
-                '{Sql.Esc(phone)}',
-                '{customerType}'
-            );
-        """);
+                                CALL sp_customers_update(
+                                    {customerId},
+                                    '{Sql.Esc(firstName)}',
+                                    '{Sql.Esc(lastName)}',
+                                    '{Sql.Esc(email)}',
+                                    '{Sql.Esc(phone)}',
+                                    '{customerType}',
+                                    {(photoPath is null ? "NULL" : $"'{Sql.Esc(photoPath)}'")}
+                                );
+                            """);
     }
 
     public Customer GetCustomerById(int customerId)
@@ -164,9 +174,90 @@ public class CustomerService
 
     public void DeleteCustomer(int customerId)
     {
-        // Policy note: DB may prevent deletion if FK constraints exist (e.g., rentals). Service callers should confirm policy.
+        var directory = GetCustomerPhotoDirectory(customerId);
+
+        if (Directory.Exists(directory))
+            Directory.Delete(directory, true);
+
         DB.ExecuteNonQuery($"CALL sp_customers_delete({customerId});");
     }
+    
+    public void SetCustomerPhoto(
+        int customerId,
+        Stream photoStream,
+        string originalFileName
+    )
+    {
+        // Ensure customer exists
+        var customer = GetCustomerById(customerId);
+
+        var extension = Path.GetExtension(originalFileName);
+        if (string.IsNullOrWhiteSpace(extension))
+            throw new InvalidOperationException("Invalid photo file.");
+
+        var directory = GetCustomerPhotoDirectory(customerId);
+        Directory.CreateDirectory(directory);
+
+        // Delete existing photos (enforce 1 image only)
+        foreach (var file in Directory.GetFiles(directory))
+            File.Delete(file);
+
+        var relativePath = Path.Combine(
+            CustomerPhotoFolder,
+            customerId.ToString(),
+            $"{CustomerPhotoFileName}{extension}"
+        );
+
+        var fullPath = Path.Combine(StorageRoot, relativePath);
+
+        using (var fs = new FileStream(fullPath, FileMode.Create, FileAccess.Write))
+        {
+            photoStream.CopyTo(fs);
+        }
+
+        // Persist photo path in DB
+        DB.ExecuteNonQuery($"""
+                                CALL sp_customers_update(
+                                    {customerId},
+                                    '{Sql.Esc(customer.FirstName)}',
+                                    '{Sql.Esc(customer.LastName)}',
+                                    '{Sql.Esc(customer.Email)}',
+                                    '{Sql.Esc(customer.Phone)}',
+                                    '{customer.CustomerType}',
+                                    '{Sql.Esc(relativePath)}'
+                                );
+                            """);
+    }
+    
+    public void DeleteCustomerPhoto(int customerId)
+    {
+        var customer = GetCustomerById(customerId);
+
+        var directory = GetCustomerPhotoDirectory(customerId);
+
+        if (Directory.Exists(directory))
+        {
+            foreach (var file in Directory.GetFiles(directory))
+                File.Delete(file);
+
+            Directory.Delete(directory);
+        }
+
+        // Remove path from DB (NULL for now — defaults later)
+        DB.ExecuteNonQuery($"""
+                                CALL sp_customers_update(
+                                    {customerId},
+                                    '{Sql.Esc(customer.FirstName)}',
+                                    '{Sql.Esc(customer.LastName)}',
+                                    '{Sql.Esc(customer.Email)}',
+                                    '{Sql.Esc(customer.Phone)}',
+                                    '{customer.CustomerType}',
+                                    '{Sql.Esc(DefaultCustomerPhotoPath)}'
+                                );
+                            """);
+
+    }
+
 
     // ----------------------------
     // ELIGIBILITY GUARDS
@@ -217,7 +308,27 @@ public class CustomerService
             Phone = row["phone"].ToString()!,
             DateOfBirth = Convert.ToDateTime(row["date_of_birth"]),
             CustomerType = Enum.Parse<CustomerType>(row["customer_type"].ToString()!, true),
+            PhotoPath = row["photo_path"] == DBNull.Value
+                ? null
+                : row["photo_path"].ToString(),
             DriversLicenseId = Convert.ToInt32(row["drivers_license_id"])
         };
+    }
+    
+    private static string GetCustomerPhotoDirectory(int customerId)
+    {
+        return Path.Combine(
+            StorageRoot,
+            CustomerPhotoFolder,
+            customerId.ToString()
+        );
+    }
+    
+    private static string BuildCustomerPhotoPath(int customerId, string extension)
+    {
+        return Path.Combine(
+            GetCustomerPhotoDirectory(customerId),
+            $"{CustomerPhotoFileName}{extension}"
+        );
     }
 }

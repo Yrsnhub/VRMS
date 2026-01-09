@@ -7,7 +7,7 @@ using VRMS.UI.Animation;
 
 namespace VRMS.UI.Forms
 {
-    public partial class Welcome : Form, IAnimationHost  /
+    public partial class Welcome : Form, IAnimationHost  
     {
         private UserControl _currentControl;
         private bool _showingLogin = true;
