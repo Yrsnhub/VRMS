@@ -3,7 +3,7 @@ using VRMS.Database;
 using VRMS.Helpers.SqlEscape;
 using VRMS.Models.Customers;
 
-namespace VRMS.Services;
+namespace VRMS.Services.Customer;
 
 public class DriversLicenseService
 {

@@ -1,13 +1,9 @@
-﻿using System.IO;
-using System;
-using System.Collections.Generic;
-using System.Data;
+﻿using System.Data;
 using VRMS.Database;
 using VRMS.Enums;
 using VRMS.Helpers.SqlEscape;
-using VRMS.Models.Customers;
 
-namespace VRMS.Services;
+namespace VRMS.Services.Customer;
 
 public class CustomerService
 {
@@ -88,7 +84,7 @@ public class CustomerService
                             """);
     }
 
-    public Customer GetCustomerById(int customerId)
+    public Models.Customers.Customer GetCustomerById(int customerId)
     {
         var table = DB.ExecuteQuery(
             $"CALL sp_customers_get_by_id({customerId});"
@@ -100,11 +96,11 @@ public class CustomerService
         return MapCustomer(table.Rows[0]);
     }
 
-    public List<Customer> GetAllCustomers()
+    public List<Models.Customers.Customer> GetAllCustomers()
     {
         var table = DB.ExecuteQuery("CALL sp_customers_get_all();");
 
-        var list = new List<Customer>();
+        var list = new List<Models.Customers.Customer>();
         foreach (DataRow row in table.Rows)
             list.Add(MapCustomer(row));
 
@@ -227,7 +223,7 @@ public class CustomerService
     
 
 
-    private static Customer MapCustomer(DataRow row)
+    private static Models.Customers.Customer MapCustomer(DataRow row)
     {
         var photoPath = row["photo_path"] == DBNull.Value
             ? DefaultCustomerPhotoPath
@@ -236,7 +232,7 @@ public class CustomerService
         if (string.IsNullOrWhiteSpace(photoPath))
             photoPath = DefaultCustomerPhotoPath;
 
-        return new Customer
+        return new Models.Customers.Customer
         {
             Id = Convert.ToInt32(row["id"]),
             FirstName = row["first_name"].ToString()!,

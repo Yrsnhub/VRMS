@@ -1,14 +1,11 @@
-﻿using System;
-using System.Data;
-using System.Security.Cryptography;
-using System.Text;
+﻿using System.Data;
 using VRMS.Database;
 using VRMS.Enums;
 using VRMS.Helpers.Security;
 using VRMS.Helpers.SqlEscape;
 using VRMS.Models.Accounts;
 
-namespace VRMS.Services;
+namespace VRMS.Services.Account;
 
 public class UserService
 {
