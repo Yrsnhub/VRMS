@@ -1,31 +1,45 @@
 ﻿using VRMS.Enums;
 using VRMS.Models.Billing;
 using VRMS.Repositories.Billing;
+using VRMS.Repositories.Rentals;
+using VRMS.Services.Fleet;
 using VRMS.Services.Rental;
 
 namespace VRMS.Services.Billing;
 
 public class BillingService
 {
-    private readonly RentalService _rentalService;
+    private readonly RentalRepository _rentalRepo;
+    private readonly ReservationService _reservationService;
+    private readonly VehicleService _vehicleService;
+    private readonly RateService _rateService;
     private readonly InvoiceRepository _invoiceRepo;
     private readonly PaymentRepository _paymentRepo;
+    private readonly InvoiceLineItemRepository _lineItemRepo;
 
     public BillingService(
-        RentalService rentalService,
+        RentalRepository rentalRepo,
+        ReservationService reservationService,
+        VehicleService vehicleService,
+        RateService rateService,
         InvoiceRepository invoiceRepo,
-        PaymentRepository paymentRepo)
+        PaymentRepository paymentRepo,
+        InvoiceLineItemRepository lineItemRepo)
     {
-        _rentalService = rentalService;
+        _rentalRepo = rentalRepo;
+        _reservationService = reservationService;
+        _vehicleService = vehicleService;
+        _rateService = rateService;
         _invoiceRepo = invoiceRepo;
         _paymentRepo = paymentRepo;
+        _lineItemRepo = lineItemRepo;
     }
 
     // ---------------- INVOICES ----------------
 
     public Invoice GetOrCreateInvoice(int rentalId)
     {
-        var rental = _rentalService.GetRentalById(rentalId);
+        var rental = _rentalRepo.GetById(rentalId);
 
         if (rental.Status != RentalStatus.Active)
             throw new InvalidOperationException(
@@ -42,30 +56,85 @@ public class BillingService
 
         return _invoiceRepo.GetById(id);
     }
-    
-    public void FinalizeInvoice(int rentalId, decimal finalTotal)
-    {
-        if (finalTotal < 0)
-            throw new InvalidOperationException(
-                "Invoice total cannot be negative.");
 
-        var rental = _rentalService.GetRentalById(rentalId);
+    // PRICING ENFORCEMENT (FINAL, AUTHORITATIVE)
+    public void FinalizeInvoice(int rentalId)
+    {
+        var rental = _rentalRepo.GetById(rentalId);
 
         if (rental.Status is not (RentalStatus.Completed or RentalStatus.Late))
             throw new InvalidOperationException(
                 "Invoice can only be finalized for completed rentals.");
 
-        var invoice = _invoiceRepo.GetByRental(rentalId)
-                      ?? throw new InvalidOperationException(
-                          "Invoice does not exist.");
-
-        if (invoice.TotalAmount != 0)
+        if (rental.ActualReturnDate == null)
             throw new InvalidOperationException(
-                "Invoice has already been finalized.");
+                "Rental has no return date.");
 
-        _invoiceRepo.FinalizeTotal(invoice.Id, finalTotal);
+        var invoice =
+            _invoiceRepo.GetByRental(rentalId)
+            ?? throw new InvalidOperationException(
+                "Invoice does not exist.");
+
+        var reservation =
+            _reservationService.GetReservationById(
+                rental.ReservationId);
+
+        var vehicle =
+            _vehicleService.GetVehicleById(
+                reservation.VehicleId);
+
+        // -------- BASE RENTAL --------
+        var baseRental =
+            _rateService.CalculateRentalCost(
+                rental.PickupDate,
+                rental.ActualReturnDate.Value,
+                vehicle.VehicleCategoryId);
+
+        _lineItemRepo.Create(
+            invoice.Id,
+            "Base rental charge",
+            baseRental);
+
+        // -------- LATE PENALTY --------
+        var latePenalty =
+            _rateService.CalculateLatePenalty(
+                rental.ExpectedReturnDate,
+                rental.ActualReturnDate.Value,
+                vehicle.VehicleCategoryId);
+
+        if (latePenalty > 0)
+            _lineItemRepo.Create(
+                invoice.Id,
+                "Late return penalty",
+                latePenalty);
+
+        // -------- MILEAGE OVERAGE --------
+        var mileageCharge =
+            _rateService.CalculateMileageOverage(
+                rental.StartOdometer,
+                rental.EndOdometer!.Value,
+                rental.PickupDate,
+                rental.ActualReturnDate.Value,
+                vehicle.VehicleCategoryId);
+
+        if (mileageCharge > 0)
+            _lineItemRepo.Create(
+                invoice.Id,
+                "Mileage overage charge",
+                mileageCharge);
+
+        // -------- FINAL TOTAL --------
+        var items =
+            _lineItemRepo.GetByInvoice(invoice.Id);
+
+        decimal total = 0m;
+        foreach (var item in items)
+            total += item.Amount;
+
+        _invoiceRepo.FinalizeTotal(
+            invoice.Id,
+            total);
     }
-
 
 
     public Invoice GetInvoiceById(int invoiceId)

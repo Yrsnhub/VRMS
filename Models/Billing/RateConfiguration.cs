@@ -9,4 +9,7 @@ public class RateConfiguration
     public decimal WeeklyRate { get; set; }
     public decimal MonthlyRate { get; set; }
     public decimal HourlyRate { get; set; }
+    
+    public decimal IncludedMileagePerDay { get; set; }
+    public decimal ExcessMileageRate { get; set; }
 }

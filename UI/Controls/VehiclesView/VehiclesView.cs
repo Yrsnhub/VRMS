@@ -8,6 +8,7 @@ using VRMS.Models.Fleet;
 using VRMS.Repositories.Fleet;
 using VRMS.Repositories.Rentals;
 using VRMS.Repositories.Accounts;
+using VRMS.Services.Billing;
 
 // Services
 using VRMS.Services.Customer;
@@ -27,6 +28,7 @@ namespace VRMS.Controls
         private readonly CustomerService _customerService;
         private readonly ReservationService _reservationService;
         private readonly RentalService _rentalService;
+        private readonly BillingService _billingService;
 
         // =========================
         // CONSTRUCTOR
@@ -88,7 +90,8 @@ namespace VRMS.Controls
             _rentalService = new RentalService(
                 _reservationService,
                 _vehicleService,
-                rentalRepo
+                rentalRepo,
+                _billingService
             );
 
             Load += VehiclesView_Load;

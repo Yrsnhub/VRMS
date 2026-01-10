@@ -1,5 +1,6 @@
 ﻿using VRMS.Enums;
 using VRMS.Repositories.Rentals;
+using VRMS.Services.Billing;
 using VRMS.Services.Fleet;
 
 namespace VRMS.Services.Rental;
@@ -9,15 +10,18 @@ public class RentalService
     private readonly ReservationService _reservationService;
     private readonly VehicleService _vehicleService;
     private readonly RentalRepository _rentalRepo;
+    private readonly BillingService _billingService;
 
     public RentalService(
         ReservationService reservationService,
         VehicleService vehicleService,
-        RentalRepository rentalRepo)
+        RentalRepository rentalRepo,
+        BillingService billingService)
     {
         _reservationService = reservationService;
         _vehicleService = vehicleService;
         _rentalRepo = rentalRepo;
+        _billingService = billingService;
     }
 
     // -------------------------------------------------
@@ -129,6 +133,9 @@ public class RentalService
         _vehicleService.UpdateVehicleStatus(
             reservation.VehicleId,
             VehicleStatus.Available);
+        
+        // ---------------- FINAL BILLING ----------------
+        _billingService.FinalizeInvoice(rentalId);
     }
 
     // -------------------------------------------------
