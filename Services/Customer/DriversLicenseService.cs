@@ -173,6 +173,9 @@ public class DriversLicenseService
         string fileName
     )
     {
+        if (photoStream.CanSeek)
+            photoStream.Position = 0;   // 🔥 THIS IS THE FIX
+
         var extension = Path.GetExtension(originalFileName);
         if (string.IsNullOrWhiteSpace(extension))
             throw new InvalidOperationException("Invalid license photo file.");
