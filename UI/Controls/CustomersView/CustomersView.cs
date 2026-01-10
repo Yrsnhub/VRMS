@@ -353,14 +353,28 @@ namespace VRMS.Controls
         private void LoadProfilePhoto(string relativePath)
         {
             picCustomerPhoto.Image?.Dispose();
+            picCustomerPhoto.Image = null;
+
+            if (string.IsNullOrWhiteSpace(relativePath) ||
+                relativePath.StartsWith("Assets/", StringComparison.OrdinalIgnoreCase))
+                return;
 
             var fullPath = Path.Combine("Storage", relativePath);
             if (!File.Exists(fullPath))
                 return;
 
-            using var fs = new FileStream(fullPath, FileMode.Open, FileAccess.Read);
-            picCustomerPhoto.Image = Image.FromStream(fs);
+            try
+            {
+                using var fs = new FileStream(fullPath, FileMode.Open, FileAccess.Read);
+                using var img = Image.FromStream(fs);
+                picCustomerPhoto.Image = new Bitmap(img);
+            }
+            catch
+            {
+                picCustomerPhoto.Image = null;
+            }
         }
+
 
         // =====================================================
         // LICENSE IMAGES
@@ -375,16 +389,31 @@ namespace VRMS.Controls
         private void LoadImage(PictureBox pb, string relativePath)
         {
             pb.Image?.Dispose();
+            pb.Image = null;
 
-            var fullPath = Path.Combine("Storage", relativePath);
-            if (!File.Exists(fullPath))
+            // Guard: placeholder or empty path
+            if (string.IsNullOrWhiteSpace(relativePath) ||
+                relativePath.StartsWith("Assets/", StringComparison.OrdinalIgnoreCase))
             {
-                pb.Image = null;
                 return;
             }
 
-            using var fs = new FileStream(fullPath, FileMode.Open, FileAccess.Read);
-            pb.Image = Image.FromStream(fs);
+            var fullPath = Path.Combine("Storage", relativePath);
+
+            if (!File.Exists(fullPath))
+                return;
+
+            try
+            {
+                using var fs = new FileStream(fullPath, FileMode.Open, FileAccess.Read);
+                using var img = Image.FromStream(fs);
+                pb.Image = new Bitmap(img); // 🔥 CLONE, detach from stream
+            }
+            catch
+            {
+                // File exists but is not a valid image → ignore safely
+                pb.Image = null;
+            }
         }
 
         // =====================================================
