@@ -109,6 +109,7 @@ namespace VRMS.Controls
         {
             if (dgvCustomers.SelectedRows.Count == 0)
             {
+                _selectedCustomer = null;
                 btnEmergencyContacts.Enabled = false;
                 return;
             }
@@ -129,6 +130,8 @@ namespace VRMS.Controls
 
         private void BtnSave_Click(object? sender, EventArgs e)
         {
+            // 🔑 IMPORTANT FIX:
+            // Validate ONLY the UI values, not selection state
             if (!ValidateForm())
                 return;
 
@@ -144,8 +147,12 @@ namespace VRMS.Controls
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(
+                    ex.Message,
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                );
             }
         }
 
@@ -168,7 +175,7 @@ namespace VRMS.Controls
         }
 
         // =====================================================
-        // CREATE / UPDATE  (MATCHES SERVICE EXACTLY)
+        // CREATE / UPDATE (MATCHES SERVICE EXACTLY)
         // =====================================================
 
         private void CreateCustomer()
@@ -205,6 +212,7 @@ namespace VRMS.Controls
                 txtEmail.Text.Trim(),
                 txtPhone.Text.Trim(),
                 txtAddress.Text.Trim(),
+                dtpDOB.Value.Date,
                 (CustomerCategory)cbCustomerType.SelectedItem!,
                 chkLoyalty.Checked,
                 chkBlacklist.Checked
@@ -383,25 +391,38 @@ namespace VRMS.Controls
         }
 
         // =====================================================
-        // MISC
+        // NAVIGATION
         // =====================================================
-
-        private void BtnManageAccount_Click(object? sender, EventArgs e)
-        {
-            MessageBox.Show("Account management comes later.", "Info");
-        }
-
-        private void BtnCaptureLicense_Click(object? sender, EventArgs e)
-        {
-            using var form = new DriverLicenseCaptureForm();
-            if (form.ShowDialog() == DialogResult.OK)
-                btnCaptureLicense.BackColor = Color.FromArgb(46, 204, 113);
-        }
 
         private void BtnCheckDrivingRecord_Click(object? sender, EventArgs e)
         {
-            MessageBox.Show("No external driving record system connected.", "Info");
+            if (_selectedCustomer == null)
+            {
+                MessageBox.Show(
+                    "Please select a customer first.",
+                    "No Customer Selected",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning
+                );
+                return;
+            }
+
+            using var dialog = new DrivingRecordVerificationDialog();
+            var result = dialog.ShowDialog(this);
+
+            if (result == DialogResult.OK)
+            {
+                
+                MessageBox.Show("Customer cleared to rent.", "Verification");
+            }
+            else if (result == DialogResult.No)
+            {
+                
+                MessageBox.Show("Customer NOT cleared to rent.", "Verification");
+            }
+           
         }
+
 
         private void BtnEmergencyContacts_Click(object? sender, EventArgs e)
         {
@@ -414,6 +435,18 @@ namespace VRMS.Controls
             );
 
             form.ShowDialog();
+        }
+
+        private void BtnManageAccount_Click(object? sender, EventArgs e)
+        {
+            MessageBox.Show("Account management comes later.", "Info");
+        }
+
+        private void BtnCaptureLicense_Click(object? sender, EventArgs e)
+        {
+            using var form = new DriverLicenseCaptureForm();
+            if (form.ShowDialog() == DialogResult.OK)
+                btnCaptureLicense.BackColor = Color.FromArgb(46, 204, 113);
         }
     }
 }
