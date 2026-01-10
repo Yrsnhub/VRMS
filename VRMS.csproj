@@ -27,7 +27,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Content Include="Assets\VehicleSamples\**\*">
+        <Content Include="Assets\Seed\**\*">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
     </ItemGroup>
