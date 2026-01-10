@@ -76,6 +76,9 @@ namespace VRMS.Services.Customer
             bool isBlacklisted
         )
         {
+            // FETCH EXISTING CUSTOMER FIRST
+            var existingCustomer = _repo.GetById(customerId);
+
             _repo.Update(
                 customerId,
                 firstName,
@@ -87,7 +90,7 @@ namespace VRMS.Services.Customer
                 category,
                 isFrequent,
                 isBlacklisted,
-                DefaultCustomerPhotoPath
+                existingCustomer.PhotoPath // ✅ PRESERVE PHOTO
             );
         }
 
@@ -126,6 +129,9 @@ namespace VRMS.Services.Customer
             string originalFileName
         )
         {
+            if (photoStream.CanSeek)
+                photoStream.Position = 0; // 🔥 REQUIRED
+
             var extension = Path.GetExtension(originalFileName);
             if (string.IsNullOrWhiteSpace(extension))
                 throw new InvalidOperationException("Invalid photo file.");
@@ -147,9 +153,9 @@ namespace VRMS.Services.Customer
             using var fs = new FileStream(fullPath, FileMode.Create, FileAccess.Write);
             photoStream.CopyTo(fs);
 
-            // update DB with the relative path (keeps same stored-proc call)
             _repo.SetPhoto(customerId, relativePath);
         }
+
 
         public void DeleteCustomerPhoto(int customerId)
         {
