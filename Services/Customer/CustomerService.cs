@@ -22,7 +22,7 @@ namespace VRMS.Services.Customer
         }
 
         // =====================================================
-        // CREATE
+        // CREATE  (MASTER)
         // =====================================================
 
         public int CreateCustomer(
@@ -31,7 +31,9 @@ namespace VRMS.Services.Customer
             string email,
             string phone,
             DateTime dateOfBirth,
-            CustomerType customerType,
+            CustomerCategory category,
+            bool isFrequent,
+            bool isBlacklisted,
             int driversLicenseId
         )
         {
@@ -41,13 +43,15 @@ namespace VRMS.Services.Customer
                 throw new InvalidOperationException("Driver's license is expired.");
 
             var table = DB.Query(
-                "CALL sp_customers_create(@first,@last,@email,@phone,@dob,@type,@photo,@licenseId);",
+                "CALL sp_customers_create(@first,@last,@email,@phone,@dob,@category,@isFrequent,@isBlacklisted,@photo,@licenseId);",
                 ("@first", firstName),
                 ("@last", lastName),
                 ("@email", email),
                 ("@phone", phone),
                 ("@dob", dateOfBirth),
-                ("@type", customerType.ToString()),
+                ("@category", category.ToString()),
+                ("@isFrequent", isFrequent),
+                ("@isBlacklisted", isBlacklisted),
                 ("@photo", DefaultCustomerPhotoPath),
                 ("@licenseId", driversLicenseId)
             );
@@ -56,7 +60,7 @@ namespace VRMS.Services.Customer
         }
 
         // =====================================================
-        // UPDATE (✅ FIXED: NOW MATCHES STORED PROCEDURE)
+        // UPDATE  (MASTER)
         // =====================================================
 
         public void UpdateCustomer(
@@ -65,19 +69,22 @@ namespace VRMS.Services.Customer
             string lastName,
             string email,
             string phone,
-            DateTime dateOfBirth,      // ✅ REQUIRED
-            CustomerType customerType
+            CustomerCategory category,
+            bool isFrequent,
+            bool isBlacklisted
         )
         {
             DB.Execute(
-                "CALL sp_customers_update(@id,@first,@last,@email,@phone,@dob,@type);",
+                "CALL sp_customers_update(@id,@first,@last,@email,@phone,@category,@isFrequent,@isBlacklisted,@photo);",
                 ("@id", customerId),
                 ("@first", firstName),
                 ("@last", lastName),
                 ("@email", email),
                 ("@phone", phone),
-                ("@dob", dateOfBirth),
-                ("@type", customerType.ToString())
+                ("@category", category.ToString()),
+                ("@isFrequent", isFrequent),
+                ("@isBlacklisted", isBlacklisted),
+                ("@photo", DefaultCustomerPhotoPath)
             );
         }
 
@@ -185,7 +192,7 @@ namespace VRMS.Services.Customer
         {
             var customer = GetCustomerById(customerId);
 
-            if (customer.CustomerType == CustomerType.Blacklisted)
+            if (customer.IsBlacklisted)
                 throw new InvalidOperationException("Customer is blacklisted.");
 
             var license = _driversLicenseService.GetDriversLicenseById(
@@ -216,8 +223,13 @@ namespace VRMS.Services.Customer
                 Email = row["email"].ToString()!,
                 Phone = row["phone"].ToString()!,
                 DateOfBirth = Convert.ToDateTime(row["date_of_birth"]),
-                CustomerType = Enum.Parse<CustomerType>(
-                    row["customer_type"].ToString()!, true),
+
+                Category = Enum.Parse<CustomerCategory>(
+                    row["customer_category"].ToString()!, true),
+
+                IsFrequent = Convert.ToBoolean(row["is_frequent"]),
+                IsBlacklisted = Convert.ToBoolean(row["is_blacklisted"]),
+
                 PhotoPath = photoPath,
                 DriversLicenseId = Convert.ToInt32(row["drivers_license_id"])
             };
