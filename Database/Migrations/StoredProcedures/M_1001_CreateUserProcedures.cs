@@ -13,6 +13,7 @@ public static class M_1001_CreateUserProcedures
                                       {SP_Users_UpdatePassword.Sql()}
                                       {SP_Users_UpdateProfile.Sql()}
                                       {SP_Users_UpdatePhoto.Sql()}
+                                      {SP_Users_UpdateSelfProfile.Sql()}
                                       """;
 
     public static string Drop() => """
@@ -24,5 +25,6 @@ public static class M_1001_CreateUserProcedures
                                    DROP PROCEDURE IF EXISTS sp_users_update_password;
                                    DROP PROCEDURE IF EXISTS sp_users_update_profile;
                                    DROP PROCEDURE IF EXISTS sp_users_update_photo;
+                                   DROP PROCEDURE IF EXISTS sp_users_update_self_profile;
                                    """;
 }

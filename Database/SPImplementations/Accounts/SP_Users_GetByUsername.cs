@@ -12,6 +12,9 @@ public static class SP_Users_GetByUsername
                                       SELECT
                                           id,
                                           username,
+                                          full_name,
+                                          email,
+                                          phone,
                                           password_hash,
                                           role,
                                           is_active,

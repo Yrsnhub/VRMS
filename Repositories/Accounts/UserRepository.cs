@@ -14,14 +14,20 @@ public class UserRepository
 
     public int Create(
         string username,
+        string? fullName,
+        string? email,
+        string? phone,
         string passwordHash,
         UserRole role,
         bool isActive,
         string? photoPath)
     {
         var table = DB.Query(
-            "CALL sp_users_create(@username,@password_hash,@role,@active,@photo);",
+            "CALL sp_users_create(@username,@full_name,@email,@phone,@password_hash,@role,@active,@photo);",
             ("@username", username),
+            ("@full_name", fullName),
+            ("@email", email),
+            ("@phone", phone),
             ("@password_hash", passwordHash),
             ("@role", role.ToString()),
             ("@active", isActive),
@@ -123,6 +129,22 @@ public class UserRepository
             ("@photo", photoPath)
         );
     }
+    
+    public void UpdateSelfProfile(
+        int userId,
+        string? fullName,
+        string? email,
+        string? phone)
+    {
+        DB.Execute(
+            "CALL sp_users_update_self_profile(@id,@full_name,@email,@phone);",
+            ("@id", userId),
+            ("@full_name", fullName),
+            ("@email", email),
+            ("@phone", phone)
+        );
+    }
+
 
 
     // ----------------------------
@@ -144,14 +166,21 @@ public class UserRepository
 
         user.Id = Convert.ToInt32(row["id"]);
         user.Username = row["username"].ToString()!;
+        
+        user.FullName =
+            row["full_name"] == DBNull.Value ? null : row["full_name"].ToString();
+        user.Email =
+            row["email"] == DBNull.Value ? null : row["email"].ToString();
+        user.Phone =
+            row["phone"] == DBNull.Value ? null : row["phone"].ToString();
+
         user.PasswordHash = row["password_hash"].ToString()!;
         user.Role = role;
         user.IsActive = Convert.ToBoolean(row["is_active"]);
         user.PhotoPath =
-            row["photo_path"] == DBNull.Value
-                ? null
-                : row["photo_path"].ToString();
+            row["photo_path"] == DBNull.Value ? null : row["photo_path"].ToString();
 
         return user;
     }
+
 }

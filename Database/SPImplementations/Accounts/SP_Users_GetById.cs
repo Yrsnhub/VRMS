@@ -12,12 +12,16 @@ public static class SP_Users_GetById
                                       SELECT
                                           id,
                                           username,
+                                          full_name,
+                                          email,
+                                          phone,
                                           password_hash,
                                           role,
                                           is_active,
                                           photo_path
                                       FROM users
                                       WHERE id = p_user_id;
+                                  
                                   
                                   END;
                                   """;

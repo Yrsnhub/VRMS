@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
+using VRMS.Models.Accounts;
+using VRMS.Services.Account;
 
 namespace VRMS.Controls.UserProfile
 {
@@ -9,8 +11,16 @@ namespace VRMS.Controls.UserProfile
         // For rounded corners - you can remove if not needed
         private const int BorderRadius = 10;
 
-        public UserProfileView()
+        private readonly UserService _userService;
+        private readonly int _userId;
+
+        private User? _originalUser;
+
+        public UserProfileView(UserService userService, int userId)
         {
+            _userService = userService;
+            _userId = userId;
+
             InitializeComponent();
             SetupView();
             LoadUserData();
@@ -23,13 +33,14 @@ namespace VRMS.Controls.UserProfile
             txtUsername.ForeColor = Color.FromArgb(100, 100, 100);
 
             // Add placeholder text hints
-            AddPlaceholder(txtFullName, "Enter your full name");
-            AddPlaceholder(txtEmail, "example@email.com");
-            AddPlaceholder(txtPhone, "+1234567890");
+            txtFullName.PlaceholderText = "Enter your full name";
+            txtEmail.PlaceholderText = "example@email.com";
+            txtPhone.PlaceholderText = "+1234567890";
 
             // Subscribe to events
             btnSave.Click += BtnSave_Click;
             btnChangePassword.Click += BtnChangePassword_Click;
+            picProfile.Click += PicProfile_Click;
 
             // Text change validation
             txtFullName.TextChanged += ValidateFields;
@@ -39,83 +50,132 @@ namespace VRMS.Controls.UserProfile
 
         private void LoadUserData()
         {
-            // TODO: Replace with actual database/user service calls
-            // For now, use dummy data
-            var currentUser = GetCurrentUser(); // Replace with your user retrieval logic
+            _originalUser = _userService.GetById(_userId);
 
-            lblProfileName.Text = currentUser.FullName;
-            lblProfileRole.Text = currentUser.Role;
-            txtUsername.Text = currentUser.Username;
-            txtFullName.Text = currentUser.FullName;
-            txtEmail.Text = currentUser.Email;
-            txtPhone.Text = currentUser.Phone;
+            lblProfileName.Text = _originalUser.Username;
+            lblProfileRole.Text = _originalUser.Role.ToString();
 
-            // Load profile picture if available
-            if (!string.IsNullOrEmpty(currentUser.ProfileImagePath))
+            txtUsername.Text = _originalUser.Username;
+            txtFullName.Text = _originalUser.FullName ?? "";
+            txtEmail.Text = _originalUser.Email ?? "";
+            txtPhone.Text = _originalUser.Phone ?? "";
+
+            var fullPhotoPath = Path.Combine(
+                AppContext.BaseDirectory,
+                "Storage",
+                _originalUser.PhotoPath
+            );
+
+            if (File.Exists(_originalUser.PhotoPath))
             {
-                // Load image from path
+                using var fs = new FileStream(_originalUser.PhotoPath, FileMode.Open, FileAccess.Read);
+                picProfile.Image = Image.FromStream(fs);
             }
+
+            btnSave.Enabled = false;
         }
 
         private void BtnSave_Click(object sender, EventArgs e)
         {
-            if (ValidateForm())
+            if (!ValidateForm())
+                return;
+
+            try
             {
-                try
-                {
-                    // Update user profile
-                    var userData = new
-                    {
-                        FullName = txtFullName.Text.Trim(),
-                        Email = txtEmail.Text.Trim(),
-                        Phone = txtPhone.Text.Trim()
-                    };
+                _userService.UpdateSelfProfile(
+                    _userId,
+                    txtFullName.Text.Trim(),
+                    txtEmail.Text.Trim(),
+                    txtPhone.Text.Trim()
+                );
 
-                    // TODO: Save to database
-                    // await UserService.UpdateProfileAsync(userData);
+                MessageBox.Show(
+                    "Profile updated successfully!",
+                    "Success",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
 
-                    MessageBox.Show("Profile updated successfully!", "Success",
-                        MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                    // Update display name
-                    lblProfileName.Text = userData.FullName;
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Error saving profile: {ex.Message}", "Error",
-                        MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
+                // Refresh baseline
+                LoadUserData();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    ex.Message,
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
         }
+
 
         private void BtnChangePassword_Click(object sender, EventArgs e)
         {
-            if (ValidatePasswordFields())
+            if (!ValidatePasswordFields())
+                return;
+
+            try
             {
-                try
-                {
-                    var passwordData = new
-                    {
-                        CurrentPassword = txtCurrentPassword.Text,
-                        NewPassword = txtNewPassword.Text
-                    };
+                _userService.ChangePassword(
+                    _userId,
+                    txtCurrentPassword.Text,
+                    txtNewPassword.Text
+                );
 
-                    // TODO: Call password change service
-                    // await UserService.ChangePasswordAsync(passwordData);
+                MessageBox.Show(
+                    "Password changed successfully!",
+                    "Success",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
 
-                    MessageBox.Show("Password changed successfully!", "Success",
-                        MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                    // Clear password fields
-                    ClearPasswordFields();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Error changing password: {ex.Message}", "Error",
-                        MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
+                ClearPasswordFields();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    ex.Message,
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
         }
+        
+        private void PicProfile_Click(object? sender, EventArgs e)
+        {
+            using var dialog = new OpenFileDialog
+            {
+                Title = "Select Profile Picture",
+                Filter = "Image Files|*.jpg;*.jpeg;*.png;*.bmp",
+                Multiselect = false
+            };
+
+            if (dialog.ShowDialog() != DialogResult.OK)
+                return;
+
+            try
+            {
+                using var stream = File.OpenRead(dialog.FileName);
+
+                _userService.SetUserPhoto(
+                    _userId,
+                    stream,
+                    Path.GetFileName(dialog.FileName)
+                );
+
+                // Reload user + image
+                LoadUserData();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    ex.Message,
+                    "Profile Photo Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
+        }
+
+
 
         private bool ValidateForm()
         {
@@ -205,11 +265,15 @@ namespace VRMS.Controls.UserProfile
 
         private bool HasProfileChanges()
         {
-            // TODO: Compare with original values
-            return !string.IsNullOrWhiteSpace(txtFullName.Text) ||
-                   !string.IsNullOrWhiteSpace(txtEmail.Text) ||
-                   !string.IsNullOrWhiteSpace(txtPhone.Text);
+            if (_originalUser == null)
+                return false;
+
+            return
+                txtFullName.Text != (_originalUser.FullName ?? "") ||
+                txtEmail.Text != (_originalUser.Email ?? "") ||
+                txtPhone.Text != (_originalUser.Phone ?? "");
         }
+
 
         private void ClearPasswordFields()
         {
