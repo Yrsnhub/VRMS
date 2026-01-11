@@ -8,17 +8,45 @@ using VRMS.Services.Rental;
 
 namespace VRMS.Services.Billing;
 
+/// <summary>
+/// Provides authoritative billing logic for rentals, including
+/// invoice creation, pricing enforcement, damage charges, and payments.
+///
+/// This service is the single source of truth for:
+/// - Invoice lifecycle management
+/// - Final rental pricing calculations
+/// - Damage charge application
+/// - Payment processing and invoice locking
+/// </summary>
 public class BillingService
 {
+    /// <summary>Rental data access</summary>
     private readonly RentalRepository _rentalRepo;
+
+    /// <summary>Reservation business logic</summary>
     private readonly ReservationService _reservationService;
+
+    /// <summary>Vehicle lookup and metadata access</summary>
     private readonly VehicleService _vehicleService;
+
+    /// <summary>Rate and pricing calculation logic</summary>
     private readonly RateService _rateService;
+
+    /// <summary>Invoice persistence</summary>
     private readonly InvoiceRepository _invoiceRepo;
+
+    /// <summary>Payment persistence</summary>
     private readonly PaymentRepository _paymentRepo;
+
+    /// <summary>Invoice line item persistence</summary>
     private readonly InvoiceLineItemRepository _lineItemRepo;
+
+    /// <summary>Damage report persistence</summary>
     private readonly DamageReportRepository _damageReportRepo;
 
+    /// <summary>
+    /// Initializes the billing service with all required dependencies.
+    /// </summary>
     public BillingService(
         RentalRepository rentalRepo,
         ReservationService reservationService,
@@ -41,6 +69,14 @@ public class BillingService
 
     // ---------------- INVOICES ----------------
 
+    /// <summary>
+    /// Retrieves an existing invoice for a rental or creates a new one if none exists.
+    /// </summary>
+    /// <param name="rentalId">Rental ID</param>
+    /// <returns>The existing or newly created <see cref="Invoice"/></returns>
+    /// <exception cref="InvalidOperationException">
+    /// Thrown when the rental is not active or a paid invoice already exists
+    /// </exception>
     public Invoice GetOrCreateInvoice(int rentalId)
     {
         var rental = _rentalRepo.GetById(rentalId);
@@ -53,6 +89,10 @@ public class BillingService
         if (existing != null)
             return existing;
 
+        if (existing != null && existing.Status == InvoiceStatus.Paid)
+            throw new InvalidOperationException(
+                "Paid invoice already exists for this rental.");
+
         var id = _invoiceRepo.Create(
             rentalId,
             0m,
@@ -61,7 +101,23 @@ public class BillingService
         return _invoiceRepo.GetById(id);
     }
 
-    // PRICING ENFORCEMENT (FINAL, AUTHORITATIVE)
+    // ---------------- PRICING ENFORCEMENT ----------------
+
+    /// <summary>
+    /// Finalizes an invoice by calculating all authoritative charges.
+    ///
+    /// This method is FINAL and AUTHORITATIVE:
+    /// - Base rental cost
+    /// - Late penalties
+    /// - Mileage overages
+    /// - Approved damage charges
+    ///
+    /// Once finalized, the total amount is locked unless unpaid.
+    /// </summary>
+    /// <param name="rentalId">Rental ID</param>
+    /// <exception cref="InvalidOperationException">
+    /// Thrown when rental state or invoice state is invalid
+    /// </exception>
     public void FinalizeInvoice(int rentalId)
     {
         var rental = _rentalRepo.GetById(rentalId);
@@ -79,6 +135,10 @@ public class BillingService
             ?? throw new InvalidOperationException(
                 "Invoice does not exist.");
 
+        if (invoice.Status == InvoiceStatus.Paid)
+            throw new InvalidOperationException(
+                "Paid invoices cannot be modified.");
+
         var reservation =
             _reservationService.GetReservationById(
                 rental.ReservationId);
@@ -87,7 +147,9 @@ public class BillingService
             _vehicleService.GetVehicleById(
                 reservation.VehicleId);
 
-        // -------- BASE RENTAL --------
+        EnsureInvoiceEditable(invoice.Id);
+
+        // -------- BASE RENTAL CHARGE --------
         var baseRental =
             _rateService.CalculateRentalCost(
                 rental.PickupDate,
@@ -99,7 +161,7 @@ public class BillingService
             "Base rental charge",
             baseRental);
 
-        // -------- LATE PENALTY --------
+        // -------- LATE RETURN PENALTY --------
         var latePenalty =
             _rateService.CalculateLatePenalty(
                 rental.ExpectedReturnDate,
@@ -126,8 +188,8 @@ public class BillingService
                 invoice.Id,
                 "Mileage overage charge",
                 mileageCharge);
-        
-        // ---------------- DAMAGE CHARGES ----------------
+
+        // -------- DAMAGE CHARGES --------
         var approvedDamages =
             _damageReportRepo.GetApprovedByRental(rentalId);
 
@@ -138,12 +200,8 @@ public class BillingService
                 $"Damage: {d.Description} (Report #{d.DamageReportId})",
                 d.EstimatedCost);
         }
-        
-        if (invoice.Status == InvoiceStatus.Paid)
-            throw new InvalidOperationException(
-                "Invoice is already paid.");
-        
-        // -------- FINAL TOTAL --------
+
+        // -------- FINAL TOTAL CALCULATION --------
         var items =
             _lineItemRepo.GetByInvoice(invoice.Id);
 
@@ -156,15 +214,33 @@ public class BillingService
             total);
     }
 
-
+    /// <summary>
+    /// Retrieves an invoice by its ID.
+    /// </summary>
     public Invoice GetInvoiceById(int invoiceId)
         => _invoiceRepo.GetById(invoiceId);
 
+    /// <summary>
+    /// Retrieves an invoice by rental ID, if one exists.
+    /// </summary>
     public Invoice? GetInvoiceByRental(int rentalId)
         => _invoiceRepo.GetByRental(rentalId);
 
     // ---------------- PAYMENTS ----------------
 
+    /// <summary>
+    /// Adds a payment to an invoice.
+    ///
+    /// Automatically marks the invoice as paid when the balance reaches zero.
+    /// </summary>
+    /// <param name="invoiceId">Invoice ID</param>
+    /// <param name="amount">Payment amount</param>
+    /// <param name="method">Payment method</param>
+    /// <param name="date">Payment date</param>
+    /// <returns>The created payment ID</returns>
+    /// <exception cref="InvalidOperationException">
+    /// Thrown when payment rules are violated
+    /// </exception>
     public int AddPayment(
         int invoiceId,
         decimal amount,
@@ -194,19 +270,26 @@ public class BillingService
                 method,
                 date);
 
-        //  AUTO-MARK PAID
+        // 🔒 AUTO-LOCK ON FULL PAYMENT
         if (GetInvoiceBalance(invoiceId) == 0m)
             _invoiceRepo.MarkPaid(invoiceId);
 
         return paymentId;
     }
 
-
+    /// <summary>
+    /// Retrieves all payments made against an invoice.
+    /// </summary>
     public List<Payment> GetPaymentsByInvoice(int invoiceId)
         => _paymentRepo.GetByInvoice(invoiceId);
 
     // ---------------- BALANCE ----------------
 
+    /// <summary>
+    /// Calculates the outstanding balance for an invoice.
+    /// </summary>
+    /// <param name="invoiceId">Invoice ID</param>
+    /// <returns>Remaining unpaid balance</returns>
     public decimal GetInvoiceBalance(int invoiceId)
     {
         var invoice = _invoiceRepo.GetById(invoiceId);
@@ -218,5 +301,21 @@ public class BillingService
             paid += p.Amount;
 
         return invoice.TotalAmount - paid;
+    }
+
+    /// <summary>
+    /// Ensures that an invoice is editable.
+    /// </summary>
+    /// <param name="invoiceId">Invoice ID</param>
+    /// <exception cref="InvalidOperationException">
+    /// Thrown when the invoice is already paid
+    /// </exception>
+    private void EnsureInvoiceEditable(int invoiceId)
+    {
+        var invoice = _invoiceRepo.GetById(invoiceId);
+
+        if (invoice.Status == InvoiceStatus.Paid)
+            throw new InvalidOperationException(
+                "Cannot modify a paid invoice.");
     }
 }

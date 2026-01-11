@@ -8,17 +8,55 @@ using VRMS.Repositories.Customers;
 
 namespace VRMS.Services.Customer
 {
+    /// <summary>
+    /// Provides business logic for customer management, including:
+    /// - Customer creation, update, and deletion
+    /// - Driver's license validation
+    /// - Eligibility enforcement for rentals
+    /// - Customer photo storage and lifecycle management
+    ///
+    /// This service coordinates database persistence and file system
+    /// storage while enforcing business rules.
+    /// </summary>
     public class CustomerService
     {
+        /// <summary>
+        /// Root directory for persistent storage.
+        /// </summary>
         private static readonly string StorageRoot =
-    Path.Combine(AppContext.BaseDirectory, "Storage");
+            Path.Combine(AppContext.BaseDirectory, "Storage");
+
+        /// <summary>
+        /// Default customer profile image path.
+        /// </summary>
         private const string DefaultCustomerPhotoPath = "Assets/profile_img.png";
+
+        /// <summary>
+        /// Folder name used for storing customer photos.
+        /// </summary>
         private const string CustomerPhotoFolder = "Customers";
+
+        /// <summary>
+        /// Base filename used for customer profile photos.
+        /// </summary>
         private const string CustomerPhotoFileName = "profile";
 
+        /// <summary>
+        /// Driver's license service used for license validation.
+        /// </summary>
         private readonly DriversLicenseService _driversLicenseService;
+
+        /// <summary>
+        /// Customer repository for database persistence.
+        /// </summary>
         private readonly CustomerRepository _repo;
 
+        /// <summary>
+        /// Initializes the customer service.
+        /// </summary>
+        /// <param name="driversLicenseService">
+        /// Service responsible for driver's license validation
+        /// </param>
         public CustomerService(DriversLicenseService driversLicenseService)
         {
             _driversLicenseService = driversLicenseService;
@@ -28,6 +66,27 @@ namespace VRMS.Services.Customer
         // =====================================================
         // CREATE  (MASTER)
         // =====================================================
+
+        /// <summary>
+        /// Creates a new customer record.
+        ///
+        /// Driver's license validity is verified before creation.
+        /// Newly created customers receive a default profile photo.
+        /// </summary>
+        /// <param name="firstName">Customer first name</param>
+        /// <param name="lastName">Customer last name</param>
+        /// <param name="email">Email address</param>
+        /// <param name="phone">Phone number</param>
+        /// <param name="address">Residential address</param>
+        /// <param name="dateOfBirth">Date of birth</param>
+        /// <param name="category">Customer category</param>
+        /// <param name="isFrequent">Frequent renter flag</param>
+        /// <param name="isBlacklisted">Blacklist flag</param>
+        /// <param name="driversLicenseId">Driver's license ID</param>
+        /// <returns>Newly created customer ID</returns>
+        /// <exception cref="InvalidOperationException">
+        /// Thrown when the driver's license is expired
+        /// </exception>
         public int CreateCustomer(
             string firstName,
             string lastName,
@@ -41,10 +100,12 @@ namespace VRMS.Services.Customer
             int driversLicenseId
         )
         {
-            var license = _driversLicenseService.GetDriversLicenseById(driversLicenseId);
+            var license =
+                _driversLicenseService.GetDriversLicenseById(driversLicenseId);
 
             if (license.ExpiryDate < DateTime.UtcNow.Date)
-                throw new InvalidOperationException("Driver's license is expired.");
+                throw new InvalidOperationException(
+                    "Driver's license is expired.");
 
             return _repo.Create(
                 firstName,
@@ -64,6 +125,11 @@ namespace VRMS.Services.Customer
         // =====================================================
         // UPDATE  (MASTER)
         // =====================================================
+
+        /// <summary>
+        /// Updates an existing customer's information without modifying
+        /// the stored profile photo.
+        /// </summary>
         public void UpdateCustomer(
             int customerId,
             string firstName,
@@ -94,11 +160,18 @@ namespace VRMS.Services.Customer
         // =====================================================
         // READ
         // =====================================================
+
+        /// <summary>
+        /// Retrieves a customer by ID.
+        /// </summary>
         public Models.Customers.Customer GetCustomerById(int customerId)
         {
             return _repo.GetById(customerId);
         }
 
+        /// <summary>
+        /// Retrieves all customers.
+        /// </summary>
         public List<Models.Customers.Customer> GetAllCustomers()
         {
             return _repo.GetAll();
@@ -107,6 +180,11 @@ namespace VRMS.Services.Customer
         // =====================================================
         // DELETE
         // =====================================================
+
+        /// <summary>
+        /// Deletes a customer and removes all associated
+        /// profile photo files from the file system.
+        /// </summary>
         public void DeleteCustomer(int customerId)
         {
             var directory = GetCustomerPhotoDirectory(customerId);
@@ -118,8 +196,21 @@ namespace VRMS.Services.Customer
         }
 
         // =====================================================
-        // CUSTOMER PHOTO (file system + DB)
+        // CUSTOMER PHOTO (FILE SYSTEM + DB)
         // =====================================================
+
+        /// <summary>
+        /// Sets or replaces a customer's profile photo.
+        ///
+        /// Existing photos are deleted before saving the new one.
+        /// Both file system storage and database path are updated.
+        /// </summary>
+        /// <param name="customerId">Customer ID</param>
+        /// <param name="photoStream">Image stream</param>
+        /// <param name="originalFileName">Original filename (for extension)</param>
+        /// <exception cref="InvalidOperationException">
+        /// Thrown when the file extension is invalid
+        /// </exception>
         public void SetCustomerPhoto(
             int customerId,
             Stream photoStream,
@@ -127,15 +218,17 @@ namespace VRMS.Services.Customer
         )
         {
             if (photoStream.CanSeek)
-                photoStream.Position = 0; // 🔥 REQUIRED
+                photoStream.Position = 0; // REQUIRED FOR STREAM REUSE
 
             var extension = Path.GetExtension(originalFileName);
             if (string.IsNullOrWhiteSpace(extension))
-                throw new InvalidOperationException("Invalid photo file.");
+                throw new InvalidOperationException(
+                    "Invalid photo file.");
 
             var directory = GetCustomerPhotoDirectory(customerId);
             Directory.CreateDirectory(directory);
 
+            // Remove existing photo files
             foreach (var file in Directory.GetFiles(directory))
                 File.Delete(file);
 
@@ -147,13 +240,18 @@ namespace VRMS.Services.Customer
 
             var fullPath = Path.Combine(StorageRoot, relativePath);
 
-            using var fs = new FileStream(fullPath, FileMode.Create, FileAccess.Write);
+            using var fs =
+                new FileStream(fullPath, FileMode.Create, FileAccess.Write);
+
             photoStream.CopyTo(fs);
 
             _repo.SetPhoto(customerId, relativePath);
         }
 
-
+        /// <summary>
+        /// Deletes a customer's profile photo and resets it
+        /// to the default image.
+        /// </summary>
         public void DeleteCustomerPhoto(int customerId)
         {
             var directory = GetCustomerPhotoDirectory(customerId);
@@ -167,23 +265,41 @@ namespace VRMS.Services.Customer
         // =====================================================
         // ELIGIBILITY
         // =====================================================
+
+        /// <summary>
+        /// Ensures a customer is eligible to rent a vehicle.
+        ///
+        /// Validates blacklist status and driver's license expiry.
+        /// </summary>
+        /// <param name="customerId">Customer ID</param>
+        /// <param name="asOfDate">Date of eligibility check</param>
+        /// <exception cref="InvalidOperationException">
+        /// Thrown when the customer is blacklisted or license is expired
+        /// </exception>
         public void EnsureCustomerCanRent(int customerId, DateTime asOfDate)
         {
             var customer = GetCustomerById(customerId);
 
             if (customer.IsBlacklisted)
-                throw new InvalidOperationException("Customer is blacklisted.");
+                throw new InvalidOperationException(
+                    "Customer is blacklisted.");
 
-            var license = _driversLicenseService.GetDriversLicenseById(
-                customer.DriversLicenseId);
+            var license =
+                _driversLicenseService.GetDriversLicenseById(
+                    customer.DriversLicenseId);
 
             if (license.ExpiryDate < asOfDate.Date)
-                throw new InvalidOperationException("Driver's license expired.");
+                throw new InvalidOperationException(
+                    "Driver's license expired.");
         }
 
         // =====================================================
         // MAPPING HELPERS
         // =====================================================
+
+        /// <summary>
+        /// Resolves the file system directory for a customer's photo storage.
+        /// </summary>
         private static string GetCustomerPhotoDirectory(int customerId)
         {
             return Path.Combine(
