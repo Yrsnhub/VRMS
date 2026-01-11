@@ -1,14 +1,43 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using VRMS.Helpers.Storage;
 using VRMS.Models.Damages;
 using VRMS.Repositories.Damages;
 
 namespace VRMS.Services.Damage;
 
+/// <summary>
+/// Provides business logic for damage management, including:
+/// - Damage catalog maintenance (definitions and estimated costs)
+/// - Damage report creation and approval
+/// - Damage report photo management
+///
+/// This service enforces validation rules and approval state
+/// while delegating persistence to repositories.
+/// </summary>
 public class DamageService
 {
+    // ----------------------------
+    // CONSTANTS
+    // ----------------------------
+
+    private const string DamagePhotoFolder = "Damages";
+    private const string DamagePhotoFileName = "damage";
+
+    private const string DefaultDamagePhotoPath =
+        "Assets/img_placeholder.png";
+
+    // ----------------------------
+    // REPOSITORIES
+    // ----------------------------
+
     private readonly DamageRepository _damageRepo;
     private readonly DamageReportRepository _reportRepo;
+
+    // ----------------------------
+    // INIT
+    // ----------------------------
 
     public DamageService()
     {
@@ -20,27 +49,42 @@ public class DamageService
     // DAMAGE CATALOG
     // ----------------------------
 
-    public int CreateDamage(string description, decimal estimatedCost)
+    public int CreateDamage(
+        string description,
+        decimal estimatedCost)
     {
         if (string.IsNullOrWhiteSpace(description))
-            throw new InvalidOperationException("Damage description is required.");
+            throw new InvalidOperationException(
+                "Damage description is required.");
 
         if (estimatedCost < 0)
-            throw new InvalidOperationException("Estimated cost cannot be negative.");
+            throw new InvalidOperationException(
+                "Estimated cost cannot be negative.");
 
-        return _damageRepo.Create(description, estimatedCost);
+        return _damageRepo.Create(
+            description,
+            estimatedCost);
     }
 
-    public void UpdateDamage(int damageId, string description, decimal estimatedCost)
+    public void UpdateDamage(
+        int damageId,
+        string description,
+        decimal estimatedCost)
     {
         if (string.IsNullOrWhiteSpace(description))
-            throw new InvalidOperationException("Damage description is required.");
+            throw new InvalidOperationException(
+                "Damage description is required.");
 
         if (estimatedCost < 0)
-            throw new InvalidOperationException("Estimated cost cannot be negative.");
+            throw new InvalidOperationException(
+                "Estimated cost cannot be negative.");
 
-        _damageRepo.GetById(damageId); // existence check
-        _damageRepo.Update(damageId, description, estimatedCost);
+        _damageRepo.GetById(damageId);
+
+        _damageRepo.Update(
+            damageId,
+            description,
+            estimatedCost);
     }
 
     public void DeleteDamage(int damageId)
@@ -49,52 +93,109 @@ public class DamageService
     }
 
     public Models.Damages.Damage GetDamageById(int damageId)
-    {
-        return _damageRepo.GetById(damageId);
-    }
+        => _damageRepo.GetById(damageId);
 
     public List<Models.Damages.Damage> GetAllDamages()
-    {
-        return _damageRepo.GetAll();
-    }
+        => _damageRepo.GetAll();
 
     // ----------------------------
     // DAMAGE REPORTS
     // ----------------------------
 
-    public int CreateDamageReport(int vehicleInspectionId, int damageId)
+    public int CreateDamageReport(
+        int vehicleInspectionId,
+        int damageId)
     {
-        _damageRepo.GetById(damageId); // ensure damage exists
-        return _reportRepo.Create(vehicleInspectionId, damageId);
+        _damageRepo.GetById(damageId);
+
+        return _reportRepo.Create(
+            vehicleInspectionId,
+            damageId);
     }
 
     public void ApproveDamageReport(int damageReportId)
     {
-        var report = _reportRepo.GetById(damageReportId);
+        var report =
+            _reportRepo.GetById(damageReportId);
 
         if (report.Approved)
-            throw new InvalidOperationException("Damage report is already approved.");
+            throw new InvalidOperationException(
+                "Damage report is already approved.");
 
-        _reportRepo.Approve(damageReportId);
+        _reportRepo.Approve(
+            damageReportId);
     }
 
     public DamageReport GetDamageReportById(int damageReportId)
     {
-        return _reportRepo.GetById(damageReportId);
+        var report =
+            _reportRepo.GetById(damageReportId);
+
+        report.PhotoPath =
+            ResolvePhoto(report.PhotoPath);
+
+        return report;
     }
 
-    public List<DamageReport> GetDamageReportsByInspection(int vehicleInspectionId)
+    public List<DamageReport> GetDamageReportsByInspection(
+        int vehicleInspectionId)
     {
-        return _reportRepo.GetByInspection(vehicleInspectionId);
+        var list =
+            _reportRepo.GetByInspection(
+                vehicleInspectionId);
+
+        foreach (var r in list)
+            r.PhotoPath =
+                ResolvePhoto(r.PhotoPath);
+
+        return list;
     }
 
-    public void SetDamageReportPhoto(int damageReportId, string photoPath)
+    // ----------------------------
+    // DAMAGE REPORT PHOTOS
+    // ----------------------------
+
+    public void SetDamageReportPhoto(
+        int damageReportId,
+        Stream photoStream,
+        string originalFileName)
     {
-        _reportRepo.SetPhoto(damageReportId, photoPath);
+        var relativePath =
+            FileStorageHelper.SaveSingleFile(
+                photoStream,
+                originalFileName,
+                Path.Combine(
+                    DamagePhotoFolder,
+                    damageReportId.ToString()
+                ),
+                DamagePhotoFileName,
+                clearDirectoryFirst: true
+            );
+
+        _reportRepo.SetPhoto(
+            damageReportId,
+            relativePath);
     }
 
     public void DeleteDamageReportPhoto(int damageReportId)
     {
-        _reportRepo.ResetPhoto(damageReportId);
+        FileStorageHelper.DeleteDirectory(
+            Path.Combine(
+                DamagePhotoFolder,
+                damageReportId.ToString()
+            )
+        );
+
+        _reportRepo.ResetPhoto(
+            damageReportId);
     }
+
+    // ----------------------------
+    // HELPERS
+    // ----------------------------
+
+    private static string ResolvePhoto(string? path)
+        => string.IsNullOrWhiteSpace(path)
+            ? DefaultDamagePhotoPath
+            : path;
 }

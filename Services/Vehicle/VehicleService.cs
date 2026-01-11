@@ -4,19 +4,50 @@ using VRMS.Repositories.Fleet;
 
 namespace VRMS.Services.Fleet;
 
+/// <summary>
+/// Provides business logic for fleet management, including:
+/// - Vehicle lifecycle and status transitions
+/// - Maintenance tracking
+/// - Vehicle categories and features
+/// - Vehicle image storage and management
+///
+/// This service enforces strict vehicle state rules and
+/// coordinates database persistence with file system storage.
+/// </summary>
 public class VehicleService
 {
+    /// <summary>
+    /// Root directory for persistent file storage.
+    /// </summary>
     private static readonly string StorageRoot =
-    Path.Combine(AppContext.BaseDirectory, "Storage");
+        Path.Combine(AppContext.BaseDirectory, "Storage");
+
+    /// <summary>
+    /// Folder name used for storing vehicle images.
+    /// </summary>
     private const string VehicleImageFolder = "Vehicles";
 
+    /// <summary>Vehicle repository</summary>
     private readonly VehicleRepository _vehicleRepo;
+
+    /// <summary>Vehicle category repository</summary>
     private readonly VehicleCategoryRepository _categoryRepo;
+
+    /// <summary>Vehicle feature repository</summary>
     private readonly VehicleFeatureRepository _featureRepo;
+
+    /// <summary>Vehicle-feature mapping repository</summary>
     private readonly VehicleFeatureMappingRepository _featureMapRepo;
+
+    /// <summary>Vehicle image repository</summary>
     private readonly VehicleImageRepository _imageRepo;
+
+    /// <summary>Maintenance record repository</summary>
     private readonly MaintenanceRepository _maintenanceRepo;
 
+    /// <summary>
+    /// Initializes the vehicle service with required repositories.
+    /// </summary>
     public VehicleService(
         VehicleRepository vehicleRepo,
         VehicleCategoryRepository categoryRepo,
@@ -37,18 +68,35 @@ public class VehicleService
     // VEHICLES
     // -------------------------------------------------
 
+    /// <summary>
+    /// Creates a new vehicle.
+    ///
+    /// Newly created vehicles are always marked as Available.
+    /// </summary>
     public int CreateVehicle(Vehicle vehicle)
     {
         vehicle.Status = VehicleStatus.Available;
         return _vehicleRepo.Create(vehicle);
     }
 
+    /// <summary>
+    /// Retrieves a vehicle by ID.
+    /// </summary>
     public Vehicle GetVehicleById(int vehicleId)
         => _vehicleRepo.GetById(vehicleId);
 
+    /// <summary>
+    /// Retrieves all vehicles.
+    /// </summary>
     public List<Vehicle> GetAllVehicles()
         => _vehicleRepo.GetAll();
 
+    /// <summary>
+    /// Updates vehicle details.
+    ///
+    /// Odometer values may only increase and
+    /// retired vehicles cannot be modified.
+    /// </summary>
     public void UpdateVehicle(
         int vehicleId,
         string color,
@@ -73,6 +121,12 @@ public class VehicleService
             categoryId);
     }
 
+    /// <summary>
+    /// Updates the status of a vehicle.
+    ///
+    /// Status transitions are validated against
+    /// the vehicle lifecycle state machine.
+    /// </summary>
     public void UpdateVehicleStatus(
         int vehicleId,
         VehicleStatus newStatus)
@@ -82,15 +136,24 @@ public class VehicleService
         _vehicleRepo.UpdateStatus(vehicleId, newStatus);
     }
 
+    /// <summary>
+    /// Retires a vehicle permanently.
+    ///
+    /// Retired vehicles cannot be modified or reused.
+    /// </summary>
     public void RetireVehicle(int vehicleId)
     {
         var vehicle = _vehicleRepo.GetById(vehicleId);
+
         if (vehicle.Status == VehicleStatus.Retired)
             return;
 
         _vehicleRepo.Retire(vehicleId);
     }
 
+    /// <summary>
+    /// Updates only the vehicle odometer.
+    /// </summary>
     public void UpdateVehicleOdometer(
         int vehicleId,
         int newOdometer)
@@ -110,7 +173,11 @@ public class VehicleService
             vehicle.CargoCapacity,
             vehicle.VehicleCategoryId);
     }
-    
+
+    /// <summary>
+    /// Retrieves a vehicle with all related data
+    /// (features, images, category, etc.).
+    /// </summary>
     public Vehicle GetVehicleFull(int vehicleId)
     {
         return _vehicleRepo.GetFullById(vehicleId);
@@ -120,6 +187,10 @@ public class VehicleService
     // MAINTENANCE
     // -------------------------------------------------
 
+    /// <summary>
+    /// Starts a maintenance record and places the vehicle
+    /// into UnderMaintenance status.
+    /// </summary>
     public int StartMaintenance(
         int vehicleId,
         string description,
@@ -143,6 +214,10 @@ public class VehicleService
         return maintenanceId;
     }
 
+    /// <summary>
+    /// Closes a maintenance record and transitions the vehicle
+    /// to a post-maintenance status.
+    /// </summary>
     public void CloseMaintenance(
         int maintenanceRecordId,
         DateTime endDate,
@@ -161,10 +236,16 @@ public class VehicleService
             postMaintenanceStatus);
     }
 
+    /// <summary>
+    /// Retrieves maintenance records for a vehicle.
+    /// </summary>
     public List<MaintenanceRecord> GetMaintenanceByVehicle(
         int vehicleId)
         => _maintenanceRepo.GetByVehicle(vehicleId);
 
+    /// <summary>
+    /// Retrieves a maintenance record by ID.
+    /// </summary>
     public MaintenanceRecord GetMaintenanceById(
         int maintenanceId)
         => _maintenanceRepo.GetById(maintenanceId);
@@ -173,11 +254,17 @@ public class VehicleService
     // CATEGORIES
     // -------------------------------------------------
 
+    /// <summary>
+    /// Creates a vehicle category.
+    /// </summary>
     public int CreateCategory(
         string name,
         string? description)
         => _categoryRepo.Create(name, description);
 
+    /// <summary>
+    /// Updates a vehicle category.
+    /// </summary>
     public void UpdateCategory(
         int categoryId,
         string name,
@@ -187,12 +274,21 @@ public class VehicleService
             name,
             description);
 
+    /// <summary>
+    /// Deletes a vehicle category.
+    /// </summary>
     public void DeleteCategory(int categoryId)
         => _categoryRepo.Delete(categoryId);
 
+    /// <summary>
+    /// Retrieves all vehicle categories.
+    /// </summary>
     public List<VehicleCategory> GetAllCategories()
         => _categoryRepo.GetAll();
 
+    /// <summary>
+    /// Retrieves a vehicle category by ID.
+    /// </summary>
     public VehicleCategory GetCategoryById(
         int categoryId)
         => _categoryRepo.GetById(categoryId);
@@ -201,20 +297,35 @@ public class VehicleService
     // FEATURES
     // -------------------------------------------------
 
+    /// <summary>
+    /// Creates a vehicle feature.
+    /// </summary>
     public int CreateFeature(string name)
         => _featureRepo.Create(name);
 
+    /// <summary>
+    /// Updates a vehicle feature.
+    /// </summary>
     public void UpdateFeature(
         int featureId,
         string name)
         => _featureRepo.Update(featureId, name);
 
+    /// <summary>
+    /// Deletes a vehicle feature.
+    /// </summary>
     public void DeleteFeature(int featureId)
         => _featureRepo.Delete(featureId);
 
+    /// <summary>
+    /// Retrieves all vehicle features.
+    /// </summary>
     public List<VehicleFeature> GetAllFeatures()
         => _featureRepo.GetAll();
 
+    /// <summary>
+    /// Retrieves a vehicle feature by ID.
+    /// </summary>
     public VehicleFeature GetFeatureById(
         int featureId)
         => _featureRepo.GetById(featureId);
@@ -223,6 +334,9 @@ public class VehicleService
     // FEATURE MAPPINGS
     // -------------------------------------------------
 
+    /// <summary>
+    /// Adds a feature to a vehicle.
+    /// </summary>
     public void AddFeatureToVehicle(
         int vehicleId,
         int featureId)
@@ -235,6 +349,9 @@ public class VehicleService
             featureId);
     }
 
+    /// <summary>
+    /// Removes a feature from a vehicle.
+    /// </summary>
     public void RemoveFeatureFromVehicle(
         int vehicleId,
         int featureId)
@@ -242,6 +359,9 @@ public class VehicleService
             vehicleId,
             featureId);
 
+    /// <summary>
+    /// Retrieves all features associated with a vehicle.
+    /// </summary>
     public List<VehicleFeature> GetVehicleFeatures(
         int vehicleId)
         => _featureMapRepo.GetByVehicle(
@@ -251,6 +371,12 @@ public class VehicleService
     // VEHICLE IMAGES
     // -------------------------------------------------
 
+    /// <summary>
+    /// Adds an image to a vehicle.
+    ///
+    /// Images are stored in the file system and
+    /// tracked in the database.
+    /// </summary>
     public void AddVehicleImage(
         int vehicleId,
         Stream imageStream,
@@ -293,6 +419,11 @@ public class VehicleService
             relativePath);
     }
 
+    /// <summary>
+    /// Removes a vehicle image.
+    ///
+    /// Deletes both the file and database record.
+    /// </summary>
     public void RemoveVehicleImage(int imageId)
     {
         var image =
@@ -309,6 +440,9 @@ public class VehicleService
         _imageRepo.Delete(imageId);
     }
 
+    /// <summary>
+    /// Retrieves all images associated with a vehicle.
+    /// </summary>
     public List<VehicleImage> GetVehicleImages(
         int vehicleId)
         => _imageRepo.GetByVehicle(vehicleId);
@@ -317,6 +451,9 @@ public class VehicleService
     // INTERNAL RULES
     // -------------------------------------------------
 
+    /// <summary>
+    /// Ensures a vehicle is not retired.
+    /// </summary>
     private static void EnsureNotRetired(
         Vehicle vehicle)
     {
@@ -325,6 +462,9 @@ public class VehicleService
                 "Retired vehicles cannot be modified.");
     }
 
+    /// <summary>
+    /// Validates legal vehicle status transitions.
+    /// </summary>
     private static void EnsureValidStatusTransition(
         VehicleStatus current,
         VehicleStatus next)
@@ -364,6 +504,9 @@ public class VehicleService
                 $"Illegal vehicle status transition: {current} → {next}");
     }
 
+    /// <summary>
+    /// Resolves the directory for storing vehicle images.
+    /// </summary>
     private static string GetVehicleImageDirectory(
         int vehicleId)
         => Path.Combine(

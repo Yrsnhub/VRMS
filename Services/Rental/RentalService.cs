@@ -1,29 +1,72 @@
 ﻿using VRMS.Enums;
 using VRMS.Repositories.Rentals;
+using VRMS.Services.Billing;
 using VRMS.Services.Fleet;
 
 namespace VRMS.Services.Rental;
 
+/// <summary>
+/// Provides business logic for rental lifecycle management, including:
+/// - Starting rentals from confirmed reservations
+/// - Completing rentals and handling returns
+/// - Enforcing vehicle state transitions
+/// - Triggering final billing upon rental completion
+///
+/// This service orchestrates reservations, vehicles, and billing
+/// while enforcing strict state validation.
+/// </summary>
 public class RentalService
 {
+    /// <summary>
+    /// Reservation service used for reservation validation and lookup.
+    /// </summary>
     private readonly ReservationService _reservationService;
+
+    /// <summary>
+    /// Vehicle service used for vehicle state and metadata management.
+    /// </summary>
     private readonly VehicleService _vehicleService;
+
+    /// <summary>
+    /// Rental repository for persistence.
+    /// </summary>
     private readonly RentalRepository _rentalRepo;
 
+    /// <summary>
+    /// Billing service responsible for final invoice calculation.
+    /// </summary>
+    private readonly BillingService _billingService;
+
+    /// <summary>
+    /// Initializes the rental service with required dependencies.
+    /// </summary>
     public RentalService(
         ReservationService reservationService,
         VehicleService vehicleService,
-        RentalRepository rentalRepo)
+        RentalRepository rentalRepo,
+        BillingService billingService)
     {
         _reservationService = reservationService;
         _vehicleService = vehicleService;
         _rentalRepo = rentalRepo;
+        _billingService = billingService;
     }
 
     // -------------------------------------------------
     // START RENTAL (PICKUP)
     // -------------------------------------------------
 
+    /// <summary>
+    /// Starts a rental based on a confirmed reservation.
+    ///
+    /// This marks the vehicle as rented and creates an active rental record.
+    /// </summary>
+    /// <param name="reservationId">Reservation ID</param>
+    /// <param name="pickupDate">Actual pickup date and time</param>
+    /// <returns>Newly created rental ID</returns>
+    /// <exception cref="InvalidOperationException">
+    /// Thrown when reservation or vehicle state is invalid
+    /// </exception>
     public int StartRental(
         int reservationId,
         DateTime pickupDate)
@@ -62,7 +105,8 @@ public class RentalService
                 vehicle.Odometer,
                 RentalStatus.Active);
 
-        _rentalRepo.MarkStarted(rentalId);
+        _rentalRepo.MarkStarted(
+            rentalId);
 
         _vehicleService.UpdateVehicleStatus(
             reservation.VehicleId,
@@ -75,6 +119,21 @@ public class RentalService
     // COMPLETE RENTAL (RETURN)
     // -------------------------------------------------
 
+    /// <summary>
+    /// Completes an active rental.
+    ///
+    /// This operation:
+    /// - Validates return date and odometer
+    /// - Updates rental status (completed or late)
+    /// - Updates vehicle odometer and availability
+    /// - Triggers final invoice calculation
+    /// </summary>
+    /// <param name="rentalId">Rental ID</param>
+    /// <param name="actualReturnDate">Actual return date and time</param>
+    /// <param name="endOdometer">Odometer reading at return</param>
+    /// <exception cref="InvalidOperationException">
+    /// Thrown when rental state or input data is invalid
+    /// </exception>
     public void CompleteRental(
         int rentalId,
         DateTime actualReturnDate,
@@ -129,15 +188,25 @@ public class RentalService
         _vehicleService.UpdateVehicleStatus(
             reservation.VehicleId,
             VehicleStatus.Available);
+
+        // ---------------- FINAL BILLING ----------------
+        _billingService.FinalizeInvoice(
+            rentalId);
     }
 
     // -------------------------------------------------
     // READ
     // -------------------------------------------------
 
+    /// <summary>
+    /// Retrieves a rental by ID.
+    /// </summary>
     public Models.Rentals.Rental GetRentalById(int rentalId)
         => _rentalRepo.GetById(rentalId);
 
+    /// <summary>
+    /// Retrieves a rental associated with a reservation, if any.
+    /// </summary>
     public Models.Rentals.Rental? GetRentalByReservation(
         int reservationId)
         => _rentalRepo.GetByReservation(reservationId);

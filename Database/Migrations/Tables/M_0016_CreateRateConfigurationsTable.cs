@@ -10,6 +10,8 @@ public static class M_0016_CreateRateConfigurationsTable
                                          weekly_rate DECIMAL(10,2) NOT NULL,
                                          monthly_rate DECIMAL(10,2) NOT NULL,
                                          hourly_rate DECIMAL(10,2) NOT NULL,
+                                         included_mileage_per_day DECIMAL(10,2) NOT NULL,
+                                         excess_mileage_rate DECIMAL(10,2) NOT NULL,
 
                                          CONSTRAINT fk_rates_category
                                              FOREIGN KEY (vehicle_category_id)

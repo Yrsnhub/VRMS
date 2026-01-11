@@ -8,7 +8,6 @@ namespace VRMS.Repositories.Damages;
 
 public class DamageReportRepository
 {
-    private const string DefaultDamagePhotoPath = "Assets/img_placeholder.png";
 
     // ----------------------------
     // DAMAGE REPORTS
@@ -17,14 +16,14 @@ public class DamageReportRepository
     public int Create(int vehicleInspectionId, int damageId)
     {
         var table = DB.Query(
-            "CALL sp_damage_reports_create(@inspectionId, @damageId, @photo);",
+            "CALL sp_damage_reports_create(@inspectionId, @damageId);",
             ("@inspectionId", vehicleInspectionId),
-            ("@damageId", damageId),
-            ("@photo", DefaultDamagePhotoPath)
+            ("@damageId", damageId)
         );
 
         return Convert.ToInt32(table.Rows[0]["damage_report_id"]);
     }
+
 
     public void Approve(int damageReportId)
     {
@@ -80,20 +79,45 @@ public class DamageReportRepository
 
     private static DamageReport Map(DataRow row)
     {
-        var photoPath = row["photo_path"] == DBNull.Value
-            ? DefaultDamagePhotoPath
-            : row["photo_path"].ToString();
-
-        if (string.IsNullOrWhiteSpace(photoPath))
-            photoPath = DefaultDamagePhotoPath;
+        string? photoPath =
+            row["photo_path"] == DBNull.Value
+                ? null
+                : row["photo_path"].ToString();
 
         return new DamageReport
         {
             Id = Convert.ToInt32(row["id"]),
             VehicleInspectionId = Convert.ToInt32(row["vehicle_inspection_id"]),
             DamageId = Convert.ToInt32(row["damage_id"]),
-            PhotoPath = photoPath!,
+            PhotoPath = photoPath,
             Approved = Convert.ToBoolean(row["approved"])
         };
+    }
+    
+    // ----------------------------
+    // BILLING SUPPORT
+    // ----------------------------
+    // Returns approved damages for a rental, with cost info
+    public List<(int DamageReportId, string Description, decimal EstimatedCost)>
+        GetApprovedByRental(int rentalId)
+    {
+        var table = DB.Query(
+            "CALL sp_damage_reports_get_approved_by_rental(@rid);",
+            ("@rid", rentalId)
+        );
+
+        var list =
+            new List<(int, string, decimal)>();
+
+        foreach (DataRow row in table.Rows)
+        {
+            list.Add((
+                Convert.ToInt32(row["damage_report_id"]),
+                row["description"].ToString()!,
+                Convert.ToDecimal(row["estimated_cost"])
+            ));
+        }
+
+        return list;
     }
 }

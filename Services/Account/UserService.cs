@@ -1,13 +1,45 @@
-﻿using VRMS.Enums;
+﻿using System;
+using System.IO;
+using VRMS.Enums;
 using VRMS.Helpers.Security;
+using VRMS.Helpers.Storage;
 using VRMS.Models.Accounts;
 using VRMS.Repositories.Accounts;
 
 namespace VRMS.Services.Account;
 
+/// <summary>
+/// Provides business logic for user authentication,
+/// account lifecycle management, and profile maintenance.
+///
+/// This service acts as the single authority for:
+/// - Authentication & password validation
+/// - User creation and deactivation
+/// - Password changes
+/// - Profile and role updates
+/// - User photo storage and lifecycle management
+/// </summary>
 public class UserService
 {
+    // ----------------------------
+    // CONSTANTS
+    // ----------------------------
+
+    private const string UserPhotoFolder = "Users";
+    private const string UserPhotoFileName = "profile";
+
+    private const string DefaultUserPhotoPath =
+        "Assets/profile_img.png";
+
+    // ----------------------------
+    // REPOSITORY
+    // ----------------------------
+
     private readonly UserRepository _userRepo;
+
+    // ----------------------------
+    // INIT
+    // ----------------------------
 
     public UserService(UserRepository userRepo)
     {
@@ -31,6 +63,9 @@ public class UserService
             throw new InvalidOperationException(
                 "Invalid password.");
 
+        user.PhotoPath =
+            ResolvePhoto(user.PhotoPath);
+
         return user;
     }
 
@@ -48,13 +83,16 @@ public class UserService
             throw new InvalidOperationException(
                 "Username cannot be empty.");
 
-        var hash = Password.Hash(plainPassword);
+        var hash =
+            Password.Hash(plainPassword);
 
+        // User starts with NO uploaded photo
         return _userRepo.Create(
             username,
             hash,
             role,
-            isActive);
+            isActive,
+            null);
     }
 
     // ----------------------------
@@ -62,10 +100,26 @@ public class UserService
     // ----------------------------
 
     public User GetById(int userId)
-        => _userRepo.GetById(userId);
+    {
+        var user =
+            _userRepo.GetById(userId);
+
+        user.PhotoPath =
+            ResolvePhoto(user.PhotoPath);
+
+        return user;
+    }
 
     public User GetByUsername(string username)
-        => _userRepo.GetByUsername(username);
+    {
+        var user =
+            _userRepo.GetByUsername(username);
+
+        user.PhotoPath =
+            ResolvePhoto(user.PhotoPath);
+
+        return user;
+    }
 
     // ----------------------------
     // DEACTIVATE
@@ -83,7 +137,8 @@ public class UserService
         string currentPlainPassword,
         string newPlainPassword)
     {
-        var user = _userRepo.GetById(userId);
+        var user =
+            _userRepo.GetById(userId);
 
         if (!Password.Verify(
                 currentPlainPassword,
@@ -119,4 +174,53 @@ public class UserService
             role,
             isActive);
     }
+
+    // ----------------------------
+    // USER PHOTO MANAGEMENT
+    // ----------------------------
+
+    public void SetUserPhoto(
+        int userId,
+        Stream photoStream,
+        string originalFileName)
+    {
+        var relativePath =
+            FileStorageHelper.SaveSingleFile(
+                photoStream,
+                originalFileName,
+                Path.Combine(
+                    UserPhotoFolder,
+                    userId.ToString()
+                ),
+                UserPhotoFileName,
+                clearDirectoryFirst: true
+            );
+
+        _userRepo.UpdatePhoto(
+            userId,
+            relativePath);
+    }
+
+    public void DeleteUserPhoto(int userId)
+    {
+        FileStorageHelper.DeleteDirectory(
+            Path.Combine(
+                UserPhotoFolder,
+                userId.ToString()
+            )
+        );
+
+        _userRepo.UpdatePhoto(
+            userId,
+            null);
+    }
+
+    // ----------------------------
+    // HELPERS
+    // ----------------------------
+
+    private static string ResolvePhoto(string? path)
+        => string.IsNullOrWhiteSpace(path)
+            ? DefaultUserPhotoPath
+            : path;
 }
