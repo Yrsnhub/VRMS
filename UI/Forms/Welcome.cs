@@ -113,8 +113,11 @@ namespace VRMS.UI.Forms
 
         private void HandleLoginSuccess(User user)
         {
+            // SESSION
             Session.CurrentUser = user;
 
+            // GLOBALS (THIS WAS MISSING)
+            Program.CurrentUserId = user.Id;
             Program.CurrentUsername = user.Username;
             Program.CurrentUserRole = user.Role.ToString();
 
@@ -124,6 +127,7 @@ namespace VRMS.UI.Forms
             Hide();
             mainForm.FormClosed += (_, __) => Application.Exit();
         }
+
 
         // =========================
         // IAnimationHost

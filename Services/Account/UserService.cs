@@ -89,10 +89,14 @@ public class UserService
         // User starts with NO uploaded photo
         return _userRepo.Create(
             username,
+            null,   // full name
+            null,   // email
+            null,   // phone
             hash,
             role,
             isActive,
-            null);
+            null    // photo
+        );
     }
 
     // ----------------------------
@@ -214,13 +218,34 @@ public class UserService
             userId,
             null);
     }
+    
+    public void UpdateSelfProfile(
+        int userId,
+        string? fullName,
+        string? email,
+        string? phone)
+    {
+        _userRepo.UpdateSelfProfile(
+            userId,
+            fullName,
+            email,
+            phone);
+    }
+
 
     // ----------------------------
     // HELPERS
     // ----------------------------
 
     private static string ResolvePhoto(string? path)
-        => string.IsNullOrWhiteSpace(path)
-            ? DefaultUserPhotoPath
-            : path;
+    {
+        if (string.IsNullOrWhiteSpace(path))
+            return Path.Combine(AppContext.BaseDirectory, DefaultUserPhotoPath);
+
+        return Path.Combine(
+            AppContext.BaseDirectory,
+            "Storage",
+            path
+        );
+    }
 }

@@ -13,8 +13,9 @@ namespace VRMS
     internal static class Program
     {
         // Global session info (used by MainForm)
-        public static string CurrentUsername { get; set; } = "Guest";
-        public static string CurrentUserRole { get; set; } = "User";
+        public static int CurrentUserId { get; set; }
+        public static string CurrentUsername { get; set; } = "";
+        public static string CurrentUserRole { get; set; } = "";
 
         [DllImport("kernel32.dll")]
         private static extern bool FreeConsole();

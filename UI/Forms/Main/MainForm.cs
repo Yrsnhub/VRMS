@@ -5,6 +5,8 @@ using VRMS;
 using VRMS.Controls;
 using VRMS.Forms;
 using VRMS.Controls.UserProfile;
+using VRMS.Repositories.Accounts;
+using VRMS.Services.Account;
 using VRMS.UI.Forms; // Add this for UserProfileView
 
 namespace VRMS.Forms
@@ -12,6 +14,8 @@ namespace VRMS.Forms
     public partial class MainForm : Form
     {
         private Button activeButton = null;
+        
+        private readonly UserService _userService;
 
         // THEME COLORS (match NewRentalForm)
         private readonly Color normalColor = Color.Transparent;
@@ -21,8 +25,12 @@ namespace VRMS.Forms
         public MainForm()
         {
             InitializeComponent();
+
+            _userService = new UserService(new UserRepository());
+
             SetupForm();
         }
+
 
         private void SetupForm()
         {
@@ -165,10 +173,15 @@ namespace VRMS.Forms
 
         private void NavigateToUserProfile()
         {
-            // Show User Profile without activating a navigation button
-            ShowView(new UserProfileView(), "My Profile", "Manage your account settings");
+            ShowView(
+                new UserProfileView(
+                    _userService,
+                    Program.CurrentUserId
+                ),
+                "My Profile",
+                "Manage your account settings"
+            );
 
-            // Deactivate all nav buttons since we're not using a profile button
             if (activeButton != null)
             {
                 activeButton.BackColor = normalColor;

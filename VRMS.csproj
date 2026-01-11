@@ -30,6 +30,14 @@
         <Content Include="Assets\Seed\**\*">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
+        <None Remove="Assets\profile_img.png" />
+        <Content Include="Assets\profile_img.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+        <None Remove="Assets\img_placeholder.png" />
+        <Content Include="Assets\img_placeholder.png">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
     </ItemGroup>
 
 </Project>

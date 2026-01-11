@@ -15,340 +15,374 @@
 
         #region Component Designer generated code
 
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
         private void InitializeComponent()
         {
-            this.panelContainer = new System.Windows.Forms.Panel();
-            this.panelForm = new System.Windows.Forms.Panel();
-            this.btnChangePassword = new System.Windows.Forms.Button();
-            this.btnSave = new System.Windows.Forms.Button();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.txtConfirmPassword = new System.Windows.Forms.TextBox();
-            this.label8 = new System.Windows.Forms.Label();
-            this.txtNewPassword = new System.Windows.Forms.TextBox();
-            this.label7 = new System.Windows.Forms.Label();
-            this.txtCurrentPassword = new System.Windows.Forms.TextBox();
-            this.label6 = new System.Windows.Forms.Label();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.txtPhone = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
-            this.txtEmail = new System.Windows.Forms.TextBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.txtFullName = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.txtUsername = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.panelProfileHeader = new System.Windows.Forms.Panel();
-            this.lblProfileRole = new System.Windows.Forms.Label();
-            this.lblProfileName = new System.Windows.Forms.Label();
-            this.pictureBoxProfile = new System.Windows.Forms.PictureBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.panelContainer.SuspendLayout();
-            this.panelForm.SuspendLayout();
-            this.groupBox2.SuspendLayout();
-            this.groupBox1.SuspendLayout();
-            this.panelProfileHeader.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxProfile)).BeginInit();
-            this.SuspendLayout();
+            panelContainer = new System.Windows.Forms.Panel();
+            panelForm = new System.Windows.Forms.Panel();
+            btnChangePassword = new System.Windows.Forms.Button();
+            btnSave = new System.Windows.Forms.Button();
+            groupBox2 = new System.Windows.Forms.GroupBox();
+            txtConfirmPassword = new System.Windows.Forms.TextBox();
+            label8 = new System.Windows.Forms.Label();
+            txtNewPassword = new System.Windows.Forms.TextBox();
+            label7 = new System.Windows.Forms.Label();
+            txtCurrentPassword = new System.Windows.Forms.TextBox();
+            label6 = new System.Windows.Forms.Label();
+            groupBox1 = new System.Windows.Forms.GroupBox();
+            txtPhone = new System.Windows.Forms.TextBox();
+            label5 = new System.Windows.Forms.Label();
+            txtEmail = new System.Windows.Forms.TextBox();
+            label4 = new System.Windows.Forms.Label();
+            txtFullName = new System.Windows.Forms.TextBox();
+            label3 = new System.Windows.Forms.Label();
+            txtUsername = new System.Windows.Forms.TextBox();
+            label2 = new System.Windows.Forms.Label();
+            panelProfileHeader = new System.Windows.Forms.Panel();
+            picProfile = new System.Windows.Forms.PictureBox();
+            lblProfileRole = new System.Windows.Forms.Label();
+            lblProfileName = new System.Windows.Forms.Label();
+            label1 = new System.Windows.Forms.Label();
+            panelContainer.SuspendLayout();
+            panelForm.SuspendLayout();
+            groupBox2.SuspendLayout();
+            groupBox1.SuspendLayout();
+            panelProfileHeader.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)picProfile).BeginInit();
+            SuspendLayout();
             // 
             // panelContainer
             // 
-            this.panelContainer.BackColor = System.Drawing.Color.White;
-            this.panelContainer.Controls.Add(this.panelForm);
-            this.panelContainer.Controls.Add(this.panelProfileHeader);
-            this.panelContainer.Controls.Add(this.label1);
-            this.panelContainer.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelContainer.Location = new System.Drawing.Point(0, 0);
-            this.panelContainer.Name = "panelContainer";
-            this.panelContainer.Padding = new System.Windows.Forms.Padding(20);
-            this.panelContainer.Size = new System.Drawing.Size(630, 494);
-            this.panelContainer.TabIndex = 0;
+            panelContainer.BackColor = System.Drawing.Color.White;
+            panelContainer.Controls.Add(panelForm);
+            panelContainer.Controls.Add(panelProfileHeader);
+            panelContainer.Controls.Add(label1);
+            panelContainer.Dock = System.Windows.Forms.DockStyle.Fill;
+            panelContainer.Location = new System.Drawing.Point(0, 0);
+            panelContainer.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            panelContainer.Name = "panelContainer";
+            panelContainer.Padding = new System.Windows.Forms.Padding(27, 31, 27, 31);
+            panelContainer.Size = new System.Drawing.Size(840, 760);
+            panelContainer.TabIndex = 0;
             // 
             // panelForm
             // 
-            this.panelForm.Controls.Add(this.btnChangePassword);
-            this.panelForm.Controls.Add(this.btnSave);
-            this.panelForm.Controls.Add(this.groupBox2);
-            this.panelForm.Controls.Add(this.groupBox1);
-            this.panelForm.Location = new System.Drawing.Point(20, 140);
-            this.panelForm.Name = "panelForm";
-            this.panelForm.Size = new System.Drawing.Size(590, 334);
-            this.panelForm.TabIndex = 2;
+            panelForm.Controls.Add(btnChangePassword);
+            panelForm.Controls.Add(btnSave);
+            panelForm.Controls.Add(groupBox2);
+            panelForm.Controls.Add(groupBox1);
+            panelForm.Location = new System.Drawing.Point(27, 215);
+            panelForm.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            panelForm.Name = "panelForm";
+            panelForm.Size = new System.Drawing.Size(787, 514);
+            panelForm.TabIndex = 2;
             // 
             // btnChangePassword
             // 
-            this.btnChangePassword.BackColor = System.Drawing.Color.FromArgb(52, 73, 94);
-            this.btnChangePassword.FlatAppearance.BorderSize = 0;
-            this.btnChangePassword.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnChangePassword.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnChangePassword.ForeColor = System.Drawing.Color.White;
-            this.btnChangePassword.Location = new System.Drawing.Point(370, 280);
-            this.btnChangePassword.Name = "btnChangePassword";
-            this.btnChangePassword.Size = new System.Drawing.Size(100, 40);
-            this.btnChangePassword.TabIndex = 5;
-            this.btnChangePassword.Text = "Change";
-            this.btnChangePassword.UseVisualStyleBackColor = false;
+            btnChangePassword.BackColor = System.Drawing.Color.FromArgb(((int)((byte)52)), ((int)((byte)73)), ((int)((byte)94)));
+            btnChangePassword.FlatAppearance.BorderSize = 0;
+            btnChangePassword.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            btnChangePassword.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)0));
+            btnChangePassword.ForeColor = System.Drawing.Color.White;
+            btnChangePassword.Location = new System.Drawing.Point(410, 431);
+            btnChangePassword.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            btnChangePassword.Name = "btnChangePassword";
+            btnChangePassword.Size = new System.Drawing.Size(216, 62);
+            btnChangePassword.TabIndex = 5;
+            btnChangePassword.Text = "Confirm new Password";
+            btnChangePassword.UseVisualStyleBackColor = false;
             // 
             // btnSave
             // 
-            this.btnSave.BackColor = System.Drawing.Color.FromArgb(46, 204, 113);
-            this.btnSave.FlatAppearance.BorderSize = 0;
-            this.btnSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnSave.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSave.ForeColor = System.Drawing.Color.White;
-            this.btnSave.Location = new System.Drawing.Point(480, 280);
-            this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(100, 40);
-            this.btnSave.TabIndex = 4;
-            this.btnSave.Text = "Save Profile";
-            this.btnSave.UseVisualStyleBackColor = false;
+            btnSave.BackColor = System.Drawing.Color.FromArgb(((int)((byte)46)), ((int)((byte)204)), ((int)((byte)113)));
+            btnSave.FlatAppearance.BorderSize = 0;
+            btnSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            btnSave.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)0));
+            btnSave.ForeColor = System.Drawing.Color.White;
+            btnSave.Location = new System.Drawing.Point(640, 431);
+            btnSave.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            btnSave.Name = "btnSave";
+            btnSave.Size = new System.Drawing.Size(133, 62);
+            btnSave.TabIndex = 4;
+            btnSave.Text = "Save Profile";
+            btnSave.UseVisualStyleBackColor = false;
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.txtConfirmPassword);
-            this.groupBox2.Controls.Add(this.label8);
-            this.groupBox2.Controls.Add(this.txtNewPassword);
-            this.groupBox2.Controls.Add(this.label7);
-            this.groupBox2.Controls.Add(this.txtCurrentPassword);
-            this.groupBox2.Controls.Add(this.label6);
-            this.groupBox2.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox2.ForeColor = System.Drawing.Color.FromArgb(52, 73, 94);
-            this.groupBox2.Location = new System.Drawing.Point(300, 10);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(280, 260);
-            this.groupBox2.TabIndex = 1;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Change Password";
+            groupBox2.Controls.Add(txtConfirmPassword);
+            groupBox2.Controls.Add(label8);
+            groupBox2.Controls.Add(txtNewPassword);
+            groupBox2.Controls.Add(label7);
+            groupBox2.Controls.Add(txtCurrentPassword);
+            groupBox2.Controls.Add(label6);
+            groupBox2.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)0));
+            groupBox2.ForeColor = System.Drawing.Color.FromArgb(((int)((byte)52)), ((int)((byte)73)), ((int)((byte)94)));
+            groupBox2.Location = new System.Drawing.Point(400, 15);
+            groupBox2.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            groupBox2.Name = "groupBox2";
+            groupBox2.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            groupBox2.Size = new System.Drawing.Size(373, 400);
+            groupBox2.TabIndex = 1;
+            groupBox2.TabStop = false;
+            groupBox2.Text = "Change Password";
             // 
             // txtConfirmPassword
             // 
-            this.txtConfirmPassword.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtConfirmPassword.Location = new System.Drawing.Point(20, 195);
-            this.txtConfirmPassword.Name = "txtConfirmPassword";
-            this.txtConfirmPassword.PasswordChar = '•';
-            this.txtConfirmPassword.Size = new System.Drawing.Size(240, 25);
-            this.txtConfirmPassword.TabIndex = 3;
+            txtConfirmPassword.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)0));
+            txtConfirmPassword.Location = new System.Drawing.Point(27, 300);
+            txtConfirmPassword.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            txtConfirmPassword.Name = "txtConfirmPassword";
+            txtConfirmPassword.PasswordChar = '•';
+            txtConfirmPassword.Size = new System.Drawing.Size(319, 29);
+            txtConfirmPassword.TabIndex = 3;
             // 
             // label8
             // 
-            this.label8.AutoSize = true;
-            this.label8.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.ForeColor = System.Drawing.Color.DimGray;
-            this.label8.Location = new System.Drawing.Point(17, 177);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(104, 15);
-            this.label8.TabIndex = 0;
-            this.label8.Text = "Confirm Password:";
+            label8.AutoSize = true;
+            label8.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)0));
+            label8.ForeColor = System.Drawing.Color.DimGray;
+            label8.Location = new System.Drawing.Point(23, 272);
+            label8.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label8.Name = "label8";
+            label8.Size = new System.Drawing.Size(130, 20);
+            label8.TabIndex = 0;
+            label8.Text = "Confirm Password:";
             // 
             // txtNewPassword
             // 
-            this.txtNewPassword.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtNewPassword.Location = new System.Drawing.Point(20, 135);
-            this.txtNewPassword.Name = "txtNewPassword";
-            this.txtNewPassword.PasswordChar = '•';
-            this.txtNewPassword.Size = new System.Drawing.Size(240, 25);
-            this.txtNewPassword.TabIndex = 2;
+            txtNewPassword.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)0));
+            txtNewPassword.Location = new System.Drawing.Point(27, 208);
+            txtNewPassword.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            txtNewPassword.Name = "txtNewPassword";
+            txtNewPassword.PasswordChar = '•';
+            txtNewPassword.Size = new System.Drawing.Size(319, 29);
+            txtNewPassword.TabIndex = 2;
             // 
             // label7
             // 
-            this.label7.AutoSize = true;
-            this.label7.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.ForeColor = System.Drawing.Color.DimGray;
-            this.label7.Location = new System.Drawing.Point(17, 117);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(87, 15);
-            this.label7.TabIndex = 0;
-            this.label7.Text = "New Password:";
+            label7.AutoSize = true;
+            label7.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)0));
+            label7.ForeColor = System.Drawing.Color.DimGray;
+            label7.Location = new System.Drawing.Point(23, 180);
+            label7.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label7.Name = "label7";
+            label7.Size = new System.Drawing.Size(107, 20);
+            label7.TabIndex = 0;
+            label7.Text = "New Password:";
             // 
             // txtCurrentPassword
             // 
-            this.txtCurrentPassword.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtCurrentPassword.Location = new System.Drawing.Point(20, 75);
-            this.txtCurrentPassword.Name = "txtCurrentPassword";
-            this.txtCurrentPassword.PasswordChar = '•';
-            this.txtCurrentPassword.Size = new System.Drawing.Size(240, 25);
-            this.txtCurrentPassword.TabIndex = 1;
+            txtCurrentPassword.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)0));
+            txtCurrentPassword.Location = new System.Drawing.Point(27, 115);
+            txtCurrentPassword.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            txtCurrentPassword.Name = "txtCurrentPassword";
+            txtCurrentPassword.PasswordChar = '•';
+            txtCurrentPassword.Size = new System.Drawing.Size(319, 29);
+            txtCurrentPassword.TabIndex = 1;
             // 
             // label6
             // 
-            this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.ForeColor = System.Drawing.Color.DimGray;
-            this.label6.Location = new System.Drawing.Point(17, 57);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(99, 15);
-            this.label6.TabIndex = 0;
-            this.label6.Text = "Current Password:";
+            label6.AutoSize = true;
+            label6.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)0));
+            label6.ForeColor = System.Drawing.Color.DimGray;
+            label6.Location = new System.Drawing.Point(23, 88);
+            label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label6.Name = "label6";
+            label6.Size = new System.Drawing.Size(125, 20);
+            label6.TabIndex = 0;
+            label6.Text = "Current Password:";
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.txtPhone);
-            this.groupBox1.Controls.Add(this.label5);
-            this.groupBox1.Controls.Add(this.txtEmail);
-            this.groupBox1.Controls.Add(this.label4);
-            this.groupBox1.Controls.Add(this.txtFullName);
-            this.groupBox1.Controls.Add(this.label3);
-            this.groupBox1.Controls.Add(this.txtUsername);
-            this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox1.ForeColor = System.Drawing.Color.FromArgb(52, 73, 94);
-            this.groupBox1.Location = new System.Drawing.Point(10, 10);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(280, 260);
-            this.groupBox1.TabIndex = 0;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Personal Information";
+            groupBox1.Controls.Add(txtPhone);
+            groupBox1.Controls.Add(label5);
+            groupBox1.Controls.Add(txtEmail);
+            groupBox1.Controls.Add(label4);
+            groupBox1.Controls.Add(txtFullName);
+            groupBox1.Controls.Add(label3);
+            groupBox1.Controls.Add(txtUsername);
+            groupBox1.Controls.Add(label2);
+            groupBox1.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)0));
+            groupBox1.ForeColor = System.Drawing.Color.FromArgb(((int)((byte)52)), ((int)((byte)73)), ((int)((byte)94)));
+            groupBox1.Location = new System.Drawing.Point(13, 15);
+            groupBox1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            groupBox1.Name = "groupBox1";
+            groupBox1.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            groupBox1.Size = new System.Drawing.Size(373, 400);
+            groupBox1.TabIndex = 0;
+            groupBox1.TabStop = false;
+            groupBox1.Text = "Personal Information";
             // 
             // txtPhone
             // 
-            this.txtPhone.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtPhone.Location = new System.Drawing.Point(20, 195);
-            this.txtPhone.Name = "txtPhone";
-            this.txtPhone.Size = new System.Drawing.Size(240, 25);
-            this.txtPhone.TabIndex = 3;
+            txtPhone.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)0));
+            txtPhone.Location = new System.Drawing.Point(27, 300);
+            txtPhone.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            txtPhone.Name = "txtPhone";
+            txtPhone.Size = new System.Drawing.Size(319, 29);
+            txtPhone.TabIndex = 3;
             // 
             // label5
             // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.ForeColor = System.Drawing.Color.DimGray;
-            this.label5.Location = new System.Drawing.Point(17, 177);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(91, 15);
-            this.label5.TabIndex = 0;
-            this.label5.Text = "Phone Number:";
+            label5.AutoSize = true;
+            label5.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)0));
+            label5.ForeColor = System.Drawing.Color.DimGray;
+            label5.Location = new System.Drawing.Point(23, 272);
+            label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label5.Name = "label5";
+            label5.Size = new System.Drawing.Size(111, 20);
+            label5.TabIndex = 0;
+            label5.Text = "Phone Number:";
             // 
             // txtEmail
             // 
-            this.txtEmail.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtEmail.Location = new System.Drawing.Point(20, 135);
-            this.txtEmail.Name = "txtEmail";
-            this.txtEmail.Size = new System.Drawing.Size(240, 25);
-            this.txtEmail.TabIndex = 2;
+            txtEmail.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)0));
+            txtEmail.Location = new System.Drawing.Point(27, 208);
+            txtEmail.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            txtEmail.Name = "txtEmail";
+            txtEmail.Size = new System.Drawing.Size(319, 29);
+            txtEmail.TabIndex = 2;
             // 
             // label4
             // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.ForeColor = System.Drawing.Color.DimGray;
-            this.label4.Location = new System.Drawing.Point(17, 117);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(39, 15);
-            this.label4.TabIndex = 0;
-            this.label4.Text = "Email:";
+            label4.AutoSize = true;
+            label4.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)0));
+            label4.ForeColor = System.Drawing.Color.DimGray;
+            label4.Location = new System.Drawing.Point(23, 180);
+            label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label4.Name = "label4";
+            label4.Size = new System.Drawing.Size(49, 20);
+            label4.TabIndex = 0;
+            label4.Text = "Email:";
             // 
             // txtFullName
             // 
-            this.txtFullName.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtFullName.Location = new System.Drawing.Point(20, 75);
-            this.txtFullName.Name = "txtFullName";
-            this.txtFullName.Size = new System.Drawing.Size(240, 25);
-            this.txtFullName.TabIndex = 1;
+            txtFullName.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)0));
+            txtFullName.Location = new System.Drawing.Point(27, 115);
+            txtFullName.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            txtFullName.Name = "txtFullName";
+            txtFullName.Size = new System.Drawing.Size(319, 29);
+            txtFullName.TabIndex = 1;
             // 
             // label3
             // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.ForeColor = System.Drawing.Color.DimGray;
-            this.label3.Location = new System.Drawing.Point(17, 57);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(64, 15);
-            this.label3.TabIndex = 0;
-            this.label3.Text = "Full Name:";
+            label3.AutoSize = true;
+            label3.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)0));
+            label3.ForeColor = System.Drawing.Color.DimGray;
+            label3.Location = new System.Drawing.Point(23, 88);
+            label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label3.Name = "label3";
+            label3.Size = new System.Drawing.Size(79, 20);
+            label3.TabIndex = 0;
+            label3.Text = "Full Name:";
             // 
             // txtUsername
             // 
-            this.txtUsername.Enabled = false;
-            this.txtUsername.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtUsername.Location = new System.Drawing.Point(20, 35);
-            this.txtUsername.Name = "txtUsername";
-            this.txtUsername.ReadOnly = true;
-            this.txtUsername.Size = new System.Drawing.Size(240, 25);
-            this.txtUsername.TabIndex = 0;
-            this.txtUsername.TabStop = false;
+            txtUsername.Enabled = false;
+            txtUsername.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)0));
+            txtUsername.Location = new System.Drawing.Point(27, 54);
+            txtUsername.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            txtUsername.Name = "txtUsername";
+            txtUsername.ReadOnly = true;
+            txtUsername.Size = new System.Drawing.Size(319, 29);
+            txtUsername.TabIndex = 0;
+            txtUsername.TabStop = false;
             // 
             // label2
             // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.ForeColor = System.Drawing.Color.DimGray;
-            this.label2.Location = new System.Drawing.Point(17, 17);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(64, 15);
-            this.label2.TabIndex = 0;
-            this.label2.Text = "Username:";
+            label2.AutoSize = true;
+            label2.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)0));
+            label2.ForeColor = System.Drawing.Color.DimGray;
+            label2.Location = new System.Drawing.Point(23, 26);
+            label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label2.Name = "label2";
+            label2.Size = new System.Drawing.Size(78, 20);
+            label2.TabIndex = 0;
+            label2.Text = "Username:";
             // 
             // panelProfileHeader
             // 
-            this.panelProfileHeader.BackColor = System.Drawing.Color.FromArgb(240, 245, 249);
-            this.panelProfileHeader.Controls.Add(this.lblProfileRole);
-            this.panelProfileHeader.Controls.Add(this.lblProfileName);
-            this.panelProfileHeader.Controls.Add(this.pictureBoxProfile);
-            this.panelProfileHeader.Location = new System.Drawing.Point(20, 50);
-            this.panelProfileHeader.Name = "panelProfileHeader";
-            this.panelProfileHeader.Size = new System.Drawing.Size(590, 80);
-            this.panelProfileHeader.TabIndex = 1;
+            panelProfileHeader.BackColor = System.Drawing.Color.FromArgb(((int)((byte)240)), ((int)((byte)245)), ((int)((byte)249)));
+            panelProfileHeader.Controls.Add(picProfile);
+            panelProfileHeader.Controls.Add(lblProfileRole);
+            panelProfileHeader.Controls.Add(lblProfileName);
+            panelProfileHeader.Location = new System.Drawing.Point(27, 77);
+            panelProfileHeader.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            panelProfileHeader.Name = "panelProfileHeader";
+            panelProfileHeader.Size = new System.Drawing.Size(787, 123);
+            panelProfileHeader.TabIndex = 1;
+            // 
+            // picProfile
+            // 
+            picProfile.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            picProfile.Cursor = System.Windows.Forms.Cursors.Hand;
+            picProfile.Location = new System.Drawing.Point(19, 17);
+            picProfile.Name = "picProfile";
+            picProfile.Size = new System.Drawing.Size(95, 89);
+            picProfile.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            picProfile.TabIndex = 3;
+            picProfile.TabStop = false;
             // 
             // lblProfileRole
             // 
-            this.lblProfileRole.AutoSize = true;
-            this.lblProfileRole.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblProfileRole.ForeColor = System.Drawing.Color.FromArgb(127, 140, 141);
-            this.lblProfileRole.Location = new System.Drawing.Point(100, 42);
-            this.lblProfileRole.Name = "lblProfileRole";
-            this.lblProfileRole.Size = new System.Drawing.Size(43, 17);
-            this.lblProfileRole.TabIndex = 2;
-            this.lblProfileRole.Text = "(Role)";
+            lblProfileRole.AutoSize = true;
+            lblProfileRole.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)0));
+            lblProfileRole.ForeColor = System.Drawing.Color.FromArgb(((int)((byte)127)), ((int)((byte)140)), ((int)((byte)141)));
+            lblProfileRole.Location = new System.Drawing.Point(133, 65);
+            lblProfileRole.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            lblProfileRole.Name = "lblProfileRole";
+            lblProfileRole.Size = new System.Drawing.Size(53, 23);
+            lblProfileRole.TabIndex = 2;
+            lblProfileRole.Text = "(Role)";
             // 
             // lblProfileName
             // 
-            this.lblProfileName.AutoSize = true;
-            this.lblProfileName.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblProfileName.ForeColor = System.Drawing.Color.FromArgb(52, 73, 94);
-            this.lblProfileName.Location = new System.Drawing.Point(98, 15);
-            this.lblProfileName.Name = "lblProfileName";
-            this.lblProfileName.Size = new System.Drawing.Size(115, 25);
-            this.lblProfileName.TabIndex = 1;
-            this.lblProfileName.Text = "User Name";
-            // 
-            // pictureBoxProfile
-            // 
-            this.pictureBoxProfile.BackColor = System.Drawing.Color.FromArgb(52, 73, 94);
-            this.pictureBoxProfile.Location = new System.Drawing.Point(20, 10);
-            this.pictureBoxProfile.Name = "pictureBoxProfile";
-            this.pictureBoxProfile.Size = new System.Drawing.Size(60, 60);
-            this.pictureBoxProfile.TabIndex = 0;
-            this.pictureBoxProfile.TabStop = false;
+            lblProfileName.AutoSize = true;
+            lblProfileName.Font = new System.Drawing.Font("Segoe UI Semibold", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)0));
+            lblProfileName.ForeColor = System.Drawing.Color.FromArgb(((int)((byte)52)), ((int)((byte)73)), ((int)((byte)94)));
+            lblProfileName.Location = new System.Drawing.Point(131, 23);
+            lblProfileName.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            lblProfileName.Name = "lblProfileName";
+            lblProfileName.Size = new System.Drawing.Size(135, 32);
+            lblProfileName.TabIndex = 1;
+            lblProfileName.Text = "User Name";
             // 
             // label1
             // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.ForeColor = System.Drawing.Color.FromArgb(44, 62, 80);
-            this.label1.Location = new System.Drawing.Point(20, 20);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(109, 21);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "My Profile";
+            label1.AutoSize = true;
+            label1.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)0));
+            label1.ForeColor = System.Drawing.Color.FromArgb(((int)((byte)44)), ((int)((byte)62)), ((int)((byte)80)));
+            label1.Location = new System.Drawing.Point(27, 31);
+            label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            label1.Name = "label1";
+            label1.Size = new System.Drawing.Size(105, 28);
+            label1.TabIndex = 0;
+            label1.Text = "My Profile";
             // 
             // UserProfileView
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.panelContainer);
-            this.Name = "UserProfileView";
-            this.Size = new System.Drawing.Size(630, 494);
-            this.panelContainer.ResumeLayout(false);
-            this.panelContainer.PerformLayout();
-            this.panelForm.ResumeLayout(false);
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
-            this.panelProfileHeader.ResumeLayout(false);
-            this.panelProfileHeader.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxProfile)).EndInit();
-            this.ResumeLayout(false);
+            AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            Controls.Add(panelContainer);
+            Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            Size = new System.Drawing.Size(840, 760);
+            panelContainer.ResumeLayout(false);
+            panelContainer.PerformLayout();
+            panelForm.ResumeLayout(false);
+            groupBox2.ResumeLayout(false);
+            groupBox2.PerformLayout();
+            groupBox1.ResumeLayout(false);
+            groupBox1.PerformLayout();
+            panelProfileHeader.ResumeLayout(false);
+            panelProfileHeader.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)picProfile).EndInit();
+            ResumeLayout(false);
         }
+
+        private System.Windows.Forms.PictureBox picProfile;
 
         #endregion
 
@@ -357,7 +391,6 @@
         private System.Windows.Forms.Panel panelProfileHeader;
         private System.Windows.Forms.Label lblProfileRole;
         private System.Windows.Forms.Label lblProfileName;
-        private System.Windows.Forms.PictureBox pictureBoxProfile;
         private System.Windows.Forms.Panel panelForm;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.TextBox txtUsername;
