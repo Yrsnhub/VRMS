@@ -1,80 +1,124 @@
-﻿namespace VRMS.Enums
+﻿namespace VRMS.Enums;
+
+public enum CustomerCategory
 {
-    public enum CustomerCategory
-    {
-        Individual,
-        Corporate
-    }
+    Individual,
+    Corporate
+}
 
-    public enum FuelType
-    {
-        Gasoline,
-        Diesel,
-        Electric,
-        Hybrid
-    }
+namespace VRMS.Enums;
 
-    public enum InspectionType
-    {
-        Pickup,
-        Return
-    }
+public enum DamageType
+{
+    Scratch,
+    Dent,
+    Stain,
+    Broken,
+    Missing
+}
 
-    public enum PaymentMethod
-    {
-        Cash,
-        CreditCard,
-        DebitCard,
-        Online
-    }
+namespace VRMS.Enums;
 
-    public enum RentalStatus
-    {
-        Active,
-        Completed,
-        Late
-    }
+public enum FuelLevel
+{
+    Empty,
+    Quarter,
+    Half,
+    ThreeQuarters,
+    Full
+}
 
-    public enum ReservationStatus
-    {
-        Pending,
-        Confirmed,
-        Cancelled
-    }
+namespace VRMS.Enums;
 
-    public enum TransmissionType
-    {
-        Manual,
-        Automatic
-    }
+public enum FuelType
+{
+    Gasoline,
+    Diesel,
+    Electric,
+    Hybrid
+}
 
-    public enum UserRole
-    {
-        Admin,
-        RentalAgent
-    }
+namespace VRMS.Enums;
 
-    public enum VehicleStatus
-    {
-        Available,
-        Reserved,
-        Rented,
-        UnderMaintenance,
-        OutOfService,
-        Retired
-    }
-    public enum InvoiceStatus
-    {
-        Unpaid,
-        Paid
-    }
-    
-    public enum DamageType
-    {
-        Scratch,
-        Dent,
-        Stain,
-        Broken,
-        Missing
-    }
+public enum InspectionType
+{
+    Pickup,
+    Return
+}
+
+namespace VRMS.Enums;
+
+public enum InvoiceStatus
+{
+    Unpaid,
+    Paid
+}
+
+namespace VRMS.Enums;
+
+public enum PaymentMethod
+{
+    Cash,
+    CreditCard,
+    DebitCard,
+    Online
+}
+
+namespace VRMS.Enums;
+
+public enum RentalStatus
+{
+    All = -1,     
+    Active = 0,
+    Completed = 1,
+    Reserved = 2,
+    Cancelled = 3,
+    Late = 4
+}
+
+
+namespace VRMS.Enums;
+
+public enum ReservationStatus
+{
+    Pending,
+    Confirmed,
+    Cancelled
+}
+
+namespace VRMS.Enums;
+
+public enum TransmissionType
+{
+    Manual,
+    Automatic
+}
+
+namespace VRMS.Enums;
+
+public enum UserRole
+{
+    Admin,
+    RentalAgent
+}
+
+namespace VRMS.Enums;
+
+public enum VehicleStatus
+{
+    Available,
+    Reserved,
+    Rented,
+    UnderMaintenance,
+    OutOfService,
+    Retired
+}
+
+namespace VRMS.Enums;
+
+public enum AccountStatus
+{
+    NotCreated,
+    Active,
+    Disabled
 }

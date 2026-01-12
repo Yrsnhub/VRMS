@@ -7,6 +7,7 @@ using System.Windows.Forms;
 using VRMS.Enums;
 using VRMS.Forms;
 using VRMS.Models.Rentals;
+using VRMS.Repositories.Accounts;
 using VRMS.Repositories.Billing;
 // =========================
 // REPOSITORIES
@@ -15,6 +16,7 @@ using VRMS.Repositories.Customers;
 using VRMS.Repositories.Damages;
 using VRMS.Repositories.Fleet;
 using VRMS.Repositories.Rentals;
+using VRMS.Services.Account;
 using VRMS.Services.Billing;
 // =========================
 // SERVICES
@@ -80,7 +82,15 @@ namespace VRMS.Controls
             // SERVICES
             // =========================
 
-            _customerService = new CustomerService(new DriversLicenseService());
+            var driversLicenseService = new DriversLicenseService();
+
+            var customerAccountRepo = new CustomerAccountRepository();
+            var customerAccountService = new CustomerAccountService(customerAccountRepo);
+
+            _customerService = new CustomerService(
+                driversLicenseService,
+                customerAccountService
+            );
 
             _vehicleService = new VehicleService(
                 vehicleRepo,

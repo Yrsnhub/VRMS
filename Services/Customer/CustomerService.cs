@@ -6,6 +6,7 @@ using VRMS.Database;
 using VRMS.Enums;
 using VRMS.Helpers.Storage;
 using VRMS.Repositories.Customers;
+using VRMS.Services.Account;
 
 namespace VRMS.Services.Customer
 {
@@ -46,6 +47,8 @@ namespace VRMS.Services.Customer
         /// Customer repository for database persistence.
         /// </summary>
         private readonly CustomerRepository _repo;
+        
+        private readonly CustomerAccountService _customerAccountService;
 
         /// <summary>
         /// Initializes the customer service.
@@ -53,9 +56,12 @@ namespace VRMS.Services.Customer
         /// <param name="driversLicenseService">
         /// Service responsible for driver's license validation
         /// </param>
-        public CustomerService(DriversLicenseService driversLicenseService)
+        public CustomerService(
+            DriversLicenseService driversLicenseService,
+            CustomerAccountService customerAccountService)
         {
             _driversLicenseService = driversLicenseService;
+            _customerAccountService = customerAccountService;
             _repo = new CustomerRepository();
         }
 
@@ -277,6 +283,23 @@ namespace VRMS.Services.Customer
             if (license.ExpiryDate < asOfDate.Date)
                 throw new InvalidOperationException(
                     "Driver's license expired.");
+        }
+        
+        // =====================================================
+        // LOGIN ACCOUNT (READ-ONLY)
+        // =====================================================
+
+        public bool HasLoginAccount(int customerId)
+        {
+            return _customerAccountService
+                       .GetAccountStatus(customerId)
+                   != AccountStatus.NotCreated;
+        }
+
+        public AccountStatus GetAccountStatus(int customerId)
+        {
+            return _customerAccountService
+                .GetAccountStatus(customerId);
         }
         
     }

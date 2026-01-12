@@ -16,31 +16,34 @@ public static class ServiceRepositoryRegistry
         // ----------------------------
         // REPOSITORIES
         // ----------------------------
-        
+
         // Accounts
         services.AddSingleton<UserRepository>();
+        services.AddSingleton<CustomerAccountRepository>();
 
-        // Fleet 
+        // Fleet
         services.AddSingleton<VehicleRepository>();
         services.AddSingleton<VehicleCategoryRepository>();
         services.AddSingleton<VehicleFeatureRepository>();
         services.AddSingleton<VehicleFeatureMappingRepository>();
         services.AddSingleton<VehicleImageRepository>();
         services.AddSingleton<MaintenanceRepository>();
-        
+
         // Customers
         services.AddSingleton<CustomerRepository>();
         services.AddSingleton<DriversLicenseRepository>();
-        
+
         // Billing
         services.AddSingleton<RateConfigurationRepository>();
 
         // ----------------------------
         // SERVICES
         // ----------------------------
+
         services.AddSingleton<UserService>();
-        services.AddSingleton<VehicleService>();
-        services.AddSingleton<CustomerService>();
+        services.AddSingleton<CustomerAccountService>();
         services.AddSingleton<DriversLicenseService>();
+        services.AddSingleton<CustomerService>();
+        services.AddSingleton<VehicleService>();
     }
 }
