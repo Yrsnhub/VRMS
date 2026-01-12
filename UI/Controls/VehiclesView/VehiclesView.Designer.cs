@@ -34,6 +34,7 @@
             label1 = new Label();
             lblVehicleCount = new Label();
             panelToolbar = new Panel();
+            btnAddCategory = new Button();
             panelSearch = new Panel();
             txtSearch = new TextBox();
             btnFilter = new Button();
@@ -127,6 +128,7 @@
             // panelToolbar
             // 
             panelToolbar.BackColor = Color.White;
+            panelToolbar.Controls.Add(btnAddCategory);
             panelToolbar.Controls.Add(panelSearch);
             panelToolbar.Controls.Add(btnFilter);
             panelToolbar.Controls.Add(btnExport);
@@ -139,6 +141,22 @@
             panelToolbar.Padding = new Padding(15, 10, 15, 10);
             panelToolbar.Size = new Size(1132, 60);
             panelToolbar.TabIndex = 1;
+            // 
+            // btnAddCategory
+            // 
+            btnAddCategory.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnAddCategory.BackColor = Color.FromArgb(128, 128, 255);
+            btnAddCategory.FlatAppearance.BorderSize = 0;
+            btnAddCategory.FlatStyle = FlatStyle.Flat;
+            btnAddCategory.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
+            btnAddCategory.ForeColor = Color.White;
+            btnAddCategory.Location = new Point(920, 10);
+            btnAddCategory.Name = "btnAddCategory";
+            btnAddCategory.Size = new Size(119, 40);
+            btnAddCategory.TabIndex = 7;
+            btnAddCategory.Text = "➕ Categories";
+            btnAddCategory.UseVisualStyleBackColor = false;
+            btnAddCategory.Click += btnAddCategory_Click;
             // 
             // panelSearch
             // 
@@ -443,7 +461,6 @@
             flowLayoutPanelFeatures.AutoSize = true;
             flowLayoutPanelFeatures.AutoSizeMode = AutoSizeMode.GrowAndShrink;
             flowLayoutPanelFeatures.BackColor = Color.Transparent;
-            flowLayoutPanelFeatures.FlowDirection = FlowDirection.LeftToRight;
             flowLayoutPanelFeatures.Location = new Point(10, 35);
             flowLayoutPanelFeatures.MaximumSize = new Size(330, 80);
             flowLayoutPanelFeatures.MinimumSize = new Size(330, 30);
@@ -451,7 +468,6 @@
             flowLayoutPanelFeatures.Padding = new Padding(0, 0, 0, 5);
             flowLayoutPanelFeatures.Size = new Size(330, 30);
             flowLayoutPanelFeatures.TabIndex = 1;
-            flowLayoutPanelFeatures.WrapContents = true;
             // 
             // lblFeaturesTitle
             // 
@@ -753,5 +769,6 @@
         private Panel panelFeatures;
         private Label lblFeaturesTitle;
         private FlowLayoutPanel flowLayoutPanelFeatures;
+        private Button btnAddCategory;
     }
 }
