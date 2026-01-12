@@ -4,6 +4,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using VRMS.DTOs.Rental;
 using VRMS.Enums;
 using VRMS.Forms;
 using VRMS.Models.Rentals;

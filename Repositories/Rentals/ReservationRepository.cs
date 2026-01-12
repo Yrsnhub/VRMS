@@ -1,5 +1,6 @@
 ﻿using System.Data;
 using VRMS.Database;
+using VRMS.DTOs.Reservation;
 using VRMS.Enums;
 using VRMS.Models.Rentals;
 
@@ -115,4 +116,33 @@ public class ReservationRepository
             list.Add(Map(row));
         return list;
     }
+    
+    // -------------------------------------------------
+    // ADMIN LIST (GRID)
+    // -------------------------------------------------
+    public List<ReservationGridRow> GetAllForGrid()
+    {
+        var table = DB.Query("CALL sp_reservations_get_all();");
+
+        var list = new List<ReservationGridRow>();
+        foreach (DataRow row in table.Rows)
+        {
+            var r = new ReservationGridRow
+            {
+                ReservationId = Convert.ToInt32(row["id"]),
+                CustomerId = Convert.ToInt32(row["customer_id"]),
+                CustomerName = $"{row["customer_first_name"]} {row["customer_last_name"]}",
+                VehicleId = Convert.ToInt32(row["vehicle_id"]),
+                VehicleName = $"{row["vehicle_year"]} {row["vehicle_make"]} {row["vehicle_model"]}",
+                StartDate = Convert.ToDateTime(row["start_date"]),
+                EndDate = Convert.ToDateTime(row["end_date"]),
+                Status = Enum.Parse<ReservationStatus>(row["status"].ToString()!, true)
+            };
+
+            list.Add(r);
+        }
+
+        return list;
+    }
+
 }

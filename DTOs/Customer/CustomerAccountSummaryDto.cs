@@ -1,7 +1,6 @@
-﻿using System;
-using VRMS.Enums;
+﻿using VRMS.Enums;
 
-namespace VRMS.DTOs;
+namespace VRMS.DTOs.Customer;
 
 public class CustomerAccountSummaryDto
 {

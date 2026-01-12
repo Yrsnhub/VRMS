@@ -1,4 +1,5 @@
-﻿using VRMS.Enums;
+﻿using VRMS.DTOs.Reservation;
+using VRMS.Enums;
 using VRMS.Models.Rentals;
 using VRMS.Repositories.Rentals;
 using VRMS.Services.Customer;
@@ -301,5 +302,9 @@ public class ReservationService
         }
 
         return false;
+    }
+    public List<ReservationGridRow> GetAllForGrid()
+    {
+        return _reservationRepo.GetAllForGrid();
     }
 }

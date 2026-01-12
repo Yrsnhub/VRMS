@@ -1,6 +1,6 @@
 ﻿using VRMS.Models.Accounts;
 
-namespace VRMS.Support
+namespace VRMS.DTOs.Support
 {
     public static class Session
     {
