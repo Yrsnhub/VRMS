@@ -253,8 +253,13 @@ namespace VRMS.Controls
                 LoadRentals();
         }
 
+        private bool _returnInProgress = false;
+
         private void BtnReturn_Click(object sender, EventArgs e)
         {
+            if (_returnInProgress)
+                return;
+
             if (!btnReturn.Enabled)
                 return;
 
@@ -264,18 +269,27 @@ namespace VRMS.Controls
             if (dgvRentals.SelectedRows[0].DataBoundItem is not RentalGridRow row)
                 return;
 
-            var rental = _rentalService.GetRentalById(row.RentalId);
+            _returnInProgress = true;
+            btnReturn.Enabled = false;
 
-            using var form = new ReturnVehicleForm(
-                rental.Id,
-                _rentalService,
-                _reservationService,
-                _vehicleService,
-                _customerService
-            );
+            try
+            {
+                using var form = new ReturnVehicleForm(
+                    row.RentalId,
+                    _rentalService,
+                    _reservationService,
+                    _vehicleService,
+                    _customerService
+                );
 
-            if (form.ShowDialog(FindForm()) == DialogResult.OK)
-                LoadRentals();
+                if (form.ShowDialog(FindForm()) == DialogResult.OK)
+                    LoadRentals();
+            }
+            finally
+            {
+                _returnInProgress = false;
+                UpdateActionButtons();
+            }
         }
 
         private void BtnViewDetails_Click(object sender, EventArgs e)
