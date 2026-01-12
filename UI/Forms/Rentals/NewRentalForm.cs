@@ -12,19 +12,19 @@ namespace VRMS.UI.Forms.Rentals
     {
         private bool _isLoaded = false;
         private decimal _lastCalculatedTotal = 0m;
-        
+
         private readonly CustomerService _customerService;
         private readonly VehicleService _vehicleService;
         private readonly ReservationService _reservationService;
         private readonly RentalService _rentalService;
         private readonly RateService _rateService;
-        
+
         public NewRentalForm(
             CustomerService customerService,
             VehicleService vehicleService,
             ReservationService reservationService,
             RentalService rentalService,
-            RateService rateService) 
+            RateService rateService)
         {
             InitializeComponent();
 
@@ -33,7 +33,7 @@ namespace VRMS.UI.Forms.Rentals
             _reservationService = reservationService;
             _rentalService = rentalService;
             _rateService = rateService; // ADD
-            
+
             dtPickup.ValueChanged += (_, __) => RecalculateTotal();         // ADD
             dtReturn.ValueChanged += (_, __) => RecalculateTotal();         // ADD
 
@@ -50,7 +50,7 @@ namespace VRMS.UI.Forms.Rentals
             LoadVehicles();
             LoadFuelLevels();
 
-            _isLoaded = true;   
+            _isLoaded = true;
 
             RecalculateTotal();
         }
@@ -82,7 +82,7 @@ namespace VRMS.UI.Forms.Rentals
             UpdateOdometerFromSelectedVehicle();
         }
 
-        
+
         private void LoadFuelLevels()
         {
             cbFuel.DataSource =
@@ -140,11 +140,11 @@ namespace VRMS.UI.Forms.Rentals
         }
 
 
-        
+
         private void CbVehicle_SelectedIndexChanged(object? sender, EventArgs e)
         {
             UpdateOdometerFromSelectedVehicle();
-            RecalculateTotal(); 
+            RecalculateTotal();
         }
 
         private void UpdateOdometerFromSelectedVehicle()
@@ -215,11 +215,11 @@ namespace VRMS.UI.Forms.Rentals
 
                     // Confirm reservation
                     _reservationService.ConfirmReservation(reservationId);
-                    
+
                     // Get selected fuel level
                     FuelLevel startFuelLevel =
                         (FuelLevel)cbFuel.SelectedValue;
-                    
+
                     // Start rental
                     int rentalId =
                         _rentalService.StartRental(

@@ -1,4 +1,5 @@
-﻿namespace VRMS.UI.Forms.Rentals
+﻿
+namespace VRMS.UI.Forms.Rentals
 {
     partial class NewRentalForm
     {
@@ -116,7 +117,7 @@
             txtOdometer.Name = "txtOdometer";
             txtOdometer.Size = new Size(233, 25);
             txtOdometer.TabIndex = 5;
-            txtOdometer.ReadOnly = true; 
+            txtOdometer.ReadOnly = true;
             txtOdometer.TabStop = false;
             // 
             // label4
