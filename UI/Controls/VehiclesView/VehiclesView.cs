@@ -5,11 +5,13 @@ using System.Windows.Forms;
 using VRMS.Enums;
 using VRMS.Forms;
 using VRMS.Models.Fleet;
+using VRMS.Repositories.Accounts;
 using VRMS.Repositories.Billing;
 
 // Repositories
 using VRMS.Repositories.Fleet;
 using VRMS.Repositories.Rentals;
+using VRMS.Services.Account;
 
 // Services
 using VRMS.Services.Customer;
@@ -74,7 +76,14 @@ namespace VRMS.Controls
             );
 
             _driversLicenseService = new DriversLicenseService();
-            _customerService = new CustomerService(_driversLicenseService);
+
+            var customerAccountRepo = new CustomerAccountRepository();
+            var customerAccountService = new CustomerAccountService(customerAccountRepo);
+
+            _customerService = new CustomerService(
+                _driversLicenseService,
+                customerAccountService
+            );
 
             _reservationService = new ReservationService(
                 _customerService,

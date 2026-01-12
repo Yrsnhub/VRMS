@@ -7,7 +7,8 @@ using System.Windows.Forms;
 using VRMS.Enums;
 using VRMS.Forms;
 using VRMS.Models.Rentals;
-
+using VRMS.Repositories.Accounts;
+using VRMS.Repositories.Billing;
 // =========================
 // REPOSITORIES
 // =========================
@@ -15,25 +16,25 @@ using VRMS.Repositories.Customers;
 using VRMS.Repositories.Damages;
 using VRMS.Repositories.Fleet;
 using VRMS.Repositories.Rentals;
-using VRMS.Repositories.Billing;
-
+using VRMS.Services.Account;
+using VRMS.Services.Billing;
 // =========================
 // SERVICES
 // =========================
 using VRMS.Services.Customer;
 using VRMS.Services.Fleet;
 using VRMS.Services.Rental;
-using VRMS.Services.Billing;
-
 using VRMS.UI.Forms.Rentals;
 
 namespace VRMS.Controls
 {
     public partial class RentalsView : UserControl
     {
+        
         // =========================
         // SERVICES
         // =========================
+
         private readonly CustomerService _customerService;
         private readonly VehicleService _vehicleService;
         private readonly ReservationService _reservationService;
@@ -41,7 +42,7 @@ namespace VRMS.Controls
         private readonly RateService _rateService;
 
         private List<RentalGridRow> _allRows = new();
-
+        
         private readonly ToolTip _toolTip = new ToolTip();
 
         private static readonly string PlaceholderImagePath =
@@ -50,6 +51,7 @@ namespace VRMS.Controls
         // =========================
         // CONSTRUCTOR
         // =========================
+
         public RentalsView()
         {
             InitializeComponent();
@@ -57,6 +59,7 @@ namespace VRMS.Controls
             // =========================
             // REPOSITORIES
             // =========================
+
             var customerRepo = new CustomerRepository();
 
             var vehicleRepo = new VehicleRepository();
@@ -78,7 +81,16 @@ namespace VRMS.Controls
             // =========================
             // SERVICES
             // =========================
-            _customerService = new CustomerService(new DriversLicenseService());
+
+            var driversLicenseService = new DriversLicenseService();
+
+            var customerAccountRepo = new CustomerAccountRepository();
+            var customerAccountService = new CustomerAccountService(customerAccountRepo);
+
+            _customerService = new CustomerService(
+                driversLicenseService,
+                customerAccountService
+            );
 
             _vehicleService = new VehicleService(
                 vehicleRepo,
@@ -119,6 +131,7 @@ namespace VRMS.Controls
             // =========================
             // EVENTS
             // =========================
+
             Load += RentalsView_Load;
             dgvRentals.SelectionChanged += DgvRentals_SelectionChanged;
         }
@@ -126,6 +139,7 @@ namespace VRMS.Controls
         // =========================
         // LOAD
         // =========================
+
         private void RentalsView_Load(object sender, EventArgs e)
         {
             ConfigureGrid();
@@ -133,7 +147,8 @@ namespace VRMS.Controls
             LoadRentals();
 
             txtSearch.TextChanged += (_, __) => ApplyFilters();
-
+            
+            // Tooltip configuration
             _toolTip.InitialDelay = 500;
             _toolTip.ReshowDelay = 100;
             _toolTip.AutoPopDelay = 5000;
@@ -218,27 +233,34 @@ namespace VRMS.Controls
         }
 
         // =========================
-        // FILTERING
+        // FILTERING (FIXED, MINIMAL)
         // =========================
+
         private void ApplyFilters()
         {
             IEnumerable<RentalGridRow> filtered = _allRows;
 
-            var status = (RentalStatus)cbStatusFilter.SelectedItem;
-            if (status != RentalStatus.All)
-                filtered = filtered.Where(r => r.Status == status);
+            var selectedStatus = (RentalStatus)cbStatusFilter.SelectedItem;
+
+            if (selectedStatus != RentalStatus.All)
+            {
+                filtered = filtered.Where(r => r.Status == selectedStatus);
+            }
 
             var search = txtSearch.Text.Trim();
+
             if (!string.IsNullOrWhiteSpace(search))
+            {
                 filtered = filtered.Where(r =>
                     r.CustomerName.Contains(search, StringComparison.OrdinalIgnoreCase));
+            }
 
             dgvRentals.DataSource = filtered.ToList();
             UpdateActionButtons();
         }
 
         // =========================
-        // NEW RENTAL (FIXED)
+        // SELECTION
         // =========================
         private void BtnNewRental_Click(object sender, EventArgs e)
         {
@@ -258,7 +280,10 @@ namespace VRMS.Controls
 
         private void BtnReturn_Click(object sender, EventArgs e)
         {
-            if (_returnInProgress || !btnReturn.Enabled)
+            if (_returnInProgress)
+                return;
+
+            if (!btnReturn.Enabled)
                 return;
 
             if (dgvRentals.SelectedRows.Count == 0)
@@ -296,9 +321,6 @@ namespace VRMS.Controls
             form.ShowDialog(this);
         }
 
-        // =========================
-        // SELECTION DETAILS
-        // =========================
         private void DgvRentals_SelectionChanged(object? sender, EventArgs e)
         {
             UpdateActionButtons();
@@ -331,24 +353,33 @@ namespace VRMS.Controls
 
         private void LoadVehicleImage(int vehicleId)
         {
-            pbVehicle.Image?.Dispose();
-            pbVehicle.Image = null;
+            if (pbVehicle.Image != null)
+            {
+                pbVehicle.Image.Dispose();
+                pbVehicle.Image = null;
+            }
 
             var images = _vehicleService.GetVehicleImages(vehicleId);
-            var path = images.Any()
+
+            string? imagePath = images.Count > 0
                 ? Path.Combine(AppContext.BaseDirectory, "Storage", images[0].ImagePath)
-                : Path.Combine(AppContext.BaseDirectory, PlaceholderImagePath);
+                : null;
 
-            if (!File.Exists(path))
-                return;
+            if (imagePath == null || !File.Exists(imagePath))
+            {
+                imagePath = Path.Combine(AppContext.BaseDirectory, PlaceholderImagePath);
+                if (!File.Exists(imagePath))
+                    return;
+            }
 
-            using var fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+            using var fs = new FileStream(imagePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
             pbVehicle.Image = Image.FromStream(fs);
         }
 
         // =========================
-        // BUTTON STATE
+        // BUTTON STATE LOGIC
         // =========================
+
         private void UpdateActionButtons()
         {
             bool hasSelection = dgvRentals.SelectedRows.Count > 0;
@@ -362,16 +393,10 @@ namespace VRMS.Controls
             SetReturnButtonState(canReturn);
         }
 
-        private void SetReturnButtonState(bool enabled)
-        {
-            btnReturn.Enabled = enabled;
-            btnReturn.BackColor = enabled ? Color.FromArgb(255, 193, 7) : Color.LightGray;
-            btnReturn.ForeColor = enabled ? Color.Black : Color.DarkGray;
-        }
-
         // =========================
         // STATUS COLORS
         // =========================
+
         private void DgvRentals_CellFormatting(object? sender, DataGridViewCellFormattingEventArgs e)
         {
             if (dgvRentals.Columns[e.ColumnIndex].DataPropertyName != "Status")
@@ -390,6 +415,22 @@ namespace VRMS.Controls
                 RentalStatus.Cancelled => Color.DarkGray,
                 _ => e.CellStyle.ForeColor
             };
+        }
+        
+        private void SetReturnButtonState(bool enabled)
+        {
+            btnReturn.Enabled = enabled;
+
+            if (enabled)
+            {
+                btnReturn.BackColor = Color.FromArgb(255, 193, 7); // your yellow
+                btnReturn.ForeColor = Color.Black;
+            }
+            else
+            {
+                btnReturn.BackColor = Color.LightGray;
+                btnReturn.ForeColor = Color.DarkGray;
+            }
         }
     }
 }

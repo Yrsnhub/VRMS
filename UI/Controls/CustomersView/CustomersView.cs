@@ -6,6 +6,8 @@ using System.Windows.Forms;
 using VRMS.Enums;
 using VRMS.Forms;
 using VRMS.Models.Customers;
+using VRMS.Repositories.Accounts;
+using VRMS.Services.Account;
 using VRMS.Services.Customer;
 using VRMS.UI.Forms.Customer;
 using VRMS.UI.Forms.Customers;
@@ -19,6 +21,7 @@ namespace VRMS.Controls
     {
         private readonly DriversLicenseService _driversLicenseService;
         private readonly CustomerService _customerService;
+        private readonly CustomerAccountService _customerAccountService;
         private readonly CustomerImageService _imageService = new();
 
         private readonly CustomerFormState _state = new();
@@ -41,7 +44,14 @@ namespace VRMS.Controls
             splitContainer1.SplitterDistance = 400;
 
             _driversLicenseService = new DriversLicenseService();
-            _customerService = new CustomerService(_driversLicenseService);
+
+            var customerAccountRepo = new CustomerAccountRepository();
+            _customerAccountService = new CustomerAccountService(customerAccountRepo);
+
+            _customerService = new CustomerService(
+                _driversLicenseService,
+                _customerAccountService
+            );
 
             InitializeCustomerTypeCombo();
             HookEvents();
@@ -509,7 +519,10 @@ namespace VRMS.Controls
                 return;
             }
 
-            using var form = new CustomerAccountForm(_state.SelectedCustomer);
+            using var form = new CustomerAccountForm(
+                _state.SelectedCustomer,
+                _customerAccountService
+            );
             form.ShowDialog(this);
         }
     }

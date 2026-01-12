@@ -1,5 +1,9 @@
 ﻿using System;
 using System.Windows.Forms;
+using VRMS.Enums;
+using VRMS.Repositories.Accounts;
+using VRMS.Services.Account;
+using VRMS.Services.Validation;
 
 // 🔒 ALIAS THE MODEL TYPE (NO AMBIGUITY POSSIBLE)
 using CustomerModel = VRMS.Models.Customers.Customer;
@@ -9,15 +13,25 @@ namespace VRMS.UI.Forms.Customers
     public partial class CustomerAccountForm : Form
     {
         private readonly CustomerModel _customer;
+        private readonly CustomerAccountService _accountService;
 
         // =====================================================
         // CONSTRUCTOR
         // =====================================================
 
-        public CustomerAccountForm(CustomerModel customer)
+        public CustomerAccountForm(
+            CustomerModel customer,
+            CustomerAccountService accountService)
         {
             InitializeComponent();
+
             _customer = customer;
+            _accountService = accountService;
+
+            btnCreate.Click += btnCreate_Click;
+            btnResetPassword.Click += btnResetPassword_Click;
+            btnDisable.Click += btnDisable_Click;
+            btnClose.Click += btnClose_Click;
 
             InitializeDataGridView();
             LoadCustomerAccount();
@@ -59,42 +73,55 @@ namespace VRMS.UI.Forms.Customers
         {
             dgvCustomerAccounts.Rows.Clear();
 
-            // TEMP LOGIC (replace with service later)
-            bool hasAccount = !string.IsNullOrWhiteSpace(_customer.Email);
+            var account = _accountService.GetByCustomerId(_customer.Id);
 
-            if (hasAccount)
+            if (account == null)
             {
-                dgvCustomerAccounts.Rows.Add(
-                    _customer.Id,
-                    $"{_customer.FirstName} {_customer.LastName}",
-                    _customer.Email,
-                    "Active",
-                    "—"
-                );
-
-                dgvCustomerAccounts.Rows[0].Selected = true;
+                UpdateFormState(AccountStatus.NotCreated);
+                return;
             }
 
-            UpdateFormState(hasAccount);
+            dgvCustomerAccounts.Rows.Add(
+                _customer.Id,
+                $"{_customer.FirstName} {_customer.LastName}",
+                account.Username,
+                account.IsEnabled ? "Active" : "Disabled",
+                account.LastLoginAt?.ToString("yyyy-MM-dd HH:mm") ?? "—"
+            );
+
+            dgvCustomerAccounts.Rows[0].Selected = true;
+
+            UpdateFormState(
+                account.IsEnabled
+                    ? AccountStatus.Active
+                    : AccountStatus.Disabled
+            );
         }
+
 
         // =====================================================
         // FORM STATE
         // =====================================================
 
-        private void UpdateFormState(bool hasAccount)
+        private void UpdateFormState(AccountStatus status)
         {
-            txtUsername.Text = hasAccount ? _customer.Email : "";
-            chkAccountEnabled.Checked = hasAccount;
+            bool hasAccount = status != AccountStatus.NotCreated;
 
-            lblAccountState.Text = hasAccount
-                ? "Login Account: Active"
-                : "Login Account: Not Created";
+            txtUsername.Text = hasAccount ? txtUsername.Text : "";
+            chkAccountEnabled.Checked = status == AccountStatus.Active;
 
-            btnCreate.Enabled = !hasAccount;
+            lblAccountState.Text = status switch
+            {
+                AccountStatus.Active => "Login Account: Active",
+                AccountStatus.Disabled => "Login Account: Disabled",
+                _ => "Login Account: Not Created"
+            };
+
+            btnCreate.Enabled = status == AccountStatus.NotCreated;
             btnResetPassword.Enabled = hasAccount;
-            btnDisable.Enabled = hasAccount;
+            btnDisable.Enabled = status == AccountStatus.Active;
         }
+
 
         // =====================================================
         // DGV EVENTS
@@ -127,36 +154,120 @@ namespace VRMS.UI.Forms.Customers
 
         private void btnCreate_Click(object sender, EventArgs e)
         {
-            MessageBox.Show(
-                "Create account logic to be implemented",
-                "Create Account",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Information
-            );
+            try
+            {
+                AccountValidator.ValidateUsername(txtUsername.Text);
+                AccountValidator.ValidatePassword(
+                    txtPassword.Text,
+                    txtConfirmPassword.Text);
+
+                _accountService.CreateAccount(
+                    _customer.Id,
+                    txtUsername.Text.Trim(),
+                    txtPassword.Text
+                );
+
+                MessageBox.Show(
+                    "Customer login account created.",
+                    "Success",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information
+                );
+
+                LoadCustomerAccount();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    ex.Message,
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                );
+            }
         }
+
 
         private void btnResetPassword_Click(object sender, EventArgs e)
         {
-            MessageBox.Show(
-                "Reset password logic to be implemented",
-                "Reset Password",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Information
-            );
+            if (dgvCustomerAccounts.SelectedRows.Count == 0)
+                return;
+
+            try
+            {
+                AccountValidator.ValidatePassword(
+                    txtPassword.Text,
+                    txtConfirmPassword.Text);
+
+                int accountId = Convert.ToInt32(
+                    dgvCustomerAccounts.SelectedRows[0]
+                        .Cells["CustomerId"].Value);
+
+                _accountService.ResetPassword(
+                    accountId,
+                    txtPassword.Text
+                );
+
+                MessageBox.Show(
+                    "Password has been reset.",
+                    "Success",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information
+                );
+
+                txtPassword.Clear();
+                txtConfirmPassword.Clear();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    ex.Message,
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                );
+            }
         }
+
 
         private void btnDisable_Click(object sender, EventArgs e)
         {
-            if (MessageBox.Show(
-                "Disable this customer account?",
-                "Confirm",
-                MessageBoxButtons.YesNo,
-                MessageBoxIcon.Warning) != DialogResult.Yes)
+            if (dgvCustomerAccounts.SelectedRows.Count == 0)
                 return;
 
-            chkAccountEnabled.Checked = false;
-            lblAccountState.Text = "Login Account: Disabled";
-            btnDisable.Enabled = false;
+            if (MessageBox.Show(
+                    "Disable this customer account?",
+                    "Confirm",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Warning) != DialogResult.Yes)
+                return;
+
+            try
+            {
+                int accountId = Convert.ToInt32(
+                    dgvCustomerAccounts.SelectedRows[0]
+                        .Cells["CustomerId"].Value);
+
+                _accountService.DisableAccount(accountId);
+
+                MessageBox.Show(
+                    "Account has been disabled.",
+                    "Success",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information
+                );
+
+                LoadCustomerAccount();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    ex.Message,
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                );
+            }
         }
 
         private void btnClose_Click(object sender, EventArgs e)
