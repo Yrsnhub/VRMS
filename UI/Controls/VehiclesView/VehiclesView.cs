@@ -10,8 +10,8 @@ using VRMS.Repositories.Accounts;
 using VRMS.Repositories.Billing;
 using VRMS.Repositories.Fleet;
 using VRMS.Repositories.Rentals;
-using VRMS.Repositories.Inspections; // Added
-using VRMS.Repositories.Damages;     // Added
+using VRMS.Repositories.Inspections;
+using VRMS.Repositories.Damages;
 using VRMS.Services.Account;
 using VRMS.Services.Customer;
 using VRMS.Services.Fleet;
@@ -28,7 +28,6 @@ namespace VRMS.Controls
         private readonly ReservationService _reservationService;
         private readonly RentalService _rentalService;
         private readonly VehicleImageRepository _vehicleImageRepo;
-        private VehicleStatus? _statusFilter = null;
 
         public VehiclesView()
         {
@@ -85,25 +84,163 @@ namespace VRMS.Controls
 
             flowLayoutPanelFeatures.AutoSize = true;
             flowLayoutPanelFeatures.WrapContents = true;
-            
+
             // -------------------------
             // FILTER WIRING
             // -------------------------
-
-            btnAll.Click += (_, _) => SetStatusFilter(null);
-            btnAvailable.Click += (_, _) => SetStatusFilter(VehicleStatus.Available);
-            btnRented.Click += (_, _) => SetStatusFilter(VehicleStatus.Rented);
-            btnMaintenance.Click += (_, _) => SetStatusFilter(VehicleStatus.UnderMaintenance);
-            btnReserved.Click += (_, _) => SetStatusFilter(VehicleStatus.Reserved);
+            cmbStatusFilter.SelectedIndexChanged += CmbStatusFilter_SelectedIndexChanged;
+            cmbAdvancedFilter.SelectedIndexChanged += CmbAdvancedFilter_SelectedIndexChanged;
 
             // Live search
             txtSearch.TextChanged += (_, _) => ApplyFilters();
+
+            // Button events
+            btnRetire.Click += BtnRetire_Click;
+        }
+
+        private void CmbStatusFilter_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ApplyFilters();
+        }
+
+        private void CmbAdvancedFilter_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cmbAdvancedFilter.SelectedItem != null)
+            {
+                var selectedFilter = cmbAdvancedFilter.SelectedItem.ToString();
+                ApplyAdvancedFilter(selectedFilter);
+            }
+        }
+
+        private void ApplyAdvancedFilter(string filter)
+        {
+            // Implement advanced filtering based on the selected filter
+            switch (filter)
+            {
+                case "⚙ Advanced Filters":
+                    // Reset to all vehicles
+                    ApplyFilters();
+                    break;
+                case "📍 By Location":
+                    ShowLocationFilterDialog();
+                    break;
+                case "📅 By Year":
+                    ShowYearFilterDialog();
+                    break;
+                case "💰 By Price Range":
+                    ShowPriceRangeFilterDialog();
+                    break;
+                case "📊 By Category":
+                    ShowCategoryFilterDialog();
+                    break;
+                case "⛽ By Fuel Type":
+                    ShowFuelTypeFilterDialog();
+                    break;
+                case "⚙ By Transmission":
+                    ShowTransmissionFilterDialog();
+                    break;
+            }
+        }
+
+        private void ShowLocationFilterDialog()
+        {
+            MessageBox.Show("Location filter - Implement location selection dialog", "Filter by Location",
+                MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void ShowYearFilterDialog()
+        {
+            MessageBox.Show("Year filter - Implement year range selection", "Filter by Year",
+                MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void ShowPriceRangeFilterDialog()
+        {
+            MessageBox.Show("Price range filter - Implement price range selection", "Filter by Price Range",
+                MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void ShowCategoryFilterDialog()
+        {
+            try
+            {
+                var categories = _vehicleService.GetAllCategories();
+                if (categories.Count == 0)
+                {
+                    MessageBox.Show("No categories available", "Filter by Category",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+                MessageBox.Show($"Select from {categories.Count} categories - Implement category selection",
+                    "Filter by Category", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error loading categories: {ex.Message}", "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void ShowFuelTypeFilterDialog()
+        {
+            MessageBox.Show("Fuel type filter - Implement fuel type selection", "Filter by Fuel Type",
+                MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void ShowTransmissionFilterDialog()
+        {
+            MessageBox.Show("Transmission filter - Implement transmission type selection", "Filter by Transmission",
+                MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void BtnRetire_Click(object sender, EventArgs e)
+        {
+            if (dgvVehicles.SelectedRows.Count == 0 || dgvVehicles.SelectedRows[0].DataBoundItem is not Vehicle vehicle)
+            {
+                MessageBox.Show("Please select a vehicle to retire.", "Retire Vehicle",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            var result = MessageBox.Show(
+                $"Are you sure you want to retire vehicle '{vehicle.Make} {vehicle.Model}' (Plate: {vehicle.LicensePlate})?\n\n" +
+                "Retired vehicles will be removed from active fleet and archived.",
+                "Confirm Retirement",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question
+            );
+
+            if (result == DialogResult.Yes)
+            {
+                try
+                {
+                    // Implement vehicle retirement logic here
+                    MessageBox.Show(
+                        $"Vehicle '{vehicle.Make} {vehicle.Model}' has been retired successfully.\n" +
+                        "Please implement the actual retirement logic in the VehicleService.",
+                        "Vehicle Retired",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information
+                    );
+
+                    LoadVehicles();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error retiring vehicle: {ex.Message}", "Error",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
         }
 
         private void VehiclesView_Load(object? sender, EventArgs e)
         {
             ConfigureGrid();
             LoadVehicles();
+
+            // Set default selections
+            cmbStatusFilter.SelectedIndex = 0;
+            cmbAdvancedFilter.SelectedIndex = 0;
         }
 
         private void ConfigureGrid()
@@ -128,17 +265,26 @@ namespace VRMS.Controls
         {
             ApplyFilters();
         }
-        
-        private void SetStatusFilter(VehicleStatus? status)
+
+        private VehicleStatus? GetSelectedStatus()
         {
-            _statusFilter = status;
-            ApplyFilters();
+            return cmbStatusFilter.SelectedIndex switch
+            {
+                0 => null, // All Vehicles
+                1 => VehicleStatus.Available,
+                2 => VehicleStatus.UnderMaintenance,
+                3 => VehicleStatus.Rented,
+                4 => VehicleStatus.Reserved,
+                5 => VehicleStatus.Retired,
+                _ => null
+            };
         }
-        
+
         private void ApplyFilters()
         {
+            var status = GetSelectedStatus();
             var vehicles = _vehicleService.SearchVehicles(
-                _statusFilter,
+                status,
                 txtSearch.Text
             );
 
@@ -148,7 +294,6 @@ namespace VRMS.Controls
             lblVehicleCount.Text = $"Total: {vehicles.Count} vehicles";
             ClearVehiclePreview();
         }
-
 
         private void DgvVehicles_SelectionChanged(object? sender, EventArgs e)
         {
@@ -188,6 +333,7 @@ namespace VRMS.Controls
             VehicleStatus.Rented => Color.FromArgb(231, 76, 60),
             VehicleStatus.UnderMaintenance => Color.FromArgb(243, 156, 18),
             VehicleStatus.Reserved => Color.FromArgb(155, 89, 182),
+            VehicleStatus.Retired => Color.FromArgb(150, 150, 150),
             _ => Color.Gray
         };
 
