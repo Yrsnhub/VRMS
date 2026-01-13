@@ -4,14 +4,15 @@ using VRMS.Models.Accounts;
 using VRMS.Services.Customer;
 using VRMS.Services.Account;
 using VRMS.Repositories.Accounts;
-using VRMS.UI.Controls.CustomerVehicleCatalog;
-using VRMS.Controls;
 using VRMS.Repositories.Billing;
 using VRMS.Repositories.Fleet;
 using VRMS.Repositories.Rentals;
 using VRMS.Services.Fleet;
 using VRMS.Services.Rental;
+using VRMS.UI.Controls.CustomerVehicleCatalog;
+using VRMS.UI.Controls.UserProfile;
 using VRMS.UI.Forms.Rentals;
+using VRMS.Controls;
 
 namespace VRMS.UI.Forms.Main
 {
@@ -20,13 +21,18 @@ namespace VRMS.UI.Forms.Main
         private readonly CustomerAccount _account;
         private readonly CustomerService _customerService;
 
-        // ✅ FULLY QUALIFIED TYPE (FIXES ERRORS)
         private VRMS.Models.Customers.Customer? _customer;
         private UserControl? _currentView;
 
+        // =========================
+        // CONSTRUCTORS
+        // =========================
         public CustomerMainForm()
         {
             InitializeComponent();
+
+            // Header click → profile view
+            mainHeader.UserInfoClicked += MainHeader_UserInfoClicked;
         }
 
         public CustomerMainForm(CustomerAccount account) : this()
@@ -44,17 +50,30 @@ namespace VRMS.UI.Forms.Main
             LoadVehiclesView();
         }
 
+        // =========================
+        // INITIALIZE CUSTOMER
+        // =========================
         private void InitializeCustomer()
         {
-            VRMS.Models.Customers.Customer customer =
+            var customer =
                 _customerService.GetCustomerById(_account.CustomerId);
 
             _customer = customer;
 
+            // Sidebar welcome
             lblWelcome.Text =
                 $"Welcome,\n{customer.FirstName} {customer.LastName}\n(Customer)";
+
+            // Header user info
+            mainHeader.SetUser(
+                $"{customer.FirstName} {customer.LastName}",
+                "Customer"
+            );
         }
 
+        // =========================
+        // NAV BUTTON EVENTS
+        // =========================
         private void btnVehicles_Click(object sender, EventArgs e)
         {
             LoadVehiclesView();
@@ -70,6 +89,14 @@ namespace VRMS.UI.Forms.Main
         // =========================
         private void LoadVehiclesView()
         {
+            if (_customer == null)
+                return;
+
+            mainHeader.SetTitle(
+                "Browse Vehicles",
+                "Find and reserve available vehicles"
+            );
+
             var vehicleService = new VehicleService(
                 new VehicleRepository(),
                 new VehicleCategoryRepository(),
@@ -90,7 +117,7 @@ namespace VRMS.UI.Forms.Main
                 new CustomerVehicleCatalog(
                     vehicleService,
                     reservationService,
-                    _customer!
+                    _customer
                 )
             );
 
@@ -102,6 +129,11 @@ namespace VRMS.UI.Forms.Main
         // =========================
         private void LoadRentalsView()
         {
+            mainHeader.SetTitle(
+                "My Rentals",
+                "View and manage your rentals"
+            );
+
             var rentalsView = new CustomersRentalsView();
 
             rentalsView.ProceedRentRequested += (_, __) =>
@@ -114,17 +146,48 @@ namespace VRMS.UI.Forms.Main
         }
 
         // =========================
-        // NAVIGATION
+        // PROFILE VIEW (HEADER CLICK)
+        // =========================
+        private void LoadCustomerProfileView()
+        {
+            if (_customer == null)
+                return;
+
+            mainHeader.SetTitle(
+                "My Profile",
+                "Manage your personal information"
+            );
+
+            var customerProfileView = new CustomerProfileView(
+                _customerService,
+                new CustomerAccountService(
+                    new CustomerAccountRepository()
+                ),
+                _customer.Id
+            );
+
+            LoadView(customerProfileView);
+
+            // No sidebar button highlighted
+            HighlightActiveButton(null);
+        }
+
+        private void MainHeader_UserInfoClicked(object? sender, EventArgs e)
+        {
+            LoadCustomerProfileView();
+        }
+
+        // =========================
+        // OPEN RENTAL FORM (MODAL)
         // =========================
         private void OpenCustomerRentalForm()
         {
             using (var rentalForm = new CustomerRentalForm())
             {
                 rentalForm.StartPosition = FormStartPosition.CenterParent;
-                rentalForm.ShowDialog(this); 
+                rentalForm.ShowDialog(this);
             }
         }
-
 
         // =========================
         // VIEW MANAGEMENT
@@ -146,7 +209,7 @@ namespace VRMS.UI.Forms.Main
             contentPanel.ResumeLayout();
         }
 
-        private void HighlightActiveButton(Button activeButton)
+        private void HighlightActiveButton(Button? activeButton)
         {
             foreach (Control ctrl in navButtonsPanel.Controls)
             {
@@ -154,8 +217,11 @@ namespace VRMS.UI.Forms.Main
                     btn.BackColor = System.Drawing.Color.Transparent;
             }
 
-            activeButton.BackColor =
-                System.Drawing.Color.FromArgb(44, 62, 80);
+            if (activeButton != null)
+            {
+                activeButton.BackColor =
+                    System.Drawing.Color.FromArgb(44, 62, 80);
+            }
         }
     }
 }
