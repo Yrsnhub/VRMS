@@ -939,7 +939,7 @@
             dgvRentalHistory.AllowUserToAddRows = false;
             dgvRentalHistory.AllowUserToDeleteRows = false;
             dgvRentalHistory.AllowUserToResizeRows = false;
-            dgvRentalHistory.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            dgvRentalHistory.Dock = DockStyle.Fill;
             dgvRentalHistory.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvRentalHistory.BackgroundColor = Color.White;
             dgvRentalHistory.BorderStyle = BorderStyle.None;
@@ -964,7 +964,6 @@
             dgvRentalHistory.DefaultCellStyle = dataGridViewCellStyle18;
             dgvRentalHistory.EnableHeadersVisualStyles = false;
             dgvRentalHistory.GridColor = Color.FromArgb(240, 240, 240);
-            dgvRentalHistory.Location = new Point(20, 138);
             dgvRentalHistory.Margin = new Padding(3, 4, 3, 4);
             dgvRentalHistory.MultiSelect = false;
             dgvRentalHistory.Name = "dgvRentalHistory";
@@ -973,7 +972,6 @@
             dgvRentalHistory.RowHeadersWidth = 51;
             dgvRentalHistory.RowTemplate.Height = 35;
             dgvRentalHistory.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvRentalHistory.Size = new Size(871, 680);
             dgvRentalHistory.TabIndex = 0;
             // 
             // contextMenuStrip1
