@@ -29,12 +29,18 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            DataGridViewCellStyle dataGridViewCellStyle13 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle14 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle15 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle16 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle17 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle18 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle5 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle12 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle6 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle7 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle8 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle9 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle10 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle11 = new DataGridViewCellStyle();
             splitContainer1 = new SplitContainer();
             dgvCustomers = new DataGridView();
             panel1 = new Panel();
@@ -97,6 +103,16 @@
             label14 = new Label();
             dgvRentalHistory = new DataGridView();
             contextMenuStrip1 = new ContextMenuStrip(components);
+            colId = new DataGridViewTextBoxColumn();
+            colRentalNumber = new DataGridViewTextBoxColumn();
+            colVehicle = new DataGridViewTextBoxColumn();
+            colPlateNumber = new DataGridViewTextBoxColumn();
+            colCategory = new DataGridViewTextBoxColumn();
+            colPickupDate = new DataGridViewTextBoxColumn();
+            colReturnDate = new DataGridViewTextBoxColumn();
+            colDays = new DataGridViewTextBoxColumn();
+            colAmount = new DataGridViewTextBoxColumn();
+            colActions = new DataGridViewButtonColumn();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
@@ -150,23 +166,23 @@
             dgvCustomers.BorderStyle = BorderStyle.None;
             dgvCustomers.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
             dgvCustomers.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle13.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle13.BackColor = Color.FromArgb(30, 60, 90);
-            dataGridViewCellStyle13.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
-            dataGridViewCellStyle13.ForeColor = Color.White;
-            dataGridViewCellStyle13.SelectionBackColor = Color.FromArgb(30, 60, 90);
-            dataGridViewCellStyle13.SelectionForeColor = Color.White;
-            dataGridViewCellStyle13.WrapMode = DataGridViewTriState.True;
-            dgvCustomers.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle13;
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = Color.FromArgb(30, 60, 90);
+            dataGridViewCellStyle1.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
+            dataGridViewCellStyle1.ForeColor = Color.White;
+            dataGridViewCellStyle1.SelectionBackColor = Color.FromArgb(30, 60, 90);
+            dataGridViewCellStyle1.SelectionForeColor = Color.White;
+            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
+            dgvCustomers.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             dgvCustomers.ColumnHeadersHeight = 50;
-            dataGridViewCellStyle14.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle14.BackColor = Color.White;
-            dataGridViewCellStyle14.Font = new Font("Segoe UI", 9.75F);
-            dataGridViewCellStyle14.ForeColor = Color.FromArgb(64, 64, 64);
-            dataGridViewCellStyle14.SelectionBackColor = Color.FromArgb(240, 245, 250);
-            dataGridViewCellStyle14.SelectionForeColor = Color.FromArgb(30, 60, 90);
-            dataGridViewCellStyle14.WrapMode = DataGridViewTriState.False;
-            dgvCustomers.DefaultCellStyle = dataGridViewCellStyle14;
+            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = Color.White;
+            dataGridViewCellStyle2.Font = new Font("Segoe UI", 9.75F);
+            dataGridViewCellStyle2.ForeColor = Color.FromArgb(64, 64, 64);
+            dataGridViewCellStyle2.SelectionBackColor = Color.FromArgb(240, 245, 250);
+            dataGridViewCellStyle2.SelectionForeColor = Color.FromArgb(30, 60, 90);
+            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
+            dgvCustomers.DefaultCellStyle = dataGridViewCellStyle2;
             dgvCustomers.Dock = DockStyle.Fill;
             dgvCustomers.EnableHeadersVisualStyles = false;
             dgvCustomers.GridColor = Color.FromArgb(240, 240, 240);
@@ -312,7 +328,7 @@
             tabControl1.Margin = new Padding(4, 5, 4, 5);
             tabControl1.Name = "tabControl1";
             tabControl1.SelectedIndex = 0;
-            tabControl1.Size = new Size(916, 894);
+            tabControl1.Size = new Size(915, 894);
             tabControl1.TabIndex = 0;
             // 
             // tabPage1
@@ -341,7 +357,7 @@
             tabPage1.Margin = new Padding(3, 4, 3, 4);
             tabPage1.Name = "tabPage1";
             tabPage1.Padding = new Padding(20);
-            tabPage1.Size = new Size(908, 858);
+            tabPage1.Size = new Size(907, 858);
             tabPage1.TabIndex = 0;
             tabPage1.Text = "Personal Information";
             // 
@@ -545,7 +561,7 @@
             tabPage2.Margin = new Padding(3, 4, 3, 4);
             tabPage2.Name = "tabPage2";
             tabPage2.Padding = new Padding(20);
-            tabPage2.Size = new Size(908, 858);
+            tabPage2.Size = new Size(907, 858);
             tabPage2.TabIndex = 1;
             tabPage2.Text = "Driver's License";
             // 
@@ -759,7 +775,7 @@
             tabPage3.Margin = new Padding(3, 4, 3, 4);
             tabPage3.Name = "tabPage3";
             tabPage3.Padding = new Padding(20);
-            tabPage3.Size = new Size(908, 858);
+            tabPage3.Size = new Size(907, 858);
             tabPage3.TabIndex = 2;
             tabPage3.Text = "Classification & Overview";
             // 
@@ -770,24 +786,24 @@
             dgvHistory.BorderStyle = BorderStyle.None;
             dgvHistory.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
             dgvHistory.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle15.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle15.BackColor = Color.FromArgb(30, 60, 90);
-            dataGridViewCellStyle15.Font = new Font("Segoe UI", 10F);
-            dataGridViewCellStyle15.ForeColor = Color.White;
-            dataGridViewCellStyle15.SelectionBackColor = Color.FromArgb(30, 60, 90);
-            dataGridViewCellStyle15.SelectionForeColor = Color.White;
-            dataGridViewCellStyle15.WrapMode = DataGridViewTriState.True;
-            dgvHistory.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle15;
+            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = Color.FromArgb(30, 60, 90);
+            dataGridViewCellStyle3.Font = new Font("Segoe UI", 10F);
+            dataGridViewCellStyle3.ForeColor = Color.White;
+            dataGridViewCellStyle3.SelectionBackColor = Color.FromArgb(30, 60, 90);
+            dataGridViewCellStyle3.SelectionForeColor = Color.White;
+            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.True;
+            dgvHistory.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
             dgvHistory.ColumnHeadersHeight = 50;
             dgvHistory.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            dataGridViewCellStyle16.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle16.BackColor = Color.White;
-            dataGridViewCellStyle16.Font = new Font("Segoe UI", 10F);
-            dataGridViewCellStyle16.ForeColor = Color.FromArgb(64, 64, 64);
-            dataGridViewCellStyle16.SelectionBackColor = Color.FromArgb(240, 245, 250);
-            dataGridViewCellStyle16.SelectionForeColor = Color.FromArgb(30, 60, 90);
-            dataGridViewCellStyle16.WrapMode = DataGridViewTriState.False;
-            dgvHistory.DefaultCellStyle = dataGridViewCellStyle16;
+            dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = Color.White;
+            dataGridViewCellStyle4.Font = new Font("Segoe UI", 10F);
+            dataGridViewCellStyle4.ForeColor = Color.FromArgb(64, 64, 64);
+            dataGridViewCellStyle4.SelectionBackColor = Color.FromArgb(240, 245, 250);
+            dataGridViewCellStyle4.SelectionForeColor = Color.FromArgb(30, 60, 90);
+            dataGridViewCellStyle4.WrapMode = DataGridViewTriState.False;
+            dgvHistory.DefaultCellStyle = dataGridViewCellStyle4;
             dgvHistory.EnableHeadersVisualStyles = false;
             dgvHistory.GridColor = Color.FromArgb(240, 240, 240);
             dgvHistory.Location = new Point(28, 441);
@@ -908,7 +924,7 @@
             tabPage4.Margin = new Padding(3, 4, 3, 4);
             tabPage4.Name = "tabPage4";
             tabPage4.Padding = new Padding(20);
-            tabPage4.Size = new Size(908, 858);
+            tabPage4.Size = new Size(907, 858);
             tabPage4.TabIndex = 3;
             tabPage4.Text = "Rental History";
             // 
@@ -920,7 +936,7 @@
             panel3.Location = new Point(20, 20);
             panel3.Margin = new Padding(3, 4, 3, 4);
             panel3.Name = "panel3";
-            panel3.Size = new Size(868, 110);
+            panel3.Size = new Size(867, 110);
             panel3.TabIndex = 1;
             // 
             // label14
@@ -945,23 +961,24 @@
             dgvRentalHistory.BorderStyle = BorderStyle.None;
             dgvRentalHistory.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
             dgvRentalHistory.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle17.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle17.BackColor = Color.FromArgb(52, 152, 219);
-            dataGridViewCellStyle17.Font = new Font("Segoe UI", 10F);
-            dataGridViewCellStyle17.ForeColor = Color.White;
-            dataGridViewCellStyle17.SelectionBackColor = Color.FromArgb(52, 152, 219);
-            dataGridViewCellStyle17.SelectionForeColor = Color.White;
-            dataGridViewCellStyle17.WrapMode = DataGridViewTriState.True;
-            dgvRentalHistory.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle17;
+            dataGridViewCellStyle5.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle5.BackColor = Color.FromArgb(52, 152, 219);
+            dataGridViewCellStyle5.Font = new Font("Segoe UI", 10F);
+            dataGridViewCellStyle5.ForeColor = Color.White;
+            dataGridViewCellStyle5.SelectionBackColor = Color.FromArgb(52, 152, 219);
+            dataGridViewCellStyle5.SelectionForeColor = Color.White;
+            dataGridViewCellStyle5.WrapMode = DataGridViewTriState.True;
+            dgvRentalHistory.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
             dgvRentalHistory.ColumnHeadersHeight = 45;
-            dataGridViewCellStyle18.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle18.BackColor = Color.White;
-            dataGridViewCellStyle18.Font = new Font("Segoe UI", 10F);
-            dataGridViewCellStyle18.ForeColor = Color.FromArgb(64, 64, 64);
-            dataGridViewCellStyle18.SelectionBackColor = Color.FromArgb(240, 245, 250);
-            dataGridViewCellStyle18.SelectionForeColor = Color.FromArgb(30, 60, 90);
-            dataGridViewCellStyle18.WrapMode = DataGridViewTriState.False;
-            dgvRentalHistory.DefaultCellStyle = dataGridViewCellStyle18;
+            dgvRentalHistory.Columns.AddRange(new DataGridViewColumn[] { colId, colRentalNumber, colVehicle, colPlateNumber, colCategory, colPickupDate, colReturnDate, colDays, colAmount, colActions });
+            dataGridViewCellStyle12.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle12.BackColor = Color.White;
+            dataGridViewCellStyle12.Font = new Font("Segoe UI", 10F);
+            dataGridViewCellStyle12.ForeColor = Color.FromArgb(64, 64, 64);
+            dataGridViewCellStyle12.SelectionBackColor = Color.FromArgb(240, 245, 250);
+            dataGridViewCellStyle12.SelectionForeColor = Color.FromArgb(30, 60, 90);
+            dataGridViewCellStyle12.WrapMode = DataGridViewTriState.False;
+            dgvRentalHistory.DefaultCellStyle = dataGridViewCellStyle12;
             dgvRentalHistory.EnableHeadersVisualStyles = false;
             dgvRentalHistory.GridColor = Color.FromArgb(240, 240, 240);
             dgvRentalHistory.Margin = new Padding(3, 4, 3, 4);
@@ -979,6 +996,118 @@
             contextMenuStrip1.ImageScalingSize = new Size(20, 20);
             contextMenuStrip1.Name = "contextMenuStrip1";
             contextMenuStrip1.Size = new Size(61, 4);
+            // 
+            // colId
+            // 
+            colId.DataPropertyName = "Id";
+            colId.HeaderText = "ID";
+            colId.MinimumWidth = 6;
+            colId.Name = "colId";
+            colId.ReadOnly = true;
+            colId.Visible = false;
+            // 
+            // colRentalNumber
+            // 
+            colRentalNumber.DataPropertyName = "RentalNumber";
+            dataGridViewCellStyle6.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
+            colRentalNumber.DefaultCellStyle = dataGridViewCellStyle6;
+            colRentalNumber.FillWeight = 15F;
+            colRentalNumber.HeaderText = "RENTAL #";
+            colRentalNumber.MinimumWidth = 100;
+            colRentalNumber.Name = "colRentalNumber";
+            colRentalNumber.ReadOnly = true;
+            // 
+            // colVehicle
+            // 
+            colVehicle.DataPropertyName = "VehicleName";
+            dataGridViewCellStyle7.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
+            colVehicle.DefaultCellStyle = dataGridViewCellStyle7;
+            colVehicle.FillWeight = 25F;
+            colVehicle.HeaderText = "VEHICLE";
+            colVehicle.MinimumWidth = 150;
+            colVehicle.Name = "colVehicle";
+            colVehicle.ReadOnly = true;
+            // 
+            // colPlateNumber
+            // 
+            colPlateNumber.DataPropertyName = "PlateNumber";
+            colPlateNumber.FillWeight = 15F;
+            colPlateNumber.HeaderText = "PLATE";
+            colPlateNumber.MinimumWidth = 80;
+            colPlateNumber.Name = "colPlateNumber";
+            colPlateNumber.ReadOnly = true;
+            // 
+            // colCategory
+            // 
+            colCategory.DataPropertyName = "Category";
+            colCategory.FillWeight = 15F;
+            colCategory.HeaderText = "CATEGORY";
+            colCategory.MinimumWidth = 100;
+            colCategory.Name = "colCategory";
+            colCategory.ReadOnly = true;
+            // 
+            // colPickupDate
+            // 
+            colPickupDate.DataPropertyName = "PickupDate";
+            dataGridViewCellStyle8.Format = "MMM dd, yyyy";
+            dataGridViewCellStyle8.NullValue = null;
+            colPickupDate.DefaultCellStyle = dataGridViewCellStyle8;
+            colPickupDate.FillWeight = 15F;
+            colPickupDate.HeaderText = "PICKUP DATE";
+            colPickupDate.MinimumWidth = 120;
+            colPickupDate.Name = "colPickupDate";
+            colPickupDate.ReadOnly = true;
+            // 
+            // colReturnDate
+            // 
+            colReturnDate.DataPropertyName = "ReturnDate";
+            dataGridViewCellStyle9.Format = "MMM dd, yyyy";
+            dataGridViewCellStyle9.NullValue = null;
+            colReturnDate.DefaultCellStyle = dataGridViewCellStyle9;
+            colReturnDate.FillWeight = 15F;
+            colReturnDate.HeaderText = "RETURN DATE";
+            colReturnDate.MinimumWidth = 120;
+            colReturnDate.Name = "colReturnDate";
+            colReturnDate.ReadOnly = true;
+            // 
+            // colDays
+            // 
+            colDays.DataPropertyName = "DaysRented";
+            dataGridViewCellStyle10.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            colDays.DefaultCellStyle = dataGridViewCellStyle10;
+            colDays.FillWeight = 10F;
+            colDays.HeaderText = "DAYS";
+            colDays.MinimumWidth = 60;
+            colDays.Name = "colDays";
+            colDays.ReadOnly = true;
+            // 
+            // colAmount
+            // 
+            colAmount.DataPropertyName = "TotalAmount";
+            dataGridViewCellStyle11.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle11.BackColor = Color.White;
+            dataGridViewCellStyle11.Font = new Font("Segoe UI", 10F);
+            dataGridViewCellStyle11.ForeColor = Color.FromArgb(64, 64, 64);
+            dataGridViewCellStyle11.SelectionBackColor = Color.FromArgb(240, 245, 250);
+            dataGridViewCellStyle11.SelectionForeColor = Color.FromArgb(30, 60, 90);
+            dataGridViewCellStyle11.WrapMode = DataGridViewTriState.False;
+            colAmount.DefaultCellStyle = dataGridViewCellStyle11;
+            colAmount.FillWeight = 15F;
+            colAmount.HeaderText = "AMOUNT";
+            colAmount.MinimumWidth = 100;
+            colAmount.Name = "colAmount";
+            colAmount.ReadOnly = true;
+            // 
+            // colActions
+            // 
+            colActions.FillWeight = 10F;
+            colActions.FlatStyle = FlatStyle.Flat;
+            colActions.HeaderText = "";
+            colActions.MinimumWidth = 80;
+            colActions.Name = "colActions";
+            colActions.ReadOnly = true;
+            colActions.Text = "View";
+            colActions.UseColumnTextForButtonValue = true;
             // 
             // CustomersView
             // 
@@ -1019,6 +1148,7 @@
             panel3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dgvRentalHistory).EndInit();
             ResumeLayout(false);
+
         }
 
         #endregion
@@ -1077,13 +1207,23 @@
         private System.Windows.Forms.DateTimePicker dtpDOB;
         private System.Windows.Forms.DataGridView dgvHistory;
         private System.Windows.Forms.Button btnEmergencyContacts;
-        private Label label7;
-        private Label label6;
-        private PictureBox picLicenseBack;
-        private PictureBox picLicenseFront;
-        private TabPage tabPage4;
-        private DataGridView dgvRentalHistory;
-        private Panel panel3;
-        private Label label14;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.PictureBox picLicenseBack;
+        private System.Windows.Forms.PictureBox picLicenseFront;
+        private System.Windows.Forms.TabPage tabPage4;
+        private System.Windows.Forms.DataGridView dgvRentalHistory;
+        private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.Label label14;
+        private DataGridViewTextBoxColumn colId;
+        private DataGridViewTextBoxColumn colRentalNumber;
+        private DataGridViewTextBoxColumn colVehicle;
+        private DataGridViewTextBoxColumn colPlateNumber;
+        private DataGridViewTextBoxColumn colCategory;
+        private DataGridViewTextBoxColumn colPickupDate;
+        private DataGridViewTextBoxColumn colReturnDate;
+        private DataGridViewTextBoxColumn colDays;
+        private DataGridViewTextBoxColumn colAmount;
+        private DataGridViewButtonColumn colActions;
     }
 }

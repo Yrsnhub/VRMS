@@ -190,7 +190,7 @@ namespace VRMS.UI.Forms.Reservation
                 _selectedCustomer != null &&
                 _selectedVehicle != null;
         }
-        
+
         private void UpdateTotalEstimate()
         {
             if (_selectedVehicle == null)
