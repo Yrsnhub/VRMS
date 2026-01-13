@@ -45,6 +45,12 @@
       <Compile Update="UI\Forms\CustomerMainForm.cs">
         <SubType>Form</SubType>
       </Compile>
+      <Compile Update="UI\Forms\Select\SelectCustomerForm.cs">
+        <SubType>Form</SubType>
+      </Compile>
+      <Compile Update="UI\Forms\Select\SelectVehicleForm.cs">
+        <SubType>Form</SubType>
+      </Compile>
     </ItemGroup>
 
 </Project>
