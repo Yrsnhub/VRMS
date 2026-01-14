@@ -1,6 +1,7 @@
 ﻿using VRMS.DTOs.Vehicle;
 using VRMS.Enums;
 using VRMS.Forms;
+using VRMS.Helpers;
 using VRMS.Models.Fleet;
 using VRMS.Services.Customer;
 using VRMS.Services.Fleet;
@@ -283,7 +284,11 @@ namespace VRMS.UI.Controls.VehiclesView
             }
             catch { lblCategoryValue.Text = "Unknown"; }
 
-            lblStatusValue.Text = vehicle.Status.ToString();
+            lblStatusValue.Text = EnumComboHelper
+                .ToComboItems<VehicleStatus>()
+                .First(x => x.Value == vehicle.Status)
+                .Display;
+
             lblStatusValue.ForeColor = GetStatusColor(vehicle.Status);
 
             LoadVehicleImage(vehicle.Id);
@@ -405,7 +410,7 @@ namespace VRMS.UI.Controls.VehiclesView
             };
 
             // 3. Open Maintenance Form
-            using var form = new MaintenanceForm(vehicleDto)
+            using var form = new MaintenanceForm(_vehicleService, vehicleDto)
             {
                 StartPosition = FormStartPosition.CenterParent
             };

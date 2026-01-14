@@ -205,28 +205,20 @@ public class VehicleService
     /// Starts a maintenance record and places the vehicle
     /// into UnderMaintenance status.
     /// </summary>
-    public int StartMaintenance(
-        int vehicleId,
-        string description,
-        decimal cost,
-        DateTime startDate)
+    public int StartMaintenance(MaintenanceRecord record)
     {
-        var vehicle = _vehicleRepo.GetById(vehicleId);
+        var vehicle = _vehicleRepo.GetById(record.VehicleId);
         EnsureNotRetired(vehicle);
 
-        var maintenanceId =
-            _maintenanceRepo.Create(
-                vehicleId,
-                description,
-                cost,
-                startDate);
+        var id = _maintenanceRepo.Create(record);
 
         _vehicleRepo.UpdateStatus(
-            vehicleId,
+            record.VehicleId,
             VehicleStatus.UnderMaintenance);
 
-        return maintenanceId;
+        return id;
     }
+
 
     /// <summary>
     /// Closes a maintenance record and transitions the vehicle
@@ -235,20 +227,21 @@ public class VehicleService
     public void CloseMaintenance(
         int maintenanceRecordId,
         DateTime endDate,
-        VehicleStatus postMaintenanceStatus)
+        MaintenanceStatus status,
+        VehicleStatus vehicleStatus)
     {
-        var record =
-            _maintenanceRepo.GetById(
-                maintenanceRecordId);
+        var record = _maintenanceRepo.GetById(maintenanceRecordId);
 
         _maintenanceRepo.Close(
             maintenanceRecordId,
-            endDate);
+            endDate,
+            status);
 
         UpdateVehicleStatus(
             record.VehicleId,
-            postMaintenanceStatus);
+            vehicleStatus);
     }
+
 
     /// <summary>
     /// Retrieves maintenance records for a vehicle.
