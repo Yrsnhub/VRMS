@@ -10,6 +10,7 @@ public static class SP_Rentals_GetAll
                                       SELECT
                                           id,
                                           reservation_id,
+                                          customer_id,     
                                           vehicle_id,
                                           pickup_date,
                                           expected_return_date,

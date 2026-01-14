@@ -4,7 +4,7 @@ public static class SP_Rentals_GetByCustomer
 {
     public static string Sql() => """
                                   DROP PROCEDURE IF EXISTS sp_rentals_get_by_customer;
-
+                                  
                                   CREATE PROCEDURE sp_rentals_get_by_customer (
                                       IN p_customer_id INT
                                   )
@@ -12,6 +12,7 @@ public static class SP_Rentals_GetByCustomer
                                       SELECT
                                           r.id,
                                           r.reservation_id,
+                                          r.customer_id,
                                           r.vehicle_id,
                                           r.pickup_date,
                                           r.expected_return_date,
@@ -28,8 +29,10 @@ public static class SP_Rentals_GetByCustomer
                                       LEFT JOIN invoices i
                                           ON i.rental_id = r.id
                                       WHERE
-                                          res.customer_id = p_customer_id
+                                          r.customer_id = p_customer_id
+                                          OR res.customer_id = p_customer_id
                                       ORDER BY r.pickup_date DESC;
                                   END;
+                                  
                                   """;
 }
