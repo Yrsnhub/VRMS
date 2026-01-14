@@ -177,6 +177,30 @@ public class RentalService
             cleanliness: string.Empty
         );
     }
+    
+    /// <summary>
+    /// Retrieves a vehicle inspection by id (thin wrapper).
+    /// </summary>
+    public Models.Damages.VehicleInspection GetInspectionById(int inspectionId)
+        => _inspectionRepo.GetById(inspectionId);
+
+    /// <summary>
+    /// Persist updates to a return inspection (notes, fuel level, cleanliness).
+    /// Thin wrapper to repository, used by the UI.
+    /// </summary>
+    public void UpdateReturnInspection(
+        int inspectionId,
+        string notes,
+        string fuelLevel,
+        string cleanliness)
+    {
+        // Basic validation (defensive)
+        if (inspectionId <= 0)
+            throw new InvalidOperationException("Invalid inspection id.");
+
+        _inspectionRepo.Update(inspectionId, notes ?? string.Empty, fuelLevel ?? string.Empty, cleanliness ?? string.Empty);
+    }
+
 
     /// <summary>
     /// Retrieves damages linked to a specific vehicle inspection.
