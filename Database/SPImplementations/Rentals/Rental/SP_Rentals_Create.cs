@@ -4,9 +4,10 @@ public static class SP_Rentals_Create
 {
     public static string Sql() => """
                                   DROP PROCEDURE IF EXISTS sp_rentals_create;
-
+                                  
                                   CREATE PROCEDURE sp_rentals_create (
                                       IN p_reservation_id INT,
+                                      IN p_customer_id INT,
                                       IN p_vehicle_id INT,
                                       IN p_pickup_date DATETIME,
                                       IN p_expected_return_date DATETIME,
@@ -17,6 +18,7 @@ public static class SP_Rentals_Create
                                   BEGIN
                                       INSERT INTO rentals (
                                           reservation_id,
+                                          customer_id,
                                           vehicle_id,
                                           pickup_date,
                                           expected_return_date,
@@ -25,7 +27,8 @@ public static class SP_Rentals_Create
                                           status
                                       )
                                       VALUES (
-                                          p_reservation_id, -- may be NULL
+                                          p_reservation_id,
+                                          p_customer_id,
                                           p_vehicle_id,
                                           p_pickup_date,
                                           p_expected_return_date,
@@ -33,8 +36,9 @@ public static class SP_Rentals_Create
                                           p_start_fuel_level,
                                           p_status
                                       );
-
+                                  
                                       SELECT LAST_INSERT_ID() AS rental_id;
                                   END;
+                                  
                                   """;
 }

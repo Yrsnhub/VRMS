@@ -2,10 +2,15 @@
 using VRMS.Repositories.Accounts;
 using VRMS.Repositories.Billing;
 using VRMS.Repositories.Customers;
+using VRMS.Repositories.Damages;
 using VRMS.Repositories.Fleet;
+using VRMS.Repositories.Inspections;
+using VRMS.Repositories.Rentals;
 using VRMS.Services.Account;
+using VRMS.Services.Billing;
 using VRMS.Services.Customer;
 using VRMS.Services.Fleet;
+using VRMS.Services.Rental;
 
 namespace VRMS.Database.Seeders;
 
@@ -28,13 +33,26 @@ public static class ServiceRepositoryRegistry
         services.AddSingleton<VehicleFeatureMappingRepository>();
         services.AddSingleton<VehicleImageRepository>();
         services.AddSingleton<MaintenanceRepository>();
+        services.AddSingleton<VehicleInspectionRepository>();
 
         // Customers
         services.AddSingleton<CustomerRepository>();
         services.AddSingleton<DriversLicenseRepository>();
 
         // Billing
+        services.AddSingleton<InvoiceRepository>();
+        services.AddSingleton<InvoiceLineItemRepository>();
+        services.AddSingleton<PaymentRepository>();
         services.AddSingleton<RateConfigurationRepository>();
+        
+        // Rentals
+        services.AddSingleton<ReservationRepository>();
+        services.AddSingleton<RentalRepository>();
+        
+        // Damages
+        services.AddSingleton<DamageRepository>();
+        services.AddSingleton<DamageReportRepository>();
+        
 
         // ----------------------------
         // SERVICES
@@ -45,5 +63,9 @@ public static class ServiceRepositoryRegistry
         services.AddSingleton<DriversLicenseService>();
         services.AddSingleton<CustomerService>();
         services.AddSingleton<VehicleService>();
+        services.AddSingleton<BillingService>();
+        services.AddSingleton<ReservationService>();
+        services.AddSingleton<RentalService>();
+        services.AddSingleton<RateService>();
     }
 }

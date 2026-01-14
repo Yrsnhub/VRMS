@@ -3,6 +3,7 @@ using VRMS.Repositories.Billing;
 using VRMS.Services.Account;
 using VRMS.Services.Customer;
 using VRMS.Services.Fleet;
+using VRMS.Services.Rental;
 
 namespace VRMS.Database.Seeders;
 
@@ -27,7 +28,13 @@ public static class SeederRunner
             new Customer.CustomerSeeder(
                 services.GetRequiredService<CustomerService>(),
                 services.GetRequiredService<DriversLicenseService>()
-            )
+            ),
+            new Rental.ReservationSeeder(
+                services.GetRequiredService<ReservationService>()
+            ),
+            new Rental.RentalSeeder(
+                services.GetRequiredService<RentalService>()
+            ),
 
         };
 

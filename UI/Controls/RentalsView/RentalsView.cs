@@ -150,6 +150,14 @@ namespace VRMS.Controls
 
                     customerName = $"{customer.FirstName} {customer.LastName}";
                 }
+                else if (r.CustomerId.HasValue)
+                {
+                    var customer =
+                        _customerService.GetCustomerById(r.CustomerId.Value);
+
+                    customerName = $"{customer.FirstName} {customer.LastName}";
+                }
+
 
                 return new RentalGridRow
                 {
@@ -265,6 +273,14 @@ namespace VRMS.Controls
 
                 customerName = $"{customer.FirstName} {customer.LastName}";
             }
+            else if (rental.CustomerId.HasValue)
+            {
+                var customer =
+                    _customerService.GetCustomerById(rental.CustomerId.Value);
+
+                customerName = $"{customer.FirstName} {customer.LastName}";
+            }
+
 
             lblDetailVehicle.Text = $"{vehicle.Year} {vehicle.Make} {vehicle.Model}";
             lblDetailCustomer.Text = customerName;

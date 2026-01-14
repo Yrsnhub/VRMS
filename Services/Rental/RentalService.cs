@@ -89,35 +89,34 @@ public class RentalService
             _reservationService.GetReservationById(reservationId);
 
         if (reservation.Status != ReservationStatus.Confirmed)
-            throw new InvalidOperationException(
-                "Reservation must be confirmed.");
+            throw new InvalidOperationException("Reservation must be confirmed.");
 
         if (_rentalRepo.GetByReservation(reservationId) != null)
-            throw new InvalidOperationException(
-                "A rental already exists for this reservation.");
+            throw new InvalidOperationException("A rental already exists for this reservation.");
 
         var vehicle =
             _vehicleService.GetVehicleById(reservation.VehicleId);
 
         if (vehicle.Status != VehicleStatus.Reserved)
-            throw new InvalidOperationException(
-                "Vehicle must be reserved.");
+            throw new InvalidOperationException("Vehicle must be reserved.");
 
         var rentalId =
             _rentalRepo.Create(
-                reservationId,
-                vehicle.Id,
-                pickupDate,
-                reservation.EndDate,
-                vehicle.Odometer,
-                startFuelLevel,
-                RentalStatus.Active);
+                reservationId: reservation.Id,
+                customerId: reservation.CustomerId,   
+                vehicleId: vehicle.Id,
+                pickupDate: pickupDate,
+                expectedReturnDate: reservation.EndDate,
+                startOdometer: vehicle.Odometer,
+                startFuelLevel: startFuelLevel,
+                status: RentalStatus.Active);
 
         _rentalRepo.MarkStarted(rentalId);
         _vehicleService.UpdateVehicleStatus(vehicle.Id, VehicleStatus.Rented);
 
         return rentalId;
     }
+
 
 
     
@@ -128,6 +127,7 @@ public class RentalService
         DateTime expectedReturnDate,
         FuelLevel startFuelLevel)
     {
+        // Validate customer eligibility
         _customerService.EnsureCustomerCanRent(customerId, pickupDate);
 
         var vehicle = _vehicleService.GetVehicleById(vehicleId);
@@ -135,22 +135,24 @@ public class RentalService
         if (vehicle.Status != VehicleStatus.Available)
             throw new InvalidOperationException("Vehicle not available.");
 
+        // ✅ WALK-IN RENTAL: NO reservation, BUT customer IS KNOWN
         var rentalId =
             _rentalRepo.Create(
-                reservationId: null,
+                reservationId: null,          // ✅ NO reservation
+                customerId: customerId,       // ✅ THIS IS THE FIX
                 vehicleId: vehicleId,
-                pickupDate,
-                expectedReturnDate,
-                vehicle.Odometer,
-                startFuelLevel,
-                RentalStatus.Active);
+                pickupDate: pickupDate,
+                expectedReturnDate: expectedReturnDate,
+                startOdometer: vehicle.Odometer,
+                startFuelLevel: startFuelLevel,
+                status: RentalStatus.Active);
 
         _rentalRepo.MarkStarted(rentalId);
-
         _vehicleService.UpdateVehicleStatus(vehicleId, VehicleStatus.Rented);
 
         return rentalId;
     }
+    
 
 
 

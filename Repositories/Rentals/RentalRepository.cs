@@ -13,6 +13,7 @@ public class RentalRepository
 
     public int Create(
         int? reservationId,
+        int? customerId,               
         int vehicleId,
         DateTime pickupDate,
         DateTime expectedReturnDate,
@@ -21,8 +22,9 @@ public class RentalRepository
         RentalStatus status)
     {
         var table = DB.Query(
-            "CALL sp_rentals_create(@rid,@vid,@pickup,@expected,@odo,@fuel,@status);",
+            "CALL sp_rentals_create(@rid,@cid,@vid,@pickup,@expected,@odo,@fuel,@status);",
             ("@rid", reservationId),
+            ("@cid", customerId),                    
             ("@vid", vehicleId),
             ("@pickup", pickupDate),
             ("@expected", expectedReturnDate),
@@ -33,6 +35,7 @@ public class RentalRepository
 
         return Convert.ToInt32(table.Rows[0]["rental_id"]);
     }
+
 
 
 
@@ -170,34 +173,31 @@ public class RentalRepository
                     ? null
                     : Convert.ToInt32(row["reservation_id"]),
 
-            VehicleId =
-                Convert.ToInt32(row["vehicle_id"]),
-            PickupDate =
-                Convert.ToDateTime(row["pickup_date"]),
-            ExpectedReturnDate =
-                Convert.ToDateTime(row["expected_return_date"]),
+            // <-- map customer_id
+            CustomerId =
+                row.Table.Columns.Contains("customer_id") && row["customer_id"] != DBNull.Value
+                    ? Convert.ToInt32(row["customer_id"])
+                    : (int?)null,
+
+            VehicleId = Convert.ToInt32(row["vehicle_id"]),
+            PickupDate = Convert.ToDateTime(row["pickup_date"]),
+            ExpectedReturnDate = Convert.ToDateTime(row["expected_return_date"]),
             ActualReturnDate =
                 row["actual_return_date"] == DBNull.Value
                     ? null
                     : Convert.ToDateTime(row["actual_return_date"]),
-            StartOdometer =
-                Convert.ToInt32(row["start_odometer"]),
+            StartOdometer = Convert.ToInt32(row["start_odometer"]),
             EndOdometer =
                 row["end_odometer"] == DBNull.Value
                     ? null
                     : Convert.ToInt32(row["end_odometer"]),
-            StartFuelLevel =
-                Enum.Parse<FuelLevel>(
-                    row["start_fuel_level"].ToString()!, true),
-
+            StartFuelLevel = Enum.Parse<FuelLevel>(row["start_fuel_level"].ToString()!, true),
             EndFuelLevel =
                 row["end_fuel_level"] == DBNull.Value
                     ? null
-                    : Enum.Parse<FuelLevel>(
-                        row["end_fuel_level"].ToString()!, true),
-            Status =
-                Enum.Parse<RentalStatus>(
-                    row["status"].ToString()!, true)
+                    : Enum.Parse<FuelLevel>(row["end_fuel_level"].ToString()!, true),
+            Status = Enum.Parse<RentalStatus>(row["status"].ToString()!, true)
         };
     }
+
 }

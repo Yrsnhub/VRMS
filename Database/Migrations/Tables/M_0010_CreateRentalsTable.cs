@@ -12,7 +12,10 @@ public static class M_0010_CreateRentalsTable
                                           -- OPTIONAL reservation (walk-in allowed)
                                           reservation_id INT NULL,
 
-                                          -- ✅ REQUIRED vehicle ownership
+                                          -- CUSTOMER OWNS THE RENTAL (even for walk-ins)
+                                          customer_id INT NOT NULL,
+
+                                          -- REQUIRED vehicle
                                           vehicle_id INT NOT NULL,
 
                                           pickup_date DATETIME NOT NULL,
@@ -31,6 +34,11 @@ public static class M_0010_CreateRentalsTable
                                               FOREIGN KEY (reservation_id)
                                               REFERENCES reservations(id)
                                               ON DELETE SET NULL,
+
+                                          CONSTRAINT fk_rentals_customer
+                                              FOREIGN KEY (customer_id)
+                                              REFERENCES customers(id)
+                                              ON DELETE RESTRICT,
 
                                           CONSTRAINT fk_rentals_vehicle
                                               FOREIGN KEY (vehicle_id)
