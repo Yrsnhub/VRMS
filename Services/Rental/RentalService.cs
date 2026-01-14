@@ -61,24 +61,6 @@ public class RentalService
         _damageRepo = damageRepo;
         _damageReportRepo = damageReportRepo;
     }
-
-
-    // -------------------------------------------------
-    // START RENTAL (PICKUP)
-    // -------------------------------------------------
-
-    [Obsolete("Use StartRentalFromReservation or StartWalkInRental")]
-    public int StartRental(
-        int reservationId,
-        DateTime pickupDate,
-        FuelLevel startFuelLevel)
-    {
-        return StartRentalFromReservation(
-            reservationId,
-            pickupDate,
-            startFuelLevel);
-    }
-
     
     public int StartRentalFromReservation(
         int reservationId,
@@ -98,6 +80,9 @@ public class RentalService
 
         var vehicle =
             _vehicleService.GetVehicleById(reservation.VehicleId);
+        
+        if (_vehicleService.HasOverlappingMaintenance(vehicle.Id, pickupDate, reservation.EndDate))
+            throw new InvalidOperationException("Vehicle has scheduled or in-progress maintenance that overlaps the reservation period.");
 
         if (vehicle.Status != VehicleStatus.Reserved)
             throw new InvalidOperationException("Vehicle must be reserved.");
@@ -136,14 +121,19 @@ public class RentalService
 
         var vehicle = _vehicleService.GetVehicleById(vehicleId);
 
+        // PROACTIVE: do not allow new rental when vehicle has scheduled/in-progress maintenance overlapping this rental.
+        if (_vehicleService.HasOverlappingMaintenance(vehicleId, pickupDate, expectedReturnDate))
+            throw new InvalidOperationException("Vehicle has scheduled or in-progress maintenance that overlaps the requested rental period.");
+
+        // Existing status guard
         if (vehicle.Status != VehicleStatus.Available)
             throw new InvalidOperationException("Vehicle not available.");
 
-        // ✅ WALK-IN RENTAL: NO reservation, BUT customer IS KNOWN
+        // WALK-IN RENTAL: NO reservation, BUT customer IS KNOWN
         var rentalId =
             _rentalRepo.Create(
-                reservationId: null,          // ✅ NO reservation
-                customerId: customerId,       // ✅ THIS IS THE FIX
+                reservationId: null,          // NO reservation
+                customerId: customerId,       // THIS IS THE FIX
                 vehicleId: vehicleId,
                 pickupDate: pickupDate,
                 expectedReturnDate: expectedReturnDate,
