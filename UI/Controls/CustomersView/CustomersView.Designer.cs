@@ -45,12 +45,6 @@
             dgvCustomers = new DataGridView();
             panel1 = new Panel();
             txtSearch = new TextBox();
-            panel2 = new Panel();
-            btnEmergencyContacts = new Button();
-            btnSave = new Button();
-            btnManageAccount = new Button();
-            btnDelete = new Button();
-            btnClear = new Button();
             tabControl1 = new TabControl();
             tabPage1 = new TabPage();
             label13 = new Label();
@@ -77,7 +71,6 @@
             picLicenseBack = new PictureBox();
             picLicenseFront = new PictureBox();
             checkBox1 = new CheckBox();
-            btnCheckDrivingRecord = new Button();
             btnCaptureLicense = new Button();
             groupBox2 = new GroupBox();
             label11 = new Label();
@@ -112,6 +105,13 @@
             colDays = new DataGridViewTextBoxColumn();
             colAmount = new DataGridViewTextBoxColumn();
             colActions = new DataGridViewButtonColumn();
+            panel2 = new Panel();
+            buttonLayout = new TableLayoutPanel();
+            btnSave = new Button();
+            btnManageAccount = new Button();
+            btnDelete = new Button();
+            btnClear = new Button();
+            btnEmergencyContacts = new Button();
             contextMenuStrip1 = new ContextMenuStrip(components);
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
@@ -119,7 +119,6 @@
             splitContainer1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvCustomers).BeginInit();
             panel1.SuspendLayout();
-            panel2.SuspendLayout();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)picCustomerPhoto).BeginInit();
@@ -135,6 +134,8 @@
             tabPage4.SuspendLayout();
             panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvRentalHistory).BeginInit();
+            panel2.SuspendLayout();
+            buttonLayout.SuspendLayout();
             SuspendLayout();
             // 
             // splitContainer1
@@ -167,7 +168,7 @@
             dgvCustomers.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
             dgvCustomers.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
             dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = Color.FromArgb(30, 60, 90);
+            dataGridViewCellStyle1.BackColor = Color.FromArgb(32, 191, 158);
             dataGridViewCellStyle1.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
             dataGridViewCellStyle1.ForeColor = Color.White;
             dataGridViewCellStyle1.SelectionBackColor = Color.FromArgb(30, 60, 90);
@@ -220,141 +221,19 @@
             txtSearch.Size = new Size(355, 30);
             txtSearch.TabIndex = 0;
             // 
-            // panel2
-            // 
-            panel2.BackColor = Color.FromArgb(248, 249, 250);
-            // BUTTON LAYOUT (BOTTOM BAR)
-            buttonLayout = new TableLayoutPanel();
-            buttonLayout.Dock = DockStyle.Fill;
-            buttonLayout.RowCount = 1;
-            buttonLayout.ColumnCount = 6;
-            buttonLayout.Padding = Padding.Empty;
-            buttonLayout.Margin = Padding.Empty;
-
-            buttonLayout.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize)); // Save
-            buttonLayout.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize)); // Account
-            buttonLayout.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize)); // Delete
-            buttonLayout.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize)); // Clear
-            buttonLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F)); // spacer
-            buttonLayout.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize)); // Emergency
-
-            // REMOVE ANCHORS (IMPORTANT)
-            btnSave.Anchor = AnchorStyles.None;
-            btnManageAccount.Anchor = AnchorStyles.None;
-            btnDelete.Anchor = AnchorStyles.None;
-            btnClear.Anchor = AnchorStyles.None;
-            btnEmergencyContacts.Anchor = AnchorStyles.None;
-
-            // ADD BUTTONS
-            buttonLayout.Controls.Add(btnSave, 0, 0);
-            buttonLayout.Controls.Add(btnManageAccount, 1, 0);
-            buttonLayout.Controls.Add(btnDelete, 2, 0);
-            buttonLayout.Controls.Add(btnClear, 3, 0);
-            buttonLayout.Controls.Add(btnEmergencyContacts, 5, 0);
-
-            // ADD LAYOUT TO PANEL
-            panel2.Controls.Add(buttonLayout);
-
-            panel2.Dock = DockStyle.Bottom;
-            panel2.Location = new Point(0, 907);
-            panel2.Margin = new Padding(13, 15, 13, 15);
-            panel2.Name = "panel2";
-            panel2.Padding = new Padding(20, 15, 20, 15);
-            panel2.Size = new Size(928, 171);
-            panel2.TabIndex = 1;
-            // 
-            // btnEmergencyContacts
-            // 
-            btnEmergencyContacts.BackColor = Color.FromArgb(155, 89, 182);
-            btnEmergencyContacts.FlatAppearance.BorderSize = 0;
-            btnEmergencyContacts.FlatStyle = FlatStyle.Flat;
-            btnEmergencyContacts.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
-            btnEmergencyContacts.ForeColor = Color.White;
-            btnEmergencyContacts.Location = new Point(628, 38);
-            btnEmergencyContacts.Margin = new Padding(3, 4, 3, 4);
-            btnEmergencyContacts.Name = "btnEmergencyContacts";
-            btnEmergencyContacts.Size = new Size(220, 60);
-            btnEmergencyContacts.TabIndex = 4;
-            btnEmergencyContacts.Text = "📱 Emergency Contacts";
-            btnEmergencyContacts.UseVisualStyleBackColor = false;
-            btnEmergencyContacts.Click += BtnEmergencyContacts_Click;
-            // 
-            // btnSave
-            // 
-            btnSave.BackColor = Color.FromArgb(46, 204, 113);
-            btnSave.FlatAppearance.BorderSize = 0;
-            btnSave.FlatStyle = FlatStyle.Flat;
-            btnSave.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
-            btnSave.ForeColor = Color.White;
-            btnSave.Location = new Point(20, 38);
-            btnSave.Margin = new Padding(3, 4, 3, 4);
-            btnSave.Name = "btnSave";
-            btnSave.Size = new Size(160, 60);
-            btnSave.TabIndex = 0;
-            btnSave.Text = "💾 Save";
-            btnSave.UseVisualStyleBackColor = false;
-            btnSave.Click += BtnSave_Click;
-            // 
-            // btnManageAccount
-            // 
-            btnManageAccount.BackColor = Color.FromArgb(52, 152, 219);
-            btnManageAccount.FlatAppearance.BorderSize = 0;
-            btnManageAccount.FlatStyle = FlatStyle.Flat;
-            btnManageAccount.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
-            btnManageAccount.ForeColor = Color.White;
-            btnManageAccount.Location = new Point(190, 38);
-            btnManageAccount.Margin = new Padding(3, 4, 3, 4);
-            btnManageAccount.Name = "btnManageAccount";
-            btnManageAccount.Size = new Size(160, 60);
-            btnManageAccount.TabIndex = 3;
-            btnManageAccount.Text = "🔐 Account";
-            btnManageAccount.UseVisualStyleBackColor = false;
-            btnManageAccount.Click += btnManageAccount_Click;
-            // 
-            // btnDelete
-            // 
-            btnDelete.BackColor = Color.FromArgb(231, 76, 60);
-            btnDelete.FlatAppearance.BorderSize = 0;
-            btnDelete.FlatStyle = FlatStyle.Flat;
-            btnDelete.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
-            btnDelete.ForeColor = Color.White;
-            btnDelete.Location = new Point(360, 38);
-            btnDelete.Margin = new Padding(3, 4, 3, 4);
-            btnDelete.Name = "btnDelete";
-            btnDelete.Size = new Size(120, 60);
-            btnDelete.TabIndex = 1;
-            btnDelete.Text = "🗑️ Delete";
-            btnDelete.UseVisualStyleBackColor = false;
-            btnDelete.Click += BtnDelete_Click;
-            // 
-            // btnClear
-            // 
-            btnClear.BackColor = Color.FromArgb(108, 122, 137);
-            btnClear.FlatAppearance.BorderSize = 0;
-            btnClear.FlatStyle = FlatStyle.Flat;
-            btnClear.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
-            btnClear.ForeColor = Color.White;
-            btnClear.Location = new Point(490, 38);
-            btnClear.Margin = new Padding(3, 4, 3, 4);
-            btnClear.Name = "btnClear";
-            btnClear.Size = new Size(120, 60);
-            btnClear.TabIndex = 2;
-            btnClear.Text = "🔄 Clear";
-            btnClear.UseVisualStyleBackColor = false;
-            // 
             // tabControl1
             // 
-            tabControl1.Dock = DockStyle.Fill;
             tabControl1.Controls.Add(tabPage1);
             tabControl1.Controls.Add(tabPage2);
             tabControl1.Controls.Add(tabPage3);
             tabControl1.Controls.Add(tabPage4);
+            tabControl1.Dock = DockStyle.Fill;
             tabControl1.Font = new Font("Segoe UI", 10F);
             tabControl1.Location = new Point(0, 0);
             tabControl1.Margin = new Padding(4, 5, 4, 5);
             tabControl1.Name = "tabControl1";
             tabControl1.SelectedIndex = 0;
-            tabControl1.Size = new Size(914, 894);
+            tabControl1.Size = new Size(928, 907);
             tabControl1.TabIndex = 0;
             // 
             // tabPage1
@@ -382,8 +261,7 @@
             tabPage1.Location = new Point(4, 32);
             tabPage1.Margin = new Padding(3, 4, 3, 4);
             tabPage1.Name = "tabPage1";
-            tabPage1.Padding = Padding.Empty;
-            tabPage1.Size = new Size(906, 858);
+            tabPage1.Size = new Size(920, 871);
             tabPage1.TabIndex = 0;
             tabPage1.Text = "Personal Information";
             // 
@@ -391,7 +269,7 @@
             // 
             label13.AutoSize = true;
             label13.Font = new Font("Segoe UI Semibold", 9.75F, FontStyle.Bold);
-            label13.Location = new Point(24, 305);
+            label13.Location = new Point(395, 177);
             label13.Name = "label13";
             label13.Size = new Size(108, 23);
             label13.TabIndex = 17;
@@ -402,7 +280,7 @@
             lblAgeCheck.AutoSize = true;
             lblAgeCheck.Font = new Font("Segoe UI Semibold", 9.75F, FontStyle.Bold);
             lblAgeCheck.ForeColor = Color.FromArgb(155, 89, 182);
-            lblAgeCheck.Location = new Point(350, 335);
+            lblAgeCheck.Location = new Point(721, 207);
             lblAgeCheck.Name = "lblAgeCheck";
             lblAgeCheck.Size = new Size(49, 23);
             lblAgeCheck.TabIndex = 16;
@@ -411,7 +289,7 @@
             // dtpDOB
             // 
             dtpDOB.Font = new Font("Segoe UI", 10F);
-            dtpDOB.Location = new Point(25, 336);
+            dtpDOB.Location = new Point(396, 208);
             dtpDOB.Margin = new Padding(3, 4, 3, 4);
             dtpDOB.Name = "dtpDOB";
             dtpDOB.Size = new Size(291, 30);
@@ -453,7 +331,7 @@
             // 
             label12.AutoSize = true;
             label12.Font = new Font("Segoe UI Semibold", 9.75F, FontStyle.Bold);
-            label12.Location = new Point(405, 229);
+            label12.Location = new Point(395, 106);
             label12.Name = "label12";
             label12.Size = new Size(95, 23);
             label12.TabIndex = 12;
@@ -464,10 +342,10 @@
             txtLastName.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             txtLastName.BorderStyle = BorderStyle.FixedSingle;
             txtLastName.Font = new Font("Segoe UI", 10F);
-            txtLastName.Location = new Point(411, 253);
+            txtLastName.Location = new Point(392, 130);
             txtLastName.Margin = new Padding(3, 4, 3, 4);
             txtLastName.Name = "txtLastName";
-            txtLastName.Size = new Size(465, 30);
+            txtLastName.Size = new Size(468, 30);
             txtLastName.TabIndex = 11;
             // 
             // txtPhone
@@ -475,7 +353,7 @@
             txtPhone.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             txtPhone.BorderStyle = BorderStyle.FixedSingle;
             txtPhone.Font = new Font("Segoe UI", 10F);
-            txtPhone.Location = new Point(25, 558);
+            txtPhone.Location = new Point(25, 439);
             txtPhone.Margin = new Padding(3, 4, 3, 4);
             txtPhone.Name = "txtPhone";
             txtPhone.Size = new Size(851, 30);
@@ -485,7 +363,7 @@
             // 
             label5.AutoSize = true;
             label5.Font = new Font("Segoe UI Semibold", 9.75F, FontStyle.Bold);
-            label5.Location = new Point(24, 534);
+            label5.Location = new Point(24, 415);
             label5.Name = "label5";
             label5.Size = new Size(132, 23);
             label5.TabIndex = 8;
@@ -496,7 +374,7 @@
             txtEmail.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             txtEmail.BorderStyle = BorderStyle.FixedSingle;
             txtEmail.Font = new Font("Segoe UI", 10F);
-            txtEmail.Location = new Point(25, 498);
+            txtEmail.Location = new Point(25, 379);
             txtEmail.Margin = new Padding(3, 4, 3, 4);
             txtEmail.Name = "txtEmail";
             txtEmail.Size = new Size(851, 30);
@@ -506,7 +384,7 @@
             // 
             label4.AutoSize = true;
             label4.Font = new Font("Segoe UI Semibold", 9.75F, FontStyle.Bold);
-            label4.Location = new Point(24, 474);
+            label4.Location = new Point(24, 355);
             label4.Name = "label4";
             label4.Size = new Size(55, 23);
             label4.TabIndex = 6;
@@ -517,7 +395,7 @@
             txtAddress.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             txtAddress.BorderStyle = BorderStyle.FixedSingle;
             txtAddress.Font = new Font("Segoe UI", 10F);
-            txtAddress.Location = new Point(28, 404);
+            txtAddress.Location = new Point(28, 285);
             txtAddress.Margin = new Padding(3, 4, 3, 4);
             txtAddress.Multiline = true;
             txtAddress.Name = "txtAddress";
@@ -528,7 +406,7 @@
             // 
             label3.AutoSize = true;
             label3.Font = new Font("Segoe UI Semibold", 9.75F, FontStyle.Bold);
-            label3.Location = new Point(24, 379);
+            label3.Location = new Point(24, 260);
             label3.Name = "label3";
             label3.Size = new Size(74, 23);
             label3.TabIndex = 4;
@@ -536,19 +414,20 @@
             // 
             // txtFirstName
             // 
+            txtFirstName.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             txtFirstName.BorderStyle = BorderStyle.FixedSingle;
             txtFirstName.Font = new Font("Segoe UI", 10F);
-            txtFirstName.Location = new Point(28, 253);
+            txtFirstName.Location = new Point(392, 61);
             txtFirstName.Margin = new Padding(3, 4, 3, 4);
             txtFirstName.Name = "txtFirstName";
-            txtFirstName.Size = new Size(337, 30);
+            txtFirstName.Size = new Size(468, 30);
             txtFirstName.TabIndex = 3;
             // 
             // label2
             // 
             label2.AutoSize = true;
             label2.Font = new Font("Segoe UI Semibold", 9.75F, FontStyle.Bold);
-            label2.Location = new Point(28, 229);
+            label2.Location = new Point(389, 37);
             label2.Name = "label2";
             label2.Size = new Size(97, 23);
             label2.TabIndex = 2;
@@ -586,8 +465,7 @@
             tabPage2.Location = new Point(4, 32);
             tabPage2.Margin = new Padding(3, 4, 3, 4);
             tabPage2.Name = "tabPage2";
-            tabPage2.Padding = Padding.Empty;
-            tabPage2.Size = new Size(906, 858);
+            tabPage2.Size = new Size(920, 871);
             tabPage2.TabIndex = 1;
             tabPage2.Text = "Driver's License";
             // 
@@ -599,13 +477,12 @@
             groupBox3.Controls.Add(picLicenseBack);
             groupBox3.Controls.Add(picLicenseFront);
             groupBox3.Controls.Add(checkBox1);
-            groupBox3.Controls.Add(btnCheckDrivingRecord);
             groupBox3.Controls.Add(btnCaptureLicense);
             groupBox3.Font = new Font("Segoe UI Semibold", 10.5F, FontStyle.Bold);
             groupBox3.Location = new Point(27, 361);
             groupBox3.Margin = new Padding(3, 4, 3, 4);
             groupBox3.Name = "groupBox3";
-            groupBox3.Padding = Padding.Empty;
+            groupBox3.Padding = new Padding(0);
             groupBox3.Size = new Size(860, 260);
             groupBox3.TabIndex = 1;
             groupBox3.TabStop = false;
@@ -651,29 +528,13 @@
             // 
             checkBox1.AutoSize = true;
             checkBox1.Font = new Font("Segoe UI", 10F);
-            checkBox1.Location = new Point(44, 180);
+            checkBox1.Location = new Point(44, 138);
             checkBox1.Margin = new Padding(3, 4, 3, 4);
             checkBox1.Name = "checkBox1";
             checkBox1.Size = new Size(198, 27);
             checkBox1.TabIndex = 2;
             checkBox1.Text = "International License?";
             checkBox1.UseVisualStyleBackColor = true;
-            // 
-            // btnCheckDrivingRecord
-            // 
-            btnCheckDrivingRecord.BackColor = Color.FromArgb(243, 156, 18);
-            btnCheckDrivingRecord.FlatAppearance.BorderSize = 0;
-            btnCheckDrivingRecord.FlatStyle = FlatStyle.Flat;
-            btnCheckDrivingRecord.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
-            btnCheckDrivingRecord.ForeColor = Color.White;
-            btnCheckDrivingRecord.Location = new Point(44, 120);
-            btnCheckDrivingRecord.Margin = new Padding(3, 4, 3, 4);
-            btnCheckDrivingRecord.Name = "btnCheckDrivingRecord";
-            btnCheckDrivingRecord.Size = new Size(216, 52);
-            btnCheckDrivingRecord.TabIndex = 1;
-            btnCheckDrivingRecord.Text = "🛡️ Check Driving Record";
-            btnCheckDrivingRecord.UseVisualStyleBackColor = false;
-            btnCheckDrivingRecord.Click += BtnCheckDrivingRecord_Click;
             // 
             // btnCaptureLicense
             // 
@@ -706,7 +567,7 @@
             groupBox2.Location = new Point(27, 31);
             groupBox2.Margin = new Padding(3, 4, 3, 4);
             groupBox2.Name = "groupBox2";
-            groupBox2.Padding = Padding.Empty;
+            groupBox2.Padding = new Padding(0);
             groupBox2.Size = new Size(860, 310);
             groupBox2.TabIndex = 0;
             groupBox2.TabStop = false;
@@ -800,8 +661,7 @@
             tabPage3.Location = new Point(4, 32);
             tabPage3.Margin = new Padding(3, 4, 3, 4);
             tabPage3.Name = "tabPage3";
-            tabPage3.Padding = Padding.Empty;
-            tabPage3.Size = new Size(906, 858);
+            tabPage3.Size = new Size(920, 871);
             tabPage3.TabIndex = 2;
             tabPage3.Text = "Classification & Overview";
             // 
@@ -816,7 +676,8 @@
             dataGridViewCellStyle3.BackColor = Color.FromArgb(30, 60, 90);
             dataGridViewCellStyle3.Font = new Font("Segoe UI", 10F);
             dataGridViewCellStyle3.ForeColor = Color.White;
-            dataGridViewCellStyle3.SelectionBackColor = Color.FromArgb(30, 60, 90);
+            dataGridViewCellStyle3.SelectionBackColor = Color.FromArgb(32, 191, 158);
+
             dataGridViewCellStyle3.SelectionForeColor = Color.White;
             dataGridViewCellStyle3.WrapMode = DataGridViewTriState.True;
             dgvHistory.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
@@ -852,7 +713,7 @@
             groupBox5.Location = new Point(27, 251);
             groupBox5.Margin = new Padding(3, 4, 3, 4);
             groupBox5.Name = "groupBox5";
-            groupBox5.Padding = Padding.Empty;
+            groupBox5.Padding = new Padding(0);
             groupBox5.Size = new Size(860, 180);
             groupBox5.TabIndex = 1;
             groupBox5.TabStop = false;
@@ -899,7 +760,7 @@
             groupBox4.Location = new Point(27, 31);
             groupBox4.Margin = new Padding(3, 4, 3, 4);
             groupBox4.Name = "groupBox4";
-            groupBox4.Padding = Padding.Empty;
+            groupBox4.Padding = new Padding(0);
             groupBox4.Size = new Size(860, 211);
             groupBox4.TabIndex = 0;
             groupBox4.TabStop = false;
@@ -943,15 +804,14 @@
             // 
             // tabPage4
             // 
+            tabPage4.AutoScroll = true;
             tabPage4.BackColor = Color.White;
             tabPage4.Controls.Add(panel3);
             tabPage4.Controls.Add(dgvRentalHistory);
             tabPage4.Location = new Point(4, 32);
             tabPage4.Margin = new Padding(3, 4, 3, 4);
             tabPage4.Name = "tabPage4";
-            tabPage4.AutoScroll = true;
-            tabPage4.Padding = Padding.Empty;
-            tabPage4.Size = new Size(906, 858);
+            tabPage4.Size = new Size(920, 871);
             tabPage4.TabIndex = 3;
             tabPage4.Text = "Rental History";
             // 
@@ -960,10 +820,10 @@
             panel3.BackColor = Color.White;
             panel3.Controls.Add(label14);
             panel3.Dock = DockStyle.Top;
-            //panel3.Location = new Point(20, 20);
+            panel3.Location = new Point(0, 0);
             panel3.Margin = new Padding(3, 4, 3, 4);
             panel3.Name = "panel3";
-            panel3.Size = new Size(866, 110);
+            panel3.Size = new Size(920, 110);
             panel3.TabIndex = 1;
             // 
             // label14
@@ -1008,6 +868,7 @@
             dgvRentalHistory.Dock = DockStyle.Fill;
             dgvRentalHistory.EnableHeadersVisualStyles = false;
             dgvRentalHistory.GridColor = Color.FromArgb(240, 240, 240);
+            dgvRentalHistory.Location = new Point(0, 0);
             dgvRentalHistory.Margin = new Padding(3, 4, 3, 4);
             dgvRentalHistory.MultiSelect = false;
             dgvRentalHistory.Name = "dgvRentalHistory";
@@ -1016,7 +877,7 @@
             dgvRentalHistory.RowHeadersWidth = 51;
             dgvRentalHistory.RowTemplate.Height = 35;
             dgvRentalHistory.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvRentalHistory.Size = new Size(866, 818);
+            dgvRentalHistory.Size = new Size(920, 871);
             dgvRentalHistory.TabIndex = 0;
             // 
             // colId
@@ -1131,6 +992,125 @@
             colActions.Text = "View";
             colActions.UseColumnTextForButtonValue = true;
             // 
+            // panel2
+            // 
+            panel2.BackColor = Color.FromArgb(248, 249, 250);
+            panel2.Controls.Add(buttonLayout);
+            panel2.Dock = DockStyle.Bottom;
+            panel2.Location = new Point(0, 907);
+            panel2.Margin = new Padding(13, 15, 13, 15);
+            panel2.Name = "panel2";
+            panel2.Padding = new Padding(20, 15, 20, 15);
+            panel2.Size = new Size(928, 171);
+            panel2.TabIndex = 1;
+            // 
+            // buttonLayout
+            // 
+            buttonLayout.ColumnCount = 6;
+            buttonLayout.ColumnStyles.Add(new ColumnStyle());
+            buttonLayout.ColumnStyles.Add(new ColumnStyle());
+            buttonLayout.ColumnStyles.Add(new ColumnStyle());
+            buttonLayout.ColumnStyles.Add(new ColumnStyle());
+            buttonLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+            buttonLayout.ColumnStyles.Add(new ColumnStyle());
+            buttonLayout.Controls.Add(btnSave, 0, 0);
+            buttonLayout.Controls.Add(btnManageAccount, 1, 0);
+            buttonLayout.Controls.Add(btnDelete, 2, 0);
+            buttonLayout.Controls.Add(btnClear, 3, 0);
+            buttonLayout.Controls.Add(btnEmergencyContacts, 5, 0);
+            buttonLayout.Dock = DockStyle.Fill;
+            buttonLayout.Location = new Point(20, 15);
+            buttonLayout.Margin = new Padding(0);
+            buttonLayout.Name = "buttonLayout";
+            buttonLayout.RowCount = 1;
+            buttonLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+            buttonLayout.Size = new Size(888, 141);
+            buttonLayout.TabIndex = 0;
+            // 
+            // btnSave
+            // 
+            btnSave.Anchor = AnchorStyles.None;
+            btnSave.BackColor = Color.FromArgb(46, 204, 113);
+            btnSave.FlatAppearance.BorderSize = 0;
+            btnSave.FlatStyle = FlatStyle.Flat;
+            btnSave.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
+            btnSave.ForeColor = Color.White;
+            btnSave.Location = new Point(3, 40);
+            btnSave.Margin = new Padding(3, 4, 3, 4);
+            btnSave.Name = "btnSave";
+            btnSave.Size = new Size(160, 60);
+            btnSave.TabIndex = 0;
+            btnSave.Text = "💾 Save";
+            btnSave.UseVisualStyleBackColor = false;
+            btnSave.Click += BtnSave_Click;
+            // 
+            // btnManageAccount
+            // 
+            btnManageAccount.Anchor = AnchorStyles.None;
+            btnManageAccount.BackColor = Color.FromArgb(52, 152, 219);
+            btnManageAccount.FlatAppearance.BorderSize = 0;
+            btnManageAccount.FlatStyle = FlatStyle.Flat;
+            btnManageAccount.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
+            btnManageAccount.ForeColor = Color.White;
+            btnManageAccount.Location = new Point(169, 40);
+            btnManageAccount.Margin = new Padding(3, 4, 3, 4);
+            btnManageAccount.Name = "btnManageAccount";
+            btnManageAccount.Size = new Size(160, 60);
+            btnManageAccount.TabIndex = 3;
+            btnManageAccount.Text = "🔐 Account";
+            btnManageAccount.UseVisualStyleBackColor = false;
+            btnManageAccount.Click += btnManageAccount_Click;
+            // 
+            // btnDelete
+            // 
+            btnDelete.Anchor = AnchorStyles.None;
+            btnDelete.BackColor = Color.FromArgb(231, 76, 60);
+            btnDelete.FlatAppearance.BorderSize = 0;
+            btnDelete.FlatStyle = FlatStyle.Flat;
+            btnDelete.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
+            btnDelete.ForeColor = Color.White;
+            btnDelete.Location = new Point(335, 40);
+            btnDelete.Margin = new Padding(3, 4, 3, 4);
+            btnDelete.Name = "btnDelete";
+            btnDelete.Size = new Size(120, 60);
+            btnDelete.TabIndex = 1;
+            btnDelete.Text = "🗑️ Delete";
+            btnDelete.UseVisualStyleBackColor = false;
+            btnDelete.Click += BtnDelete_Click;
+            // 
+            // btnClear
+            // 
+            btnClear.Anchor = AnchorStyles.None;
+            btnClear.BackColor = Color.FromArgb(108, 122, 137);
+            btnClear.FlatAppearance.BorderSize = 0;
+            btnClear.FlatStyle = FlatStyle.Flat;
+            btnClear.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
+            btnClear.ForeColor = Color.White;
+            btnClear.Location = new Point(461, 40);
+            btnClear.Margin = new Padding(3, 4, 3, 4);
+            btnClear.Name = "btnClear";
+            btnClear.Size = new Size(120, 60);
+            btnClear.TabIndex = 2;
+            btnClear.Text = "🔄 Clear";
+            btnClear.UseVisualStyleBackColor = false;
+            // 
+            // btnEmergencyContacts
+            // 
+            btnEmergencyContacts.Anchor = AnchorStyles.None;
+            btnEmergencyContacts.BackColor = Color.FromArgb(155, 89, 182);
+            btnEmergencyContacts.FlatAppearance.BorderSize = 0;
+            btnEmergencyContacts.FlatStyle = FlatStyle.Flat;
+            btnEmergencyContacts.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
+            btnEmergencyContacts.ForeColor = Color.White;
+            btnEmergencyContacts.Location = new Point(665, 40);
+            btnEmergencyContacts.Margin = new Padding(3, 4, 3, 4);
+            btnEmergencyContacts.Name = "btnEmergencyContacts";
+            btnEmergencyContacts.Size = new Size(220, 60);
+            btnEmergencyContacts.TabIndex = 4;
+            btnEmergencyContacts.Text = "📱 Emergency Contacts";
+            btnEmergencyContacts.UseVisualStyleBackColor = false;
+            btnEmergencyContacts.Click += BtnEmergencyContacts_Click;
+            // 
             // contextMenuStrip1
             // 
             contextMenuStrip1.ImageScalingSize = new Size(20, 20);
@@ -1153,7 +1133,6 @@
             ((System.ComponentModel.ISupportInitialize)dgvCustomers).EndInit();
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
-            panel2.ResumeLayout(false);
             tabControl1.ResumeLayout(false);
             tabPage1.ResumeLayout(false);
             tabPage1.PerformLayout();
@@ -1175,6 +1154,8 @@
             panel3.ResumeLayout(false);
             panel3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dgvRentalHistory).EndInit();
+            panel2.ResumeLayout(false);
+            buttonLayout.ResumeLayout(false);
             ResumeLayout(false);
 
         }
@@ -1209,7 +1190,6 @@
         private System.Windows.Forms.TextBox txtLicenseState;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.Button btnCheckDrivingRecord;
         private System.Windows.Forms.CheckBox checkBox1;
         private System.Windows.Forms.GroupBox groupBox4;
         private System.Windows.Forms.CheckBox chkLoyalty;

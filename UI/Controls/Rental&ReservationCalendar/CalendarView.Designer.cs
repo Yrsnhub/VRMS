@@ -27,8 +27,6 @@
             lblTitle = new Label();
             cmbFilter = new ComboBox();
             cmbSort = new ComboBox();
-            btnList = new Button();
-            btnNewRental = new Button();
             pnlMain = new Panel();
             splitContainer = new SplitContainer();
             pnlVehicleList = new Panel();
@@ -58,8 +56,6 @@
             pnlHeader.Controls.Add(lblTitle);
             pnlHeader.Controls.Add(cmbFilter);
             pnlHeader.Controls.Add(cmbSort);
-            pnlHeader.Controls.Add(btnList);
-            pnlHeader.Controls.Add(btnNewRental);
             pnlHeader.Dock = DockStyle.Top;
             pnlHeader.Location = new Point(0, 0);
             pnlHeader.Margin = new Padding(3, 4, 3, 4);
@@ -129,29 +125,6 @@
             cmbSort.Name = "cmbSort";
             cmbSort.Size = new Size(137, 28);
             cmbSort.TabIndex = 2;
-            // 
-            // btnList
-            // 
-            btnList.Location = new Point(697, 16);
-            btnList.Margin = new Padding(3, 4, 3, 4);
-            btnList.Name = "btnList";
-            btnList.Size = new Size(86, 31);
-            btnList.TabIndex = 1;
-            btnList.Text = "List View";
-            btnList.UseVisualStyleBackColor = true;
-            // 
-            // btnNewRental
-            // 
-            btnNewRental.BackColor = Color.SteelBlue;
-            btnNewRental.FlatStyle = FlatStyle.Flat;
-            btnNewRental.ForeColor = Color.White;
-            btnNewRental.Location = new Point(800, 16);
-            btnNewRental.Margin = new Padding(3, 4, 3, 4);
-            btnNewRental.Name = "btnNewRental";
-            btnNewRental.Size = new Size(114, 31);
-            btnNewRental.TabIndex = 0;
-            btnNewRental.Text = "New Rental";
-            btnNewRental.UseVisualStyleBackColor = false;
             // 
             // pnlMain
             // 
@@ -299,8 +272,6 @@
         private System.Windows.Forms.Label lblTitle;
         private System.Windows.Forms.ComboBox cmbFilter;
         private System.Windows.Forms.ComboBox cmbSort;
-        private System.Windows.Forms.Button btnList;
-        private System.Windows.Forms.Button btnNewRental;
         private System.Windows.Forms.Panel pnlMain;
         private System.Windows.Forms.SplitContainer splitContainer;
         private System.Windows.Forms.Panel pnlVehicleList;

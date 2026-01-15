@@ -70,7 +70,6 @@
             panelPreviewHeader = new Panel();
             lblVehicleDetails = new Label();
             picVehiclePreview = new PictureBox();
-            panelHeader.SuspendLayout();
             panelToolbar.SuspendLayout();
             panelSearch.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)splitContainerMain).BeginInit();
@@ -90,7 +89,6 @@
             // panelHeader
             // 
             panelHeader.BackColor = Color.White;
-            panelHeader.Controls.Add(lblVehicleCount);
             panelHeader.Dock = DockStyle.Top;
             panelHeader.Location = new Point(0, 0);
             panelHeader.Name = "panelHeader";
@@ -101,10 +99,10 @@
             // 
             lblVehicleCount.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             lblVehicleCount.Font = new Font("Segoe UI", 10F);
-            lblVehicleCount.ForeColor = Color.FromArgb(200, 200, 200);
-            lblVehicleCount.Location = new Point(1291, 15);
+            lblVehicleCount.ForeColor = Color.FromArgb(64, 64, 64);
+            lblVehicleCount.Location = new Point(908, 3);
             lblVehicleCount.Name = "lblVehicleCount";
-            lblVehicleCount.Size = new Size(180, 40);
+            lblVehicleCount.Size = new Size(180, 25);
             lblVehicleCount.TabIndex = 1;
             lblVehicleCount.Text = "Total: 0 vehicles";
             lblVehicleCount.TextAlign = ContentAlignment.MiddleRight;
@@ -297,11 +295,11 @@
             dgvVehicles.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
             dgvVehicles.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
             dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = Color.FromArgb(30, 60, 90);
+            dataGridViewCellStyle1.BackColor = Color.FromArgb(32, 191, 158);
             dataGridViewCellStyle1.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             dataGridViewCellStyle1.ForeColor = Color.White;
             dataGridViewCellStyle1.Padding = new Padding(8, 0, 0, 0);
-            dataGridViewCellStyle1.SelectionBackColor = Color.FromArgb(30, 60, 90);
+            dataGridViewCellStyle1.SelectionBackColor = Color.FromArgb(32, 191, 158);
             dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
             dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
             dgvVehicles.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
@@ -333,6 +331,7 @@
             // panelStatusFilter
             // 
             panelStatusFilter.BackColor = Color.White;
+            panelStatusFilter.Controls.Add(lblVehicleCount);
             panelStatusFilter.Controls.Add(cmbAdvancedFilter);
             panelStatusFilter.Controls.Add(lblStatusFilter);
             panelStatusFilter.Dock = DockStyle.Top;
@@ -637,7 +636,6 @@
             Controls.Add(panelHeader);
             Name = "VehiclesView";
             Size = new Size(1491, 800);
-            panelHeader.ResumeLayout(false);
             panelToolbar.ResumeLayout(false);
             panelSearch.ResumeLayout(false);
             panelSearch.PerformLayout();

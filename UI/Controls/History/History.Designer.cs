@@ -219,11 +219,11 @@
             dgvReservations.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
             dgvReservations.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
             dataGridViewCellStyle5.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle5.BackColor = Color.FromArgb(30, 60, 90);
+            dataGridViewCellStyle5.BackColor = Color.FromArgb(32, 191, 158);
             dataGridViewCellStyle5.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             dataGridViewCellStyle5.ForeColor = Color.White;
             dataGridViewCellStyle5.Padding = new Padding(8, 0, 0, 0);
-            dataGridViewCellStyle5.SelectionBackColor = Color.FromArgb(30, 60, 90);
+            dataGridViewCellStyle5.SelectionBackColor = Color.FromArgb(32, 191, 158);
             dataGridViewCellStyle5.SelectionForeColor = SystemColors.HighlightText;
             dataGridViewCellStyle5.WrapMode = DataGridViewTriState.True;
             dgvReservations.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
@@ -310,11 +310,11 @@
             dgvRentals.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
             dgvRentals.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
             dataGridViewCellStyle7.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle7.BackColor = Color.FromArgb(30, 60, 90);
+            dataGridViewCellStyle7.BackColor = Color.FromArgb(32, 191, 158);
             dataGridViewCellStyle7.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             dataGridViewCellStyle7.ForeColor = Color.White;
             dataGridViewCellStyle7.Padding = new Padding(8, 0, 0, 0);
-            dataGridViewCellStyle7.SelectionBackColor = Color.FromArgb(30, 60, 90);
+            dataGridViewCellStyle7.SelectionBackColor = Color.FromArgb(32, 191, 158);
             dataGridViewCellStyle7.SelectionForeColor = SystemColors.HighlightText;
             dataGridViewCellStyle7.WrapMode = DataGridViewTriState.True;
             dgvRentals.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle7;
