@@ -17,12 +17,12 @@ public static class SP_Users_GetById
                                           phone,
                                           password_hash,
                                           role,
-                                          is_active,
+                                          account_status,
                                           photo_path
                                       FROM users
-                                      WHERE id = p_user_id;
-                                  
-                                  
+                                      WHERE id = p_user_id
+                                        AND account_status != 'Removed';
                                   END;
+                                  
                                   """;
 }

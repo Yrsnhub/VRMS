@@ -19,18 +19,18 @@ public class UserRepository
         string? phone,
         string passwordHash,
         UserRole role,
-        bool isActive,
+        AccountStatus status,
         string? photoPath)
     {
         var table = DB.Query(
-            "CALL sp_users_create(@username,@full_name,@email,@phone,@password_hash,@role,@active,@photo);",
+            "CALL sp_users_create(@username,@full_name,@email,@phone,@password_hash,@role,@status,@photo);",
             ("@username", username),
             ("@full_name", fullName),
             ("@email", email),
             ("@phone", phone),
             ("@password_hash", passwordHash),
             ("@role", role.ToString()),
-            ("@active", isActive),
+            ("@status", status.ToString()),
             ("@photo", photoPath)
         );
 
@@ -97,30 +97,30 @@ public class UserRepository
             ("@password_hash", passwordHash)
         );
     }
+    
+    public void UpdateStatus(int userId, AccountStatus status)
+    {
+        DB.Execute(
+            "CALL sp_users_update_status(@id,@status);",
+            ("@id", userId),
+            ("@status", status.ToString())
+        );
+    }
 
     public void UpdateProfile(
         int id,
         string username,
         UserRole role,
-        bool isActive)
+        AccountStatus status)
     {
         DB.Execute(
-            "CALL sp_users_update_profile(@id,@username,@role,@active);",
+            "CALL sp_users_update_profile(@id,@username,@role,@status);",
             ("@id", id),
             ("@username", username),
             ("@role", role.ToString()),
-            ("@active", isActive)
+            ("@status", status.ToString())
         );
     }
-
-    public void Deactivate(int id)
-    {
-        DB.Execute(
-            "CALL sp_users_deactivate(@id);",
-            ("@id", id)
-        );
-    }
-
     public void UpdatePhoto(int userId, string photoPath)
     {
         DB.Execute(
@@ -231,7 +231,10 @@ public class UserRepository
 
         user.PasswordHash = row["password_hash"].ToString()!;
         user.Role = role;
-        user.IsActive = Convert.ToBoolean(row["is_active"]);
+        user.Status = Enum.Parse<AccountStatus>(
+            row["account_status"].ToString()!,
+            true
+        );
         user.PhotoPath =
             row["photo_path"] == DBNull.Value ? null : row["photo_path"].ToString();
 

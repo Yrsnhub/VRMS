@@ -4,7 +4,7 @@ public static class SP_Users_Authenticate
 {
     public static string Sql() => """
                                   DROP PROCEDURE IF EXISTS sp_users_authenticate;
-
+                                  
                                   CREATE PROCEDURE sp_users_authenticate (
                                       IN p_username VARCHAR(50)
                                   )
@@ -17,12 +17,12 @@ public static class SP_Users_Authenticate
                                           phone,
                                           password_hash,
                                           role,
-                                          is_active,
+                                          account_status,
                                           photo_path
                                       FROM users
                                       WHERE username = p_username
-                                        AND is_active = TRUE;
-                                  
+                                        AND account_status = 'Active';
                                   END;
+                                  
                                   """;
 }

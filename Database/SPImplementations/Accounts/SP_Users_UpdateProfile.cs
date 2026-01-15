@@ -9,14 +9,14 @@ public static class SP_Users_UpdateProfile
                                       IN p_user_id INT,
                                       IN p_username VARCHAR(50),
                                       IN p_role VARCHAR(50),
-                                      IN p_is_active BOOLEAN
+                                      IN p_status VARCHAR(20)
                                   )
                                   BEGIN
                                       UPDATE users
                                       SET
                                           username = p_username,
                                           role = p_role,
-                                          is_active = p_is_active
+                                          account_status = p_status
                                       WHERE id = p_user_id;
                                   END;
                                   """;

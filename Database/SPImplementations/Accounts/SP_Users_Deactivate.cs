@@ -10,7 +10,7 @@ public static class SP_Users_Deactivate
                                   )
                                   BEGIN
                                       UPDATE users
-                                      SET is_active = FALSE
+                                      SET account_status = 'Disabled'
                                       WHERE id = p_user_id;
                                   END;
                                   """;

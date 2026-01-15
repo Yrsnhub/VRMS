@@ -18,7 +18,7 @@ public static class SP_Users_GetPage
                                           phone,
                                           password_hash,
                                           role,
-                                          is_active,
+                                          account_status,
                                           photo_path
                                       FROM users
                                       ORDER BY username

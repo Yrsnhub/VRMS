@@ -13,7 +13,7 @@ public static class SP_Users_UpdatePhoto
                                       UPDATE users
                                       SET photo_path = p_photo_path
                                       WHERE id = p_user_id
-                                        AND is_active = TRUE;
+                                        AND account_status = 'Active';
                                   END;
                                   """;
 }

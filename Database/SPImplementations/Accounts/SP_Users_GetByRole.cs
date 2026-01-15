@@ -17,7 +17,7 @@ public static class SP_Users_GetByRole
                                           phone,
                                           password_hash,
                                           role,
-                                          is_active,
+                                          account_status,
                                           photo_path
                                       FROM users
                                       WHERE role = p_role

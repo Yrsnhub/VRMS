@@ -28,8 +28,8 @@
             splitContainer = new SplitContainer();
             pnlUserList = new Panel();
             dgvUsers = new DataGridView();
-            colSelect = new DataGridViewCheckBoxColumn();
             colID = new DataGridViewTextBoxColumn();
+            colUsername = new DataGridViewTextBoxColumn();
             colFullName = new DataGridViewTextBoxColumn();
             colEmail = new DataGridViewTextBoxColumn();
             colRole = new DataGridViewTextBoxColumn();
@@ -55,6 +55,7 @@
             lblEmail = new Label();
             lblFullName = new Label();
             lblUserId = new Label();
+            labelFullName = new Label();
             label7 = new Label();
             label6 = new Label();
             label5 = new Label();
@@ -178,7 +179,14 @@
             dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
             dgvUsers.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             dgvUsers.ColumnHeadersHeight = 50;
-            dgvUsers.Columns.AddRange(new DataGridViewColumn[] { colSelect, colID, colFullName, colEmail, colRole, colStatus, colLastLogin, colCreatedDate });
+            dgvUsers.Columns.AddRange(new DataGridViewColumn[] {
+                colID,
+                colUsername,
+                colFullName,
+                colEmail,
+                colRole,
+                colStatus
+            });
             dgvUsers.ContextMenuStrip = contextMenuActions;
             dgvUsers.Dock = DockStyle.Fill;
             dgvUsers.EnableHeadersVisualStyles = false;
@@ -213,14 +221,6 @@
             dgvUsers.CellContentClick += dgvUsers_CellContentClick;
             dgvUsers.SelectionChanged += dgvUsers_SelectionChanged;
             // 
-            // colSelect
-            // 
-            colSelect.FillWeight = 30F;
-            colSelect.HeaderText = "";
-            colSelect.MinimumWidth = 30;
-            colSelect.Name = "colSelect";
-            colSelect.Resizable = DataGridViewTriState.False;
-            // 
             // colID
             // 
             colID.DataPropertyName = "Id";
@@ -229,6 +229,15 @@
             colID.MinimumWidth = 60;
             colID.Name = "colID";
             colID.ReadOnly = true;
+            //
+            // colUsername
+            //
+            colUsername.DataPropertyName = "Username";
+            colUsername.FillWeight = 100F;
+            colUsername.HeaderText = "Username";
+            colUsername.MinimumWidth = 100;
+            colUsername.Name = "colUsername";
+            colUsername.ReadOnly = true;
             // 
             // colFullName
             // 
@@ -409,7 +418,6 @@
             btnEditUser.TabIndex = 0;
             btnEditUser.Text = "Edit User Details";
             btnEditUser.UseVisualStyleBackColor = false;
-            btnEditUser.Click += btnEditUser_Click;
             // 
             // gbUserInfo
             // 
@@ -427,6 +435,7 @@
             gbUserInfo.Controls.Add(label3);
             gbUserInfo.Controls.Add(label2);
             gbUserInfo.Controls.Add(label1);
+            gbUserInfo.Controls.Add(labelFullName);
             gbUserInfo.Dock = DockStyle.Top;
             gbUserInfo.Location = new Point(12, 12);
             gbUserInfo.Margin = new Padding(3, 4, 3, 4);
@@ -496,6 +505,14 @@
             lblFullName.Size = new Size(17, 23);
             lblFullName.TabIndex = 8;
             lblFullName.Text = "-";
+            // labelFullName
+            labelFullName.AutoSize = true;
+            labelFullName.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            labelFullName.Location = new Point(13, 110);
+            labelFullName.Name = "labelFullName";
+            labelFullName.Size = new Size(96, 23);
+            labelFullName.TabIndex = 8;
+            labelFullName.Text = "Full Name:";
             // 
             // lblUserId
             // 
@@ -624,6 +641,7 @@
         private Label lblEmail;
         private Label lblFullName;
         private Label lblUserId;
+        private Label labelFullName;
         private Label label7;
         private Label label6;
         private Label label5;
@@ -636,8 +654,8 @@
         private Button btnDisableAccount;
         private Button btnEnableAccount;
         private Button btnEditUser;
-        private DataGridViewCheckBoxColumn colSelect;
         private DataGridViewTextBoxColumn colID;
+        private DataGridViewTextBoxColumn colUsername;
         private DataGridViewTextBoxColumn colFullName;
         private DataGridViewTextBoxColumn colEmail;
         private DataGridViewTextBoxColumn colRole;

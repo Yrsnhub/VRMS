@@ -18,7 +18,7 @@ public static class SP_Users_UpdateSelfProfile
                                           email = p_email,
                                           phone = p_phone
                                       WHERE id = p_user_id
-                                        AND is_active = TRUE;
+                                        AND account_status = 'Active';
                                   END;
                                   """;
 }

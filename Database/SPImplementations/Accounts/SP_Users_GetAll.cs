@@ -4,7 +4,7 @@ public static class SP_Users_GetAll
 {
     public static string Sql() => """
                                   DROP PROCEDURE IF EXISTS sp_users_get_all;
-
+                                  
                                   CREATE PROCEDURE sp_users_get_all ()
                                   BEGIN
                                       SELECT
@@ -15,10 +15,12 @@ public static class SP_Users_GetAll
                                           phone,
                                           password_hash,
                                           role,
-                                          is_active,
+                                          account_status,
                                           photo_path
                                       FROM users
+                                      WHERE account_status != 'Removed'
                                       ORDER BY username;
                                   END;
+                                  
                                   """;
 }

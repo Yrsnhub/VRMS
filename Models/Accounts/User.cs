@@ -13,7 +13,7 @@ public abstract class User
 
     public string PasswordHash { get; set; } = string.Empty;
     public UserRole Role { get; set; }
-    public bool IsActive { get; set; } = true;
+    public AccountStatus Status { get; set; }
 
     public string? PhotoPath { get; set; }
 }

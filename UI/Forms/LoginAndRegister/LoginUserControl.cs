@@ -83,8 +83,14 @@ namespace VRMS.Controls
             {
                 var user = _userService.Authenticate(username, password);
 
-                if (!user.IsActive)
-                    throw new InvalidOperationException("Account inactive.");
+                if (user.Status != AccountStatus.Active)
+                {
+                    throw new InvalidOperationException(
+                        user.Status == AccountStatus.Disabled
+                            ? "This account has been disabled."
+                            : "This account has been removed."
+                    );
+                }
 
                 LoggedInUser = user;
 

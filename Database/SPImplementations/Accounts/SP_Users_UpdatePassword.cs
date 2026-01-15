@@ -13,7 +13,7 @@ public static class SP_Users_UpdatePassword
                                       UPDATE users
                                       SET password_hash = p_password_hash
                                       WHERE id = p_user_id
-                                        AND is_active = TRUE;
+                                        AND account_status = 'Active';
                                   END;
                                   """;
 }

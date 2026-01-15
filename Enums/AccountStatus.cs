@@ -2,7 +2,7 @@
 
 public enum AccountStatus
 {
-    NotCreated,
     Active,
-    Disabled
+    Disabled,
+    Removed
 }

@@ -12,7 +12,7 @@ public static class SP_Users_Create
                                       IN p_phone VARCHAR(30),
                                       IN p_password_hash VARCHAR(255),
                                       IN p_role VARCHAR(50),
-                                      IN p_is_active BOOLEAN,
+                                      IN p_status VARCHAR(20),
                                       IN p_photo_path VARCHAR(255)
                                   )
                                   BEGIN
@@ -23,7 +23,7 @@ public static class SP_Users_Create
                                           phone,
                                           password_hash,
                                           role,
-                                          is_active,
+                                          account_status,
                                           photo_path
                                       )
                                       VALUES (
@@ -33,12 +33,13 @@ public static class SP_Users_Create
                                           p_phone,
                                           p_password_hash,
                                           p_role,
-                                          p_is_active,
+                                          p_status,
                                           p_photo_path
                                       );
                                   
                                       SELECT LAST_INSERT_ID() AS id;
                                   END;
+                                  
                                   
                                   
                                   """;

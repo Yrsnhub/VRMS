@@ -17,10 +17,11 @@ public static class SP_Users_GetByUsername
                                           phone,
                                           password_hash,
                                           role,
-                                          is_active,
+                                          account_status,
                                           photo_path
                                       FROM users
-                                      WHERE username = p_username;
+                                      WHERE username = p_username
+                                        AND account_status != 'Removed';
                                   
                                   END;
                                   """;

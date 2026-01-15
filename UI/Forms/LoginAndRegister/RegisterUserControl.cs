@@ -87,7 +87,7 @@ namespace VRMS.Controls
                     username,
                     password,
                     UserRole.RentalAgent,
-                    true
+                    AccountStatus.Active
                 );
 
                 MessageBox.Show(

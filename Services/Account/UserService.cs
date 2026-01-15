@@ -4,6 +4,7 @@ using VRMS.Enums;
 using VRMS.Helpers;
 using VRMS.Models.Accounts;
 using VRMS.Repositories.Accounts;
+using VRMS.UI.Config.Support;
 
 namespace VRMS.Services.Account;
 
@@ -76,28 +77,25 @@ public class UserService
         string username,
         string plainPassword,
         UserRole role,
-        bool isActive = true)
+        AccountStatus status = AccountStatus.Active)
     {
         if (string.IsNullOrWhiteSpace(username))
-            throw new InvalidOperationException(
-                "Username cannot be empty.");
+            throw new InvalidOperationException("Username cannot be empty.");
 
-        var hash =
-            PasswordHelper.Hash(plainPassword);
+        var hash = PasswordHelper.Hash(plainPassword);
 
-        var userId = _userRepo.Create(
+        return _userRepo.Create(
             username,
             null,
             null,
             null,
             hash,
             role,
-            isActive,
+            status,
             null
         );
-
-        return userId;
     }
+
 
     // ----------------------------
     // LOOKUPS
@@ -171,16 +169,6 @@ public class UserService
     }
 
     // ----------------------------
-    // DEACTIVATE
-    // ----------------------------
-
-    public void Deactivate(int userId)
-    {
-        _userRepo.Deactivate(userId);
-        
-    }
-
-    // ----------------------------
     // PASSWORD MANAGEMENT
     // ----------------------------
 
@@ -214,17 +202,13 @@ public class UserService
         int userId,
         string username,
         UserRole role,
-        bool isActive)
+        AccountStatus status)
     {
         if (string.IsNullOrWhiteSpace(username))
             throw new InvalidOperationException(
                 "Username cannot be empty.");
 
-        _userRepo.UpdateProfile(
-            userId,
-            username,
-            role,
-            isActive);
+        _userRepo.UpdateProfile(userId, username, role, status);
     }
 
     // ----------------------------
@@ -278,6 +262,18 @@ public class UserService
             fullName,
             email,
             phone);
+    }
+    
+    public void UpdateAccountStatus(int userId, AccountStatus status)
+    {
+        if (Session.CurrentUser != null &&
+            Session.CurrentUser.Id == userId &&
+            status == AccountStatus.Removed)
+            throw new InvalidOperationException(
+                "You cannot remove your own account."
+            );
+
+        _userRepo.UpdateStatus(userId, status);
     }
 
 
