@@ -13,7 +13,6 @@ using VRMS.Services.Account;
 using VRMS.UI.ApplicationService;
 using VRMS.UI.Controls.CustomersView;
 using VRMS.UI.Forms;
-using VRMS.UI.Controls.CustomerVehicleCatalog;
 using VRMS.UI.Controls.Reports;
 using VRMS.UI.Controls.History;
 using VRMS.UI.Controls.VehiclesView;
@@ -218,14 +217,6 @@ namespace VRMS.Forms
                         new CustomersView(),
                         "Customers",
                         "Customer Database"
-                    );
-                    break;
-
-                case "btnReservation":
-                    ShowView(
-                        new ReservationsView(),
-                        "Reservations",
-                        "Bookings and Scheduling"
                     );
                     break;
 
