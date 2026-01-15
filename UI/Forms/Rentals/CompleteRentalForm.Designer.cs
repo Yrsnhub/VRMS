@@ -53,6 +53,7 @@
             pnlActionBar = new Panel();
             btnCompleteReturn = new Button();
             btnCancels = new Button();
+            btnViewDamageDetails = new Button();
             pnlHeader.SuspendLayout();
             pnlRentalSummary.SuspendLayout();
             pnlReturnDetails.SuspendLayout();
@@ -240,6 +241,7 @@
             // 
             pnlDamageAssessment.BackColor = Color.White;
             pnlDamageAssessment.BorderStyle = BorderStyle.FixedSingle;
+            pnlDamageAssessment.Controls.Add(btnViewDamageDetails);
             pnlDamageAssessment.Controls.Add(btnInspectionChecklist);
             pnlDamageAssessment.Controls.Add(lblSectionTitleDamage);
             pnlDamageAssessment.Controls.Add(btnAddDamage);
@@ -281,9 +283,9 @@
             btnAddDamage.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
             btnAddDamage.ForeColor = Color.White;
             btnAddDamage.ImageAlign = ContentAlignment.MiddleLeft;
-            btnAddDamage.Location = new Point(20, 305);
+            btnAddDamage.Location = new Point(111, 274);
             btnAddDamage.Name = "btnAddDamage";
-            btnAddDamage.Size = new Size(580, 35);
+            btnAddDamage.Size = new Size(200, 66);
             btnAddDamage.TabIndex = 1;
             btnAddDamage.Text = "Add Damage Record";
             btnAddDamage.UseVisualStyleBackColor = false;
@@ -299,7 +301,7 @@
             dgvDamages.ReadOnly = true;
             dgvDamages.RowHeadersWidth = 51;
             dgvDamages.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvDamages.Size = new Size(580, 240);
+            dgvDamages.Size = new Size(580, 215);
             dgvDamages.TabIndex = 2;
             // 
             // pnlBillingSummary
@@ -468,6 +470,20 @@
             btnCancels.UseVisualStyleBackColor = false;
             btnCancels.Click += btnCancel_Click;
             // 
+            // btnViewDamageDetails
+            // 
+            btnViewDamageDetails.BackColor = Color.CornflowerBlue;
+            btnViewDamageDetails.FlatStyle = FlatStyle.Flat;
+            btnViewDamageDetails.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            btnViewDamageDetails.ForeColor = Color.White;
+            btnViewDamageDetails.ImageAlign = ContentAlignment.MiddleLeft;
+            btnViewDamageDetails.Location = new Point(317, 274);
+            btnViewDamageDetails.Name = "btnViewDamageDetails";
+            btnViewDamageDetails.Size = new Size(200, 66);
+            btnViewDamageDetails.TabIndex = 4;
+            btnViewDamageDetails.Text = "View Damage Details";
+            btnViewDamageDetails.UseVisualStyleBackColor = false;
+            // 
             // CompleteRentalForm
             // 
             ClientSize = new Size(1300, 889);
@@ -537,5 +553,6 @@
         private Label lblSubtotalValue;
         private Label lblBaseRental;
         private Label lblBaseRentalValue;
+        private Button btnViewDamageDetails;
     }
 }

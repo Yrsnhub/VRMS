@@ -180,76 +180,15 @@ namespace VRMS.UI.Controls.CustomersView
                 return;
 
             PopulateForm(_state.SelectedCustomer);
-            LoadRentalHistory(_state.SelectedCustomer.Id);
+            
             btnEmergencyContacts.Enabled = true;
             UpdateDeleteButtonState();
         }
 
+
         
-        private void LoadRentalHistory(int customerId)
-        {
-            dgvRentalHistory.SuspendLayout();
 
-            dgvRentalHistory.AutoGenerateColumns = false;
-            dgvRentalHistory.Columns.Clear();
-            dgvRentalHistory.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
-            // ---- DEFINE COLUMNS FIRST ----
-
-            dgvRentalHistory.Columns.Add(new DataGridViewTextBoxColumn
-            {
-                HeaderText = "Rental #",
-                DataPropertyName = nameof(RentalHistoryRowDto.RentalId),
-                Width = 80
-            });
-
-            dgvRentalHistory.Columns.Add(new DataGridViewTextBoxColumn
-            {
-                HeaderText = "Pickup",
-                DataPropertyName = nameof(RentalHistoryRowDto.PickupDate)
-            });
-
-            dgvRentalHistory.Columns.Add(new DataGridViewTextBoxColumn
-            {
-                HeaderText = "Return",
-                DataPropertyName = nameof(RentalHistoryRowDto.ReturnDate)
-            });
-
-            dgvRentalHistory.Columns.Add(new DataGridViewTextBoxColumn
-            {
-                HeaderText = "Days",
-                DataPropertyName = nameof(RentalHistoryRowDto.DurationDays),
-                Width = 60
-            });
-
-            dgvRentalHistory.Columns.Add(new DataGridViewTextBoxColumn
-            {
-                HeaderText = "Status",
-                DataPropertyName = nameof(RentalHistoryRowDto.Status)
-            });
-
-            dgvRentalHistory.Columns.Add(new DataGridViewTextBoxColumn
-            {
-                HeaderText = "Total",
-                DataPropertyName = nameof(RentalHistoryRowDto.TotalAmount),
-                DefaultCellStyle = { Format = "₱#,##0.00" }
-            });
-
-            // ---- DATA SOURCE LAST ----
-
-            var data = _rentalService.GetRentalHistoryForCustomer(customerId)
-                       ?? new List<RentalHistoryRowDto>();
-
-            dgvRentalHistory.DataSource = data;
-
-            dgvRentalHistory.ResumeLayout();
-            
-            /*
-            MessageBox.Show(
-                $"Rental history rows: {data.Count}",
-                "Debug");
-                */
-        }
 
 
 
