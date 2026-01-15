@@ -40,7 +40,6 @@ namespace VRMS.UI.Controls.Rental_ReservationCalendar
         // ===============================
         private DateTime _currentDate;
         private CalendarViewMode _currentViewMode = CalendarViewMode.Month;
-        private bool _isFirstPaint = true;
 
         // ===============================
         // DUMMY VEHICLE MODEL
@@ -206,40 +205,25 @@ namespace VRMS.UI.Controls.Rental_ReservationCalendar
             SetViewMode(CalendarViewMode.Month);
             EnableDoubleBuffering();
 
-            // Configure DGV to match calendar rows
-            ConfigureDataGridView();
+            // Position DGV correctly
+            PositionDGV();
         }
 
         // ===============================
-        // DATA GRID VIEW CONFIGURATION
+        // POSITION DGV TO MATCH CALENDAR
         // ===============================
-        private void ConfigureDataGridView()
+        private void PositionDGV()
         {
-            // Set row height to match calendar row height
+            // Set DGV position to match calendar header
+            dgvVehicles.Location = new Point(0, HeaderHeight);
+            dgvVehicles.Height = pnlVehicleList.Height - HeaderHeight;
+
+            // Configure row height
             dgvVehicles.RowTemplate.Height = RowHeight;
-
-            // Set font size to fit better
-            dgvVehicles.DefaultCellStyle.Font = new Font("Segoe UI", 9, FontStyle.Regular);
-
-            // Set alignment
-            dgvVehicles.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dgvVehicles.DefaultCellStyle.Padding = new Padding(5, 0, 0, 0);
-
-            // Configure columns for better display
-            if (dgvVehicles.Columns.Count >= 3)
+            foreach (DataGridViewRow row in dgvVehicles.Rows)
             {
-                dgvVehicles.Columns[0].Width = 50;  // Year column
-                dgvVehicles.Columns[1].Width = 80;  // License column
-                dgvVehicles.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill; // Model column
+                row.Height = RowHeight;
             }
-
-            // Make sure DGV doesn't add extra rows
-            dgvVehicles.AllowUserToAddRows = false;
-            dgvVehicles.AllowUserToDeleteRows = false;
-            dgvVehicles.AllowUserToResizeRows = false;
-
-            // Set row height explicitly
-            dgvVehicles.RowHeadersVisible = false;
         }
 
         // ===============================
@@ -287,6 +271,34 @@ namespace VRMS.UI.Controls.Rental_ReservationCalendar
                 // Add tooltip
                 row.Cells[1].ToolTipText = $"Category: {vehicle.Category}\nStatus: {vehicle.Status}";
             }
+        }
+
+        // ===============================
+        // VEHICLE HEADER PAINT
+        // ===============================
+        private void pnlVehicleHeader_Paint(object sender, PaintEventArgs e)
+        {
+            Graphics g = e.Graphics;
+            Rectangle rect = pnlVehicleHeader.ClientRectangle;
+
+            // Fill background
+            using Brush headerBrush = new SolidBrush(Color.FromArgb(240, 240, 240));
+            g.FillRectangle(headerBrush, rect);
+
+            // Draw border
+            using Pen borderPen = new Pen(Color.LightGray);
+            g.DrawRectangle(borderPen, rect);
+
+            // Draw header text
+            TextRenderer.DrawText(
+                g,
+                "VEHICLES",
+                Font,
+                rect,
+                Color.Black,
+                TextFormatFlags.HorizontalCenter |
+                TextFormatFlags.VerticalCenter
+            );
         }
 
         // ===============================
@@ -469,9 +481,6 @@ namespace VRMS.UI.Controls.Rental_ReservationCalendar
             Graphics g = e.Graphics;
             g.Clear(Color.White);
 
-            // Update DGV row heights to match calendar
-            SyncDGVRowHeights();
-
             switch (_currentViewMode)
             {
                 case CalendarViewMode.Month:
@@ -480,17 +489,6 @@ namespace VRMS.UI.Controls.Rental_ReservationCalendar
                 case CalendarViewMode.Week:
                     DrawWeekView(g);
                     break;
-            }
-
-            _isFirstPaint = false;
-        }
-
-        private void SyncDGVRowHeights()
-        {
-            // Ensure all DGV rows have the same height as calendar rows
-            foreach (DataGridViewRow row in dgvVehicles.Rows)
-            {
-                row.Height = RowHeight;
             }
         }
 
@@ -513,7 +511,7 @@ namespace VRMS.UI.Controls.Rental_ReservationCalendar
             DrawGrid(g, daysInMonth);
             DrawMonthRentals(g);
             DrawMonthMaintenance(g);
-            DrawVehicleRows(g, daysInMonth);
+            // Removed: DrawVehicleRows(g, daysInMonth); - No longer needed
         }
 
         private void DrawDayHeaders(Graphics g, int daysInMonth)
@@ -576,7 +574,7 @@ namespace VRMS.UI.Controls.Rental_ReservationCalendar
 
             using Pen pen = new Pen(Color.LightGray);
 
-            // Vertical day lines
+            // Vertical day lines (start from x = 0, no first column for vehicle names)
             for (int i = 0; i <= daysInMonth; i++)
             {
                 int x = i * DayColumnWidth;
@@ -589,23 +587,6 @@ namespace VRMS.UI.Controls.Rental_ReservationCalendar
             {
                 int y = HeaderHeight + (i * RowHeight);
                 g.DrawLine(pen, 0, y, totalWidth, y);
-            }
-        }
-
-        private void DrawVehicleRows(Graphics g, int daysInMonth)
-        {
-            using Font rowFont = new Font(Font.FontFamily, 8);
-            using Brush textBrush = new SolidBrush(Color.Black);
-
-            for (int i = 0; i < dgvVehicles.Rows.Count; i++)
-            {
-                int y = HeaderHeight + (i * RowHeight);
-
-                // Draw vehicle name in first cell area
-                string vehicleInfo = _dummyVehicles[i].Model;
-                RectangleF textRect = new RectangleF(2, y + 2, DayColumnWidth - 4, RowHeight - 4);
-
-                g.DrawString(vehicleInfo, rowFont, textBrush, textRect);
             }
         }
 
@@ -701,7 +682,7 @@ namespace VRMS.UI.Controls.Rental_ReservationCalendar
             DrawWeekGrid(g);
             DrawWeekRentals(g, startOfWeek);
             DrawWeekMaintenance(g, startOfWeek);
-            DrawVehicleTimeRows(g);
+            // Removed: DrawVehicleTimeRows(g); - No longer needed
         }
 
         private void DrawWeekTimeHeaders(Graphics g, DateTime startOfWeek)
@@ -725,7 +706,7 @@ namespace VRMS.UI.Controls.Rental_ReservationCalendar
                 TextFormatFlags.VerticalCenter
             );
 
-            // Day headers
+            // Day headers (start from x = TimeColumnWidth)
             for (int day = 0; day < 7; day++)
             {
                 DateTime currentDay = startOfWeek.AddDays(day);
@@ -777,7 +758,7 @@ namespace VRMS.UI.Controls.Rental_ReservationCalendar
             using Pen lightPen = new Pen(Color.LightGray);
             using Pen mediumPen = new Pen(Color.Gray);
 
-            // Draw time column
+            // Draw time column (just for time labels, no vehicle info)
             for (int hour = DayStartHour; hour <= DayEndHour; hour++)
             {
                 int y = HeaderHeight + ((hour - DayStartHour) * HourRowHeight);
@@ -796,11 +777,11 @@ namespace VRMS.UI.Controls.Rental_ReservationCalendar
                     TextFormatFlags.VerticalCenter
                 );
 
-                // Horizontal lines across days
+                // Horizontal lines across days (start from TimeColumnWidth)
                 g.DrawLine(lightPen, TimeColumnWidth, y, pnlCalendarCanvas.Width, y);
             }
 
-            // Draw vertical day separators
+            // Draw vertical day separators (start from TimeColumnWidth)
             for (int day = 0; day <= 7; day++)
             {
                 int x = TimeColumnWidth + (day * dayWidth);
@@ -808,33 +789,11 @@ namespace VRMS.UI.Controls.Rental_ReservationCalendar
                 g.DrawLine(mediumPen, x, HeaderHeight, x, bottomY);
             }
 
-            // Draw vehicle row separators
+            // Draw vehicle row separators (just the horizontal lines)
             for (int i = 0; i <= rowCount; i++)
             {
                 int y = HeaderHeight + (i * HourRowHeight * (DayEndHour - DayStartHour + 1));
-                g.DrawLine(mediumPen, 0, y, pnlCalendarCanvas.Width, y);
-            }
-        }
-
-        private void DrawVehicleTimeRows(Graphics g)
-        {
-            using Font rowFont = new Font(Font.FontFamily, 8);
-            using Brush textBrush = new SolidBrush(Color.Black);
-
-            for (int i = 0; i < dgvVehicles.Rows.Count; i++)
-            {
-                int y = HeaderHeight + (i * HourRowHeight * (DayEndHour - DayStartHour + 1));
-
-                // Draw vehicle name in time column
-                string vehicleInfo = _dummyVehicles[i].LicensePlate;
-                RectangleF textRect = new RectangleF(2, y + 2, TimeColumnWidth - 4, 20);
-
-                g.DrawString(vehicleInfo, rowFont, textBrush, textRect);
-
-                // Draw model on second line
-                string modelInfo = _dummyVehicles[i].Model;
-                RectangleF modelRect = new RectangleF(2, y + 22, TimeColumnWidth - 4, 20);
-                g.DrawString(modelInfo, rowFont, textBrush, modelRect);
+                g.DrawLine(mediumPen, TimeColumnWidth, y, pnlCalendarCanvas.Width, y);
             }
         }
 
@@ -851,7 +810,7 @@ namespace VRMS.UI.Controls.Rental_ReservationCalendar
                 if (rental.StartTime.Date < startOfWeek || rental.StartTime.Date > startOfWeek.AddDays(6))
                     continue;
 
-                // Calculate position
+                // Calculate position (starting from TimeColumnWidth)
                 int dayIndex = (int)(rental.StartTime.Date - startOfWeek.Date).TotalDays;
                 int x = TimeColumnWidth + (dayIndex * dayWidth);
 
@@ -904,7 +863,7 @@ namespace VRMS.UI.Controls.Rental_ReservationCalendar
                 if (maintenance.StartTime.Date < startOfWeek || maintenance.StartTime.Date > startOfWeek.AddDays(6))
                     continue;
 
-                // Calculate position
+                // Calculate position (starting from TimeColumnWidth)
                 int dayIndex = (int)(maintenance.StartTime.Date - startOfWeek.Date).TotalDays;
                 int x = TimeColumnWidth + (dayIndex * dayWidth);
 
@@ -955,6 +914,12 @@ namespace VRMS.UI.Controls.Rental_ReservationCalendar
         {
             // Ensure row height stays consistent
             dgvVehicles.Rows[e.RowIndex].Height = RowHeight;
+        }
+
+        private void pnlVehicleList_Resize(object sender, EventArgs e)
+        {
+            // Reposition DGV when panel resizes
+            PositionDGV();
         }
     }
 }
