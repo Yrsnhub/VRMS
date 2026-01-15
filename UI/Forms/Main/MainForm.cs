@@ -17,14 +17,13 @@ using VRMS.UI.Controls.VehiclesView;
 using VRMS.Repositories.Reports;
 using VRMS.Services.Reports;
 using VRMS.UI.Controls.RentalsView;
-
+using VRMS.UI.Controls.Rental_ReservationCalendar; // ✅ REQUIRED
 
 namespace VRMS.Forms
 {
     public partial class MainForm : Form
     {
         private Button activeButton = null;
-
         private readonly UserService _userService;
 
         // THEME COLORS
@@ -35,9 +34,7 @@ namespace VRMS.Forms
         public MainForm()
         {
             InitializeComponent();
-
             _userService = ApplicationServices.UserService;
-
             SetupForm();
         }
 
@@ -61,14 +58,12 @@ namespace VRMS.Forms
 
         private void SetupForm()
         {
-            // Sidebar user info
             if (lbluserInfo != null)
             {
                 lbluserInfo.Text =
                     $"Welcome,\n{Program.CurrentUsername}\n({Program.CurrentUserRole})";
             }
 
-            // Header user info
             if (mainHeader != null)
             {
                 mainHeader.SetUser(Program.CurrentUsername, Program.CurrentUserRole);
@@ -84,7 +79,6 @@ namespace VRMS.Forms
 
         private void ApplyRoleBasedVisibility()
         {
-            // CUSTOMER UI RULES
             if (IsCustomer())
             {
                 btnCustomers.Visible = false;
@@ -92,7 +86,6 @@ namespace VRMS.Forms
                 btnAdmin.Visible = false;
             }
 
-            // NON-ADMIN RULES
             if (!IsAdmin())
             {
                 btnAdmin.Visible = false;
@@ -137,7 +130,8 @@ namespace VRMS.Forms
                 btnCustomers,
                 btnReservation,
                 btnRentals,
-                btnHistory,   // ✅ HISTORY
+                btnRentalsCalendar, // ✅ CALENDAR BUTTON ADDED
+                btnHistory,
                 btnReports,
                 btnAdmin
             };
@@ -148,7 +142,6 @@ namespace VRMS.Forms
 
                 button.BackColor = normalColor;
                 button.FlatAppearance.BorderSize = 0;
-
                 button.Click += NavButton_Click;
 
                 button.MouseEnter += (s, e) =>
@@ -172,7 +165,8 @@ namespace VRMS.Forms
 
         private void NavButton_Click(object sender, EventArgs e)
         {
-            if (sender is not Button clickedButton) return;
+            Button clickedButton = sender as Button;
+            if (clickedButton == null) return;
             if (clickedButton == activeButton) return;
 
             ActivateButton(clickedButton);
@@ -238,13 +232,23 @@ namespace VRMS.Forms
                     );
                     break;
 
-                case "btnHistory": 
+                // ✅ THIS IS THE ONLY NEW NAVIGATION CASE
+                case "btnRentalsCalendar":
+                    ShowView(
+                        new CalendarView(),
+                        "Rental Calendar",
+                        "Vehicle availability and bookings"
+                    );
+                    break;
+
+                case "btnHistory":
                     ShowView(
                         new History(),
                         "History",
                         "Reservations & Rental Records"
                     );
                     break;
+
                 case "btnReports":
                     {
                         var reportsRepo = new ReportsRepository();
@@ -257,7 +261,6 @@ namespace VRMS.Forms
                         );
                         break;
                     }
-
 
                 case "btnAdmin":
                     if (!IsAdmin())
@@ -314,11 +317,6 @@ namespace VRMS.Forms
             view.Dock = DockStyle.Fill;
             contentPanel.Controls.Add(view);
 
-            UpdateHeaderTitle(title, subtitle);
-        }
-
-        private void UpdateHeaderTitle(string title, string subtitle)
-        {
             if (mainHeader != null)
             {
                 mainHeader.SetTitle(title, subtitle);

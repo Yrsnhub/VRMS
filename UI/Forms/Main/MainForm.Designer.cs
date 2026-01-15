@@ -34,6 +34,7 @@
             logoPictureBox = new PictureBox();
             contentPanel = new Panel();
             mainHeader = new VRMS.Controls.MainHeaderControl();
+            btnRentalsCalendar = new Button();
             sidePanel.SuspendLayout();
             navButtonsPanel.SuspendLayout();
             headerPanel.SuspendLayout();
@@ -60,6 +61,7 @@
             navButtonsPanel.Controls.Add(btnCustomers);
             navButtonsPanel.Controls.Add(btnReservation);
             navButtonsPanel.Controls.Add(btnRentals);
+            navButtonsPanel.Controls.Add(btnRentalsCalendar);
             navButtonsPanel.Controls.Add(btnReports);
             navButtonsPanel.Controls.Add(btnHistory);
             navButtonsPanel.Controls.Add(btnAdmin);
@@ -167,7 +169,7 @@
             btnReports.FlatStyle = FlatStyle.Flat;
             btnReports.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
             btnReports.ForeColor = Color.White;
-            btnReports.Location = new Point(19, 395);
+            btnReports.Location = new Point(19, 470);
             btnReports.Margin = new Padding(5, 4, 5, 4);
             btnReports.Name = "btnReports";
             btnReports.Size = new Size(251, 67);
@@ -184,7 +186,7 @@
             btnHistory.FlatStyle = FlatStyle.Flat;
             btnHistory.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
             btnHistory.ForeColor = Color.White;
-            btnHistory.Location = new Point(19, 470);
+            btnHistory.Location = new Point(19, 545);
             btnHistory.Margin = new Padding(5, 4, 5, 4);
             btnHistory.Name = "btnHistory";
             btnHistory.Size = new Size(251, 67);
@@ -201,7 +203,7 @@
             btnAdmin.FlatStyle = FlatStyle.Flat;
             btnAdmin.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
             btnAdmin.ForeColor = Color.White;
-            btnAdmin.Location = new Point(19, 545);
+            btnAdmin.Location = new Point(19, 620);
             btnAdmin.Margin = new Padding(5, 4, 5, 4);
             btnAdmin.Name = "btnAdmin";
             btnAdmin.Size = new Size(251, 67);
@@ -218,7 +220,7 @@
             btnLogout.FlatStyle = FlatStyle.Flat;
             btnLogout.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
             btnLogout.ForeColor = Color.White;
-            btnLogout.Location = new Point(19, 620);
+            btnLogout.Location = new Point(19, 695);
             btnLogout.Margin = new Padding(5, 4, 5, 4);
             btnLogout.Name = "btnLogout";
             btnLogout.Size = new Size(251, 67);
@@ -253,7 +255,6 @@
             // 
             // logoPictureBox
             // 
-           
             logoPictureBox.Location = new Point(17, 20);
             logoPictureBox.Margin = new Padding(5, 4, 5, 4);
             logoPictureBox.Name = "logoPictureBox";
@@ -281,6 +282,24 @@
             mainHeader.Name = "mainHeader";
             mainHeader.Size = new Size(1294, 133);
             mainHeader.TabIndex = 3;
+            // 
+            // btnRentalsCalendar
+            // 
+            btnRentalsCalendar.BackColor = Color.Transparent;
+            btnRentalsCalendar.FlatAppearance.BorderSize = 0;
+            btnRentalsCalendar.FlatAppearance.MouseOverBackColor = Color.FromArgb(44, 62, 80);
+            btnRentalsCalendar.FlatStyle = FlatStyle.Flat;
+            btnRentalsCalendar.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            btnRentalsCalendar.ForeColor = Color.White;
+            btnRentalsCalendar.Location = new Point(19, 395);
+            btnRentalsCalendar.Margin = new Padding(5, 4, 5, 4);
+            btnRentalsCalendar.Name = "btnRentalsCalendar";
+            btnRentalsCalendar.Size = new Size(251, 67);
+            btnRentalsCalendar.TabIndex = 9;
+            btnRentalsCalendar.Text = "🗓️ Rentals Calendar";
+            btnRentalsCalendar.TextAlign = ContentAlignment.MiddleLeft;
+            btnRentalsCalendar.UseVisualStyleBackColor = false;
+         
             // 
             // MainForm
             // 
@@ -323,5 +342,6 @@
         private System.Windows.Forms.Button btnLogout;
         private VRMS.Controls.MainHeaderControl mainHeader;
         private Button btnHistory;
+        private Button btnRentalsCalendar;
     }
 }
