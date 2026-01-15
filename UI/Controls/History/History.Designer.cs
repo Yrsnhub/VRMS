@@ -404,10 +404,10 @@
             panelActions.Controls.Add(btnViewReceipt);
             panelActions.Controls.Add(btnRefund);
             panelActions.Dock = DockStyle.Bottom;
-            panelActions.Location = new Point(0, 610);
+            panelActions.Location = new Point(0, 587);
             panelActions.Name = "panelActions";
             panelActions.Padding = new Padding(10);
-            panelActions.Size = new Size(379, 100);
+            panelActions.Size = new Size(379, 123);
             panelActions.TabIndex = 3;
             // 
             // btnViewReceipt
@@ -418,9 +418,9 @@
             btnViewReceipt.FlatStyle = FlatStyle.Flat;
             btnViewReceipt.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
             btnViewReceipt.ForeColor = Color.White;
-            btnViewReceipt.Location = new Point(10, 40);
+            btnViewReceipt.Location = new Point(10, 60);
             btnViewReceipt.Name = "btnViewReceipt";
-            btnViewReceipt.Size = new Size(359, 30);
+            btnViewReceipt.Size = new Size(359, 50);
             btnViewReceipt.TabIndex = 2;
             btnViewReceipt.Text = "📄 View Receipt";
             btnViewReceipt.UseVisualStyleBackColor = false;
@@ -436,7 +436,7 @@
             btnRefund.ForeColor = Color.White;
             btnRefund.Location = new Point(10, 10);
             btnRefund.Name = "btnRefund";
-            btnRefund.Size = new Size(359, 30);
+            btnRefund.Size = new Size(359, 50);
             btnRefund.TabIndex = 0;
             btnRefund.Text = "💸 Refund";
             btnRefund.UseVisualStyleBackColor = false;
@@ -475,7 +475,7 @@
             panelInfoGrid.Location = new Point(0, 340);
             panelInfoGrid.Name = "panelInfoGrid";
             panelInfoGrid.Padding = new Padding(15);
-            panelInfoGrid.Size = new Size(379, 270);
+            panelInfoGrid.Size = new Size(379, 241);
             panelInfoGrid.TabIndex = 2;
             // 
             // lblCreatedValue

@@ -23,7 +23,6 @@
             btnDashboard = new Button();
             btnVehicles = new Button();
             btnCustomers = new Button();
-            btnReservation = new Button();
             btnRentals = new Button();
             btnRentalsCalendar = new Button();
             btnReports = new Button();
@@ -59,7 +58,6 @@
             navButtonsPanel.Controls.Add(btnDashboard);
             navButtonsPanel.Controls.Add(btnVehicles);
             navButtonsPanel.Controls.Add(btnCustomers);
-            navButtonsPanel.Controls.Add(btnReservation);
             navButtonsPanel.Controls.Add(btnRentals);
             navButtonsPanel.Controls.Add(btnRentalsCalendar);
             navButtonsPanel.Controls.Add(btnReports);
@@ -127,23 +125,6 @@
             btnCustomers.TextAlign = ContentAlignment.MiddleLeft;
             btnCustomers.UseVisualStyleBackColor = false;
             // 
-            // btnReservation
-            // 
-            btnReservation.BackColor = Color.Transparent;
-            btnReservation.FlatAppearance.BorderSize = 0;
-            btnReservation.FlatAppearance.MouseOverBackColor = Color.FromArgb(44, 62, 80);
-            btnReservation.FlatStyle = FlatStyle.Flat;
-            btnReservation.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-            btnReservation.ForeColor = Color.White;
-            btnReservation.Location = new Point(19, 245);
-            btnReservation.Margin = new Padding(5, 4, 5, 4);
-            btnReservation.Name = "btnReservation";
-            btnReservation.Size = new Size(251, 67);
-            btnReservation.TabIndex = 7;
-            btnReservation.Text = "✏ Reservation";
-            btnReservation.TextAlign = ContentAlignment.MiddleLeft;
-            btnReservation.UseVisualStyleBackColor = false;
-            // 
             // btnRentals
             // 
             btnRentals.BackColor = Color.Transparent;
@@ -152,7 +133,7 @@
             btnRentals.FlatStyle = FlatStyle.Flat;
             btnRentals.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
             btnRentals.ForeColor = Color.White;
-            btnRentals.Location = new Point(19, 320);
+            btnRentals.Location = new Point(19, 245);
             btnRentals.Margin = new Padding(5, 4, 5, 4);
             btnRentals.Name = "btnRentals";
             btnRentals.Size = new Size(251, 67);
@@ -169,7 +150,7 @@
             btnRentalsCalendar.FlatStyle = FlatStyle.Flat;
             btnRentalsCalendar.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
             btnRentalsCalendar.ForeColor = Color.White;
-            btnRentalsCalendar.Location = new Point(19, 395);
+            btnRentalsCalendar.Location = new Point(19, 320);
             btnRentalsCalendar.Margin = new Padding(5, 4, 5, 4);
             btnRentalsCalendar.Name = "btnRentalsCalendar";
             btnRentalsCalendar.Size = new Size(251, 67);
@@ -186,7 +167,7 @@
             btnReports.FlatStyle = FlatStyle.Flat;
             btnReports.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
             btnReports.ForeColor = Color.White;
-            btnReports.Location = new Point(19, 470);
+            btnReports.Location = new Point(19, 395);
             btnReports.Margin = new Padding(5, 4, 5, 4);
             btnReports.Name = "btnReports";
             btnReports.Size = new Size(251, 67);
@@ -203,7 +184,7 @@
             btnHistory.FlatStyle = FlatStyle.Flat;
             btnHistory.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
             btnHistory.ForeColor = Color.White;
-            btnHistory.Location = new Point(19, 545);
+            btnHistory.Location = new Point(19, 470);
             btnHistory.Margin = new Padding(5, 4, 5, 4);
             btnHistory.Name = "btnHistory";
             btnHistory.Size = new Size(251, 67);
@@ -220,7 +201,7 @@
             btnAdmin.FlatStyle = FlatStyle.Flat;
             btnAdmin.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
             btnAdmin.ForeColor = Color.White;
-            btnAdmin.Location = new Point(19, 620);
+            btnAdmin.Location = new Point(19, 545);
             btnAdmin.Margin = new Padding(5, 4, 5, 4);
             btnAdmin.Name = "btnAdmin";
             btnAdmin.Size = new Size(251, 67);
@@ -237,7 +218,7 @@
             btnLogout.FlatStyle = FlatStyle.Flat;
             btnLogout.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
             btnLogout.ForeColor = Color.White;
-            btnLogout.Location = new Point(19, 695);
+            btnLogout.Location = new Point(19, 620);
             btnLogout.Margin = new Padding(5, 4, 5, 4);
             btnLogout.Name = "btnLogout";
             btnLogout.Size = new Size(251, 67);
@@ -334,7 +315,6 @@
         private System.Windows.Forms.Button btnDashboard;
         private System.Windows.Forms.Button btnVehicles;
         private System.Windows.Forms.Button btnCustomers;
-        private System.Windows.Forms.Button btnReservation;
         private System.Windows.Forms.Button btnRentals;
         private System.Windows.Forms.Button btnReports;
         private System.Windows.Forms.Button btnAdmin;

@@ -133,7 +133,7 @@ namespace VRMS.Forms
                 btnDashboard,
                 btnVehicles,
                 btnCustomers,
-                btnReservation,
+               
                 btnRentals,
                 btnRentalsCalendar, // ✅ CALENDAR BUTTON ADDED
                 btnHistory,
@@ -221,13 +221,7 @@ namespace VRMS.Forms
                     );
                     break;
 
-                case "btnReservation":
-                    ShowView(
-                        new ReservationsView(),
-                        "Reservations",
-                        "Bookings and Scheduling"
-                    );
-                    break;
+              
 
                 case "btnRentals":
                     ShowView(
