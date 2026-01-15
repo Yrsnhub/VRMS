@@ -28,9 +28,6 @@ public static class ApplicationServices
     private static readonly CustomerRepository _customerRepo =
         new CustomerRepository();
 
-    private static readonly CustomerAccountRepository _customerAccountRepo =
-        new CustomerAccountRepository();
-
     private static readonly RentalRepository _rentalRepo =
         new RentalRepository();
 
@@ -76,8 +73,6 @@ public static class ApplicationServices
     private static readonly DashboardRepository _dashboardRepo =
         new DashboardRepository();
     
-    private static readonly CustomerAuthService _customerAuthService =
-        new CustomerAuthService(_customerAccountRepo);
     
     
     // =====================================================
@@ -90,13 +85,11 @@ public static class ApplicationServices
     public static UserService UserService { get; } =
         new UserService(_userRepo);
 
-    public static CustomerAccountService CustomerAccountService { get; } =
-        new CustomerAccountService(_customerAccountRepo);
+
 
     public static CustomerService CustomerService { get; } =
         new CustomerService(
-            DriversLicenseService,
-            CustomerAccountService
+            DriversLicenseService
         );
 
     public static VehicleService VehicleService { get; } =
@@ -142,9 +135,7 @@ public static class ApplicationServices
     public static PaymentRepository PaymentRepository { get; } =
         _paymentRepo;
     
-    public static CustomerAuthService CustomerAuthService =>
-        _customerAuthService;
-    
+
     public static DamageService DamageService { get; } =
         new DamageService();
 }

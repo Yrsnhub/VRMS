@@ -9,7 +9,6 @@ using VRMS.UI.ApplicationService;
 using VRMS.UI.Config.State;
 using VRMS.UI.Config.Validation;
 using VRMS.UI.Forms.Customer;
-using VRMS.UI.Forms.Customers;
 using VRMS.UI.Services;
 
 namespace VRMS.UI.Controls.CustomersView
@@ -19,7 +18,6 @@ namespace VRMS.UI.Controls.CustomersView
         private readonly DriversLicenseService _driversLicenseService;
         private readonly CustomerService _customerService;
         private readonly RentalService _rentalService;
-        private readonly CustomerAccountService _customerAccountService;
         private readonly CustomerImageService _imageService = new();
 
         private readonly CustomerFormState _state = new();
@@ -37,7 +35,6 @@ namespace VRMS.UI.Controls.CustomersView
             splitContainer1.SplitterDistance = 400;
 
             _driversLicenseService = ApplicationServices.DriversLicenseService;
-            _customerAccountService = ApplicationServices.CustomerAccountService;
             _customerService = ApplicationServices.CustomerService;
             _rentalService = ApplicationServices.RentalService;
 
@@ -523,22 +520,6 @@ namespace VRMS.UI.Controls.CustomersView
             btnDelete.BackColor = Color.FromArgb(231, 76, 60); // red
             btnDelete.ForeColor = Color.White;
         }
-
-
-
-        private void btnManageAccount_Click(object sender, EventArgs e)
-        {
-            if (_state.SelectedCustomer == null)
-            {
-                MessageBox.Show("Please select a customer first.");
-                return;
-            }
-
-            using var form = new CustomerAccountForm(
-                _state.SelectedCustomer,
-                _customerAccountService
-            );
-            form.ShowDialog(this);
-        }
+        
     }
 }

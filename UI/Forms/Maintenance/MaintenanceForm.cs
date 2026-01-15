@@ -48,6 +48,7 @@ namespace VRMS.UI.Forms.Maintenance
             // --- History grid wiring ---
             dgvHistory.SelectionChanged += dgvHistory_SelectionChanged;
             dgvHistory.MultiSelect = false;
+            UpdateRetireButtonUI();
         }
 
         private void LoadVehicleInfo()
@@ -62,6 +63,7 @@ namespace VRMS.UI.Forms.Maintenance
                 // Update button visibility
                 UpdateMarkAvailableButtonVisibility();
             }
+            UpdateRetireButtonUI();
         }
 
         private void UpdateMarkAvailableButtonVisibility()
@@ -467,7 +469,49 @@ namespace VRMS.UI.Forms.Maintenance
             if (currentVehicle == null)
                 return;
 
-            // 1. Hard safety checks
+            // ==============================
+            // RESTORE MODE
+            // ==============================
+            if (currentVehicle.Status == VehicleStatus.Retired)
+            {
+                var confirmRestore = MessageBox.Show(
+                    "Restore this vehicle back to AVAILABLE?\n\n" +
+                    "• Vehicle will be usable again\n" +
+                    "Proceed?",
+                    "Confirm Restore Vehicle",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question);
+
+                if (confirmRestore != DialogResult.Yes)
+                    return;
+
+                try
+                {
+                    _vehicleService.RestoreVehicle(currentVehicle.Id);
+
+                    currentVehicle.Status = VehicleStatus.Available;
+                    VehicleStatusUpdated = true;
+
+                    UpdateRetireButtonUI();
+
+                    lblStatusMessage.Text =
+                        "Vehicle restored and marked AVAILABLE.";
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(
+                        ex.Message,
+                        "Restore Failed",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+                }
+
+                return;
+            }
+
+            // ==============================
+            // RETIRE MODE
+            // ==============================
             if (currentVehicle.Status == VehicleStatus.Rented ||
                 currentVehicle.Status == VehicleStatus.Reserved)
             {
@@ -479,47 +523,29 @@ namespace VRMS.UI.Forms.Maintenance
                 return;
             }
 
-            if (currentVehicle.Status == VehicleStatus.Retired)
-            {
-                MessageBox.Show(
-                    "This vehicle is already retired.",
-                    "Already Retired",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Information);
-                return;
-            }
-
-            // 2. Strong confirmation (retirement is permanent)
-            var confirm = MessageBox.Show(
-                "⚠️ WARNING ⚠️\n\n" +
+            var confirmRetire = MessageBox.Show(
+                "WARNING \n\n" +
                 "You are about to RETIRE this vehicle.\n\n" +
-                "• The vehicle will be permanently removed from service\n" +
-                "• It can NEVER be rented again\n" +
-                "• It can NEVER be edited again\n\n" +
-                "This action CANNOT be undone.\n\n" +
-                "Are you absolutely sure you want to retire this vehicle?",
+                "Proceed?",
                 "Confirm Vehicle Retirement",
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Warning,
                 MessageBoxDefaultButton.Button2);
 
-            if (confirm != DialogResult.Yes)
+            if (confirmRetire != DialogResult.Yes)
                 return;
 
             try
             {
-                // 3. Retire via service (single source of truth)
                 _vehicleService.RetireVehicle(currentVehicle.Id);
 
-                // 4. Update local state
                 currentVehicle.Status = VehicleStatus.Retired;
                 VehicleStatusUpdated = true;
 
-                lblStatusMessage.Text = "Vehicle successfully retired.";
+                UpdateRetireButtonUI();
 
-                // 5. Close form so parent refreshes vehicle list
-                this.DialogResult = DialogResult.OK;
-                this.Close();
+                lblStatusMessage.Text =
+                    "Vehicle successfully retired.";
             }
             catch (Exception ex)
             {
@@ -530,6 +556,34 @@ namespace VRMS.UI.Forms.Maintenance
                     MessageBoxIcon.Error);
             }
         }
+
+        
+        private void UpdateRetireButtonUI()
+        {
+            if (currentVehicle == null)
+            {
+                btnRetire.Visible = false;
+                return;
+            }
+
+            btnRetire.Visible = true;
+
+            if (currentVehicle.Status == VehicleStatus.Retired)
+            {
+                // RESTORE MODE
+                btnRetire.Text = "Restore Vehicle";
+                btnRetire.BackColor = Color.FromArgb(46, 204, 113); // green
+                btnRetire.ForeColor = Color.White;
+            }
+            else
+            {
+                // RETIRE MODE
+                btnRetire.Text = "Retire";
+                btnRetire.BackColor = Color.Black;
+                btnRetire.ForeColor = Color.White;
+            }
+        }
+
 
     }
 }

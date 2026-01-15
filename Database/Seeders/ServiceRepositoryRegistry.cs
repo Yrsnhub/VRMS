@@ -24,7 +24,6 @@ public static class ServiceRepositoryRegistry
 
         // Accounts
         services.AddSingleton<UserRepository>();
-        services.AddSingleton<CustomerAccountRepository>();
 
         // Fleet
         services.AddSingleton<VehicleRepository>();
@@ -58,7 +57,6 @@ public static class ServiceRepositoryRegistry
         // ----------------------------
 
         services.AddSingleton<UserService>();
-        services.AddSingleton<CustomerAccountService>();
         services.AddSingleton<DriversLicenseService>();
         services.AddSingleton<CustomerService>();
         services.AddSingleton<VehicleService>();

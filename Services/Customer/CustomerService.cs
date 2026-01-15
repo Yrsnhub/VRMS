@@ -48,7 +48,6 @@ namespace VRMS.Services.Customer
         /// </summary>
         private readonly CustomerRepository _repo;
         
-        private readonly CustomerAccountService _customerAccountService;
 
         /// <summary>
         /// Initializes the customer service.
@@ -57,11 +56,9 @@ namespace VRMS.Services.Customer
         /// Service responsible for driver's license validation
         /// </param>
         public CustomerService(
-            DriversLicenseService driversLicenseService,
-            CustomerAccountService customerAccountService)
+            DriversLicenseService driversLicenseService)
         {
             _driversLicenseService = driversLicenseService;
-            _customerAccountService = customerAccountService;
             _repo = new CustomerRepository();
         }
 
@@ -189,9 +186,6 @@ namespace VRMS.Services.Customer
         /// </summary>
         public void DeleteCustomer(int customerId)
         {
-            if (HasLoginAccount(customerId))
-                throw new InvalidOperationException(
-                    "Customer has a user account. Delete the user account first.");
 
             FileStorageHelper.DeleteDirectory(
                 Path.Combine(
@@ -290,22 +284,6 @@ namespace VRMS.Services.Customer
                     "Driver's license expired.");
         }
         
-        // =====================================================
-        // LOGIN ACCOUNT (READ-ONLY)
-        // =====================================================
-
-        public bool HasLoginAccount(int customerId)
-        {
-            return _customerAccountService
-                       .GetAccountStatus(customerId)
-                   != AccountStatus.NotCreated;
-        }
-
-        public AccountStatus GetAccountStatus(int customerId)
-        {
-            return _customerAccountService
-                .GetAccountStatus(customerId);
-        }
         
     }
 }

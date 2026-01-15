@@ -355,6 +355,24 @@ public class VehicleService
     public VehicleCategory GetCategoryById(
         int categoryId)
         => _categoryRepo.GetById(categoryId);
+    
+    /// <summary>
+    /// Restores a retired vehicle back to Available.
+    /// This is an administrative override.
+    /// </summary>
+    public void RestoreVehicle(int vehicleId)
+    {
+        var vehicle = _vehicleRepo.GetById(vehicleId);
+    
+        if (vehicle.Status != VehicleStatus.Retired)
+            throw new InvalidOperationException(
+                "Only retired vehicles can be restored.");
+    
+        // Direct update – bypass lifecycle rules intentionally
+        _vehicleRepo.UpdateStatus(
+            vehicleId,
+            VehicleStatus.Available);
+    }
 
     /// <summary>
     /// Updates only the security deposit of a vehicle category.
