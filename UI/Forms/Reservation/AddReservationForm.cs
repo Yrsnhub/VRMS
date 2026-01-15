@@ -139,6 +139,32 @@ namespace VRMS.UI.Forms.Reservation
 
             var start = dtpStart.Value.Date;
             var end = dtpEnd.Value.Date.AddDays(1).AddTicks(-1);
+            
+            // ---------- CHECK FOR RENTAL DATE OVERLAP ----------
+            var overlappingRentals =
+                _vehicleService.GetOverlappingRentalsForVehicle(
+                    _selectedVehicle.Id,
+                    start,
+                    end);
+
+            if (overlappingRentals.Count > 0)
+            {
+                var r = overlappingRentals[0];
+
+                var overlapEnd =
+                    r.ActualReturnDate ?? r.ExpectedReturnDate;
+
+                MessageBox.Show(
+                    $"This vehicle is already rented from " +
+                    $"{r.PickupDate:yyyy-MM-dd} to {overlapEnd:yyyy-MM-dd}.\n\n" +
+                    $"Please choose another vehicle or adjust the reservation dates.",
+                    "Rental Conflict",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
+                return;
+            }
+
 
             try
             {

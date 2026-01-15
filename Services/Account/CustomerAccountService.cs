@@ -48,11 +48,13 @@ public class CustomerAccountService
         var agentId =
             Session.CurrentUser!.Id;
 
-        return _repo.Create(
+        var accountId = _repo.Create(
             customerId,
             username,
             passwordHash,
             agentId);
+
+        return accountId;
     }
 
     // =====================================================
@@ -101,6 +103,7 @@ public class CustomerAccountService
         _repo.UpdatePassword(
             accountId,
             hash);
+        
     }
 
     // =====================================================
@@ -110,8 +113,11 @@ public class CustomerAccountService
     public void DisableAccount(int accountId)
     {
         EnsureAgent();
+
         _repo.Disable(accountId);
+        
     }
+
 
     // =====================================================
     // HELPERS

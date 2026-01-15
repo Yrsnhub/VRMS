@@ -39,7 +39,10 @@ namespace VRMS.UI.Forms.Select
             {
                 // Get all available vehicles
                 var allVehicles = _vehicleService.GetAllVehicles()
-                    .FindAll(v => v.Status == VehicleStatus.Available);
+                    .Where(v =>
+                        v.Status != VehicleStatus.Retired &&
+                        v.Status != VehicleStatus.OutOfService)
+                    .ToList();
 
                 // Apply search filter if provided
                 if (!string.IsNullOrWhiteSpace(searchTerm))
