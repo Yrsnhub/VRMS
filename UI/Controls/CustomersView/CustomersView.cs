@@ -90,6 +90,12 @@ namespace VRMS.UI.Controls.CustomersView
 
             dgvCustomers.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
+            // Set column header style
+            dgvCustomers.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(32, 191, 158);
+            dgvCustomers.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            dgvCustomers.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+            dgvCustomers.EnableHeadersVisualStyles = false;
+
             dgvCustomers.Columns.Add(new DataGridViewTextBoxColumn
             {
                 HeaderText = "First Name",
@@ -103,7 +109,7 @@ namespace VRMS.UI.Controls.CustomersView
                 DataPropertyName = "LastName",
                 FillWeight = 30
             });
-            
+
             dgvCustomers.Columns.Add(new DataGridViewTextBoxColumn
             {
                 HeaderText = "Email",
@@ -124,8 +130,6 @@ namespace VRMS.UI.Controls.CustomersView
                 DataPropertyName = "Phone",
                 FillWeight = 20
             });
-            
-            
         }
 
         private void TxtSearch_TextChanged(object? sender, EventArgs e)
