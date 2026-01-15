@@ -6,6 +6,7 @@ using VRMS.Forms;
 using VRMS.Services.Account;
 using VRMS.UI.ApplicationService;
 using VRMS.UI.Config.Animation;
+using VRMS.UI.Config.Support;
 
 namespace VRMS.UI.Forms
 {
@@ -16,9 +17,6 @@ namespace VRMS.UI.Forms
 
         private readonly UserService _userService =
             ApplicationServices.UserService;
-
-        private readonly CustomerAuthService _customerAuthService =
-            ApplicationServices.CustomerAuthService;
 
         public Welcome()
         {
@@ -92,6 +90,8 @@ namespace VRMS.UI.Forms
             if (login.LoggedInUser != null)
             {
                 // ✅ SET GLOBAL SESSION STATE (THIS WAS MISSING)
+                Session.CurrentUser = login.LoggedInUser;
+                
                 Program.CurrentUserId = login.LoggedInUser.Id;
                 Program.CurrentUsername = login.LoggedInUser.Username;
                 Program.CurrentUserRole = login.LoggedInUser.Role.ToString();
