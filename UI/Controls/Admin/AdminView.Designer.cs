@@ -31,46 +31,54 @@
             pnlHeader = new Panel();
             lblTitle = new Label();
             tcAdmin = new TabControl();
-            tpUsers = new TabPage();
+            tpPendingApprovals = new TabPage();
             splitContainer1 = new SplitContainer();
-            dgvUsers = new DataGridView();
+            dgvPendingUsers = new DataGridView();
+            colUsername = new DataGridViewTextBoxColumn();
+            colFullName = new DataGridViewTextBoxColumn();
+            colEmail = new DataGridViewTextBoxColumn();
+            colRequestedDate = new DataGridViewTextBoxColumn();
+            colApprove = new DataGridViewButtonColumn();
+            colDecline = new DataGridViewButtonColumn();
+            gbPendingListActions = new GroupBox();
+            btnRefreshPending = new Button();
+            btnExportPending = new Button();
+            gbApprovalStats = new GroupBox();
+            lblTotalPending = new Label();
+            lblTotalLabel = new Label();
+            lblApprovedToday = new Label();
+            lblApprovedTodayLabel = new Label();
+            lblDeclinedToday = new Label();
+            lblDeclinedTodayLabel = new Label();
+            tpUserManagement = new TabPage();
+            splitContainer2 = new SplitContainer();
+            dgvAllUsers = new DataGridView();
             gbUserListActions = new GroupBox();
             btnAddUser = new Button();
             btnEditUser = new Button();
             btnDeleteUser = new Button();
-            btnRefresh = new Button();
-            pnlUserManagement = new Panel();
-            gbUserDetails = new GroupBox();
-            txtEmail = new TextBox();
-            lblEmail = new Label();
-            txtUsername = new TextBox();
-            lblUsername = new Label();
-            txtFullName = new TextBox();
-            lblFullName = new Label();
-            cbRole = new ComboBox();
-            lblRole = new Label();
-            gbActions = new GroupBox();
-            btnApprove = new Button();
-            btnReject = new Button();
-            btnDeactivate = new Button();
-            btnResetPassword = new Button();
-            btnSaveUser = new Button();
+            btnRefreshAllUsers = new Button();
             tpSettings = new TabPage();
             btnSaveSettings = new Button();
             txtSystemName = new TextBox();
             lblSystemName = new Label();
             pnlHeader.SuspendLayout();
             tcAdmin.SuspendLayout();
-            tpUsers.SuspendLayout();
+            tpPendingApprovals.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
             splitContainer1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)dgvUsers).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dgvPendingUsers).BeginInit();
+            gbPendingListActions.SuspendLayout();
+            gbApprovalStats.SuspendLayout();
+            tpUserManagement.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)splitContainer2).BeginInit();
+            splitContainer2.Panel1.SuspendLayout();
+            splitContainer2.Panel2.SuspendLayout();
+            splitContainer2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvAllUsers).BeginInit();
             gbUserListActions.SuspendLayout();
-            pnlUserManagement.SuspendLayout();
-            gbUserDetails.SuspendLayout();
-            gbActions.SuspendLayout();
             tpSettings.SuspendLayout();
             SuspendLayout();
             // 
@@ -81,7 +89,7 @@
             pnlHeader.Dock = DockStyle.Top;
             pnlHeader.Location = new Point(0, 0);
             pnlHeader.Name = "pnlHeader";
-            pnlHeader.Size = new Size(1000, 100);
+            pnlHeader.Size = new Size(1263, 100);
             pnlHeader.TabIndex = 0;
             // 
             // lblTitle
@@ -97,7 +105,8 @@
             // 
             // tcAdmin
             // 
-            tcAdmin.Controls.Add(tpUsers);
+            tcAdmin.Controls.Add(tpPendingApprovals);
+            tcAdmin.Controls.Add(tpUserManagement);
             tcAdmin.Controls.Add(tpSettings);
             tcAdmin.Dock = DockStyle.Fill;
             tcAdmin.Font = new Font("Segoe UI", 10F);
@@ -105,20 +114,20 @@
             tcAdmin.Location = new Point(0, 100);
             tcAdmin.Name = "tcAdmin";
             tcAdmin.SelectedIndex = 0;
-            tcAdmin.Size = new Size(1000, 775);
+            tcAdmin.Size = new Size(1263, 775);
             tcAdmin.SizeMode = TabSizeMode.FillToRight;
             tcAdmin.TabIndex = 1;
             // 
-            // tpUsers
+            // tpPendingApprovals
             // 
-            tpUsers.Controls.Add(splitContainer1);
-            tpUsers.Location = new Point(4, 44);
-            tpUsers.Name = "tpUsers";
-            tpUsers.Padding = new Padding(10, 12, 10, 12);
-            tpUsers.Size = new Size(992, 727);
-            tpUsers.TabIndex = 0;
-            tpUsers.Text = "User Management";
-            tpUsers.UseVisualStyleBackColor = true;
+            tpPendingApprovals.Controls.Add(splitContainer1);
+            tpPendingApprovals.Location = new Point(4, 44);
+            tpPendingApprovals.Name = "tpPendingApprovals";
+            tpPendingApprovals.Padding = new Padding(10, 12, 10, 12);
+            tpPendingApprovals.Size = new Size(1255, 727);
+            tpPendingApprovals.TabIndex = 0;
+            tpPendingApprovals.Text = "Pending Approvals";
+            tpPendingApprovals.UseVisualStyleBackColor = true;
             // 
             // splitContainer1
             // 
@@ -128,50 +137,276 @@
             // 
             // splitContainer1.Panel1
             // 
-            splitContainer1.Panel1.Controls.Add(dgvUsers);
-            splitContainer1.Panel1.Controls.Add(gbUserListActions);
+            splitContainer1.Panel1.Controls.Add(dgvPendingUsers);
+            splitContainer1.Panel1.Controls.Add(gbPendingListActions);
             // 
             // splitContainer1.Panel2
             // 
-            splitContainer1.Panel2.Controls.Add(pnlUserManagement);
-            splitContainer1.Size = new Size(972, 703);
-            splitContainer1.SplitterDistance = 650;
+            splitContainer1.Panel2.Controls.Add(gbApprovalStats);
+            splitContainer1.Size = new Size(1235, 703);
+            splitContainer1.SplitterDistance = 889;
             splitContainer1.SplitterWidth = 10;
             splitContainer1.TabIndex = 0;
-            splitContainer1.SplitterMoved += splitContainer1_SplitterMoved;
             // 
-            // dgvUsers
+            // dgvPendingUsers
             // 
-            dgvUsers.AllowUserToAddRows = false;
-            dgvUsers.AllowUserToDeleteRows = false;
-            dgvUsers.BackgroundColor = Color.White;
-            dgvUsers.BorderStyle = BorderStyle.None;
-            dgvUsers.ColumnHeadersHeight = 40;
-            dgvUsers.Dock = DockStyle.Fill;
-            dgvUsers.Location = new Point(0, 112);
-            dgvUsers.MultiSelect = false;
-            dgvUsers.Name = "dgvUsers";
-            dgvUsers.ReadOnly = true;
-            dgvUsers.RowHeadersVisible = false;
-            dgvUsers.RowHeadersWidth = 51;
-            dgvUsers.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvUsers.Size = new Size(650, 591);
-            dgvUsers.TabIndex = 1;
+            dgvPendingUsers.AllowUserToAddRows = false;
+            dgvPendingUsers.AllowUserToDeleteRows = false;
+            dgvPendingUsers.AllowUserToResizeRows = false;
+            dgvPendingUsers.BackgroundColor = Color.White;
+            dgvPendingUsers.BorderStyle = BorderStyle.None;
+            dgvPendingUsers.ColumnHeadersHeight = 50;
+            dgvPendingUsers.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            dgvPendingUsers.Columns.AddRange(new DataGridViewColumn[] { colUsername, colFullName, colEmail, colRequestedDate, colApprove, colDecline });
+            dgvPendingUsers.Dock = DockStyle.Fill;
+            dgvPendingUsers.GridColor = Color.Gainsboro;
+            dgvPendingUsers.Location = new Point(0, 112);
+            dgvPendingUsers.MultiSelect = false;
+            dgvPendingUsers.Name = "dgvPendingUsers";
+            dgvPendingUsers.ReadOnly = true;
+            dgvPendingUsers.RowHeadersVisible = false;
+            dgvPendingUsers.RowHeadersWidth = 51;
+            dgvPendingUsers.RowTemplate.Height = 45;
+            dgvPendingUsers.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvPendingUsers.Size = new Size(889, 591);
+            dgvPendingUsers.TabIndex = 2;
+            // 
+            // colUsername
+            // 
+            colUsername.DataPropertyName = "Username";
+            colUsername.HeaderText = "Username";
+            colUsername.MinimumWidth = 120;
+            colUsername.Name = "colUsername";
+            colUsername.ReadOnly = true;
+            colUsername.Width = 150;
+            // 
+            // colFullName
+            // 
+            colFullName.DataPropertyName = "FullName";
+            colFullName.HeaderText = "Full Name";
+            colFullName.MinimumWidth = 150;
+            colFullName.Name = "colFullName";
+            colFullName.ReadOnly = true;
+            colFullName.Width = 200;
+            // 
+            // colEmail
+            // 
+            colEmail.DataPropertyName = "Email";
+            colEmail.HeaderText = "Email Address";
+            colEmail.MinimumWidth = 180;
+            colEmail.Name = "colEmail";
+            colEmail.ReadOnly = true;
+            colEmail.Width = 220;
+            // 
+            // colRequestedDate
+            // 
+            colRequestedDate.DataPropertyName = "RequestedDate";
+            colRequestedDate.HeaderText = "Requested Date";
+            colRequestedDate.MinimumWidth = 120;
+            colRequestedDate.Name = "colRequestedDate";
+            colRequestedDate.ReadOnly = true;
+            colRequestedDate.Width = 150;
+            // 
+            // colApprove
+            // 
+            colApprove.HeaderText = "";
+            colApprove.MinimumWidth = 80;
+            colApprove.Name = "colApprove";
+            colApprove.ReadOnly = true;
+            colApprove.Text = "Approve";
+            colApprove.UseColumnTextForButtonValue = true;
+            colApprove.Width = 80;
+            // 
+            // colDecline
+            // 
+            colDecline.HeaderText = "";
+            colDecline.MinimumWidth = 80;
+            colDecline.Name = "colDecline";
+            colDecline.ReadOnly = true;
+            colDecline.Text = "Decline";
+            colDecline.UseColumnTextForButtonValue = true;
+            colDecline.Width = 80;
+            // 
+            // gbPendingListActions
+            // 
+            gbPendingListActions.Controls.Add(btnRefreshPending);
+            gbPendingListActions.Controls.Add(btnExportPending);
+            gbPendingListActions.Dock = DockStyle.Top;
+            gbPendingListActions.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
+            gbPendingListActions.Location = new Point(0, 0);
+            gbPendingListActions.Name = "gbPendingListActions";
+            gbPendingListActions.Size = new Size(889, 112);
+            gbPendingListActions.TabIndex = 1;
+            gbPendingListActions.TabStop = false;
+            gbPendingListActions.Text = "Pending User Approvals";
+            // 
+            // btnRefreshPending
+            // 
+            btnRefreshPending.BackColor = Color.FromArgb(52, 152, 219);
+            btnRefreshPending.FlatStyle = FlatStyle.Flat;
+            btnRefreshPending.ForeColor = Color.White;
+            btnRefreshPending.Location = new Point(20, 44);
+            btnRefreshPending.Name = "btnRefreshPending";
+            btnRefreshPending.Size = new Size(140, 44);
+            btnRefreshPending.TabIndex = 0;
+            btnRefreshPending.Text = "Refresh List";
+            btnRefreshPending.UseVisualStyleBackColor = false;
+            // 
+            // btnExportPending
+            // 
+            btnExportPending.BackColor = Color.FromArgb(155, 89, 182);
+            btnExportPending.FlatStyle = FlatStyle.Flat;
+            btnExportPending.ForeColor = Color.White;
+            btnExportPending.Location = new Point(180, 44);
+            btnExportPending.Name = "btnExportPending";
+            btnExportPending.Size = new Size(140, 44);
+            btnExportPending.TabIndex = 1;
+            btnExportPending.Text = "Export to CSV";
+            btnExportPending.UseVisualStyleBackColor = false;
+            // 
+            // gbApprovalStats
+            // 
+            gbApprovalStats.Controls.Add(lblTotalPending);
+            gbApprovalStats.Controls.Add(lblTotalLabel);
+            gbApprovalStats.Controls.Add(lblApprovedToday);
+            gbApprovalStats.Controls.Add(lblApprovedTodayLabel);
+            gbApprovalStats.Controls.Add(lblDeclinedToday);
+            gbApprovalStats.Controls.Add(lblDeclinedTodayLabel);
+            gbApprovalStats.Dock = DockStyle.Top;
+            gbApprovalStats.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
+            gbApprovalStats.Location = new Point(0, 0);
+            gbApprovalStats.Name = "gbApprovalStats";
+            gbApprovalStats.Padding = new Padding(15);
+            gbApprovalStats.Size = new Size(336, 703);
+            gbApprovalStats.TabIndex = 0;
+            gbApprovalStats.TabStop = false;
+            gbApprovalStats.Text = "Approval Statistics";
+            // 
+            // lblTotalPending
+            // 
+            lblTotalPending.AutoSize = true;
+            lblTotalPending.Font = new Font("Segoe UI", 28F, FontStyle.Bold);
+            lblTotalPending.ForeColor = Color.FromArgb(243, 156, 18);
+            lblTotalPending.Location = new Point(18, 69);
+            lblTotalPending.Name = "lblTotalPending";
+            lblTotalPending.Size = new Size(81, 62);
+            lblTotalPending.TabIndex = 5;
+            lblTotalPending.Text = "12";
+            // 
+            // lblTotalLabel
+            // 
+            lblTotalLabel.AutoSize = true;
+            lblTotalLabel.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblTotalLabel.Location = new Point(18, 45);
+            lblTotalLabel.Name = "lblTotalLabel";
+            lblTotalLabel.Size = new Size(99, 20);
+            lblTotalLabel.TabIndex = 4;
+            lblTotalLabel.Text = "Total Pending";
+            // 
+            // lblApprovedToday
+            // 
+            lblApprovedToday.AutoSize = true;
+            lblApprovedToday.Font = new Font("Segoe UI", 28F, FontStyle.Bold);
+            lblApprovedToday.ForeColor = Color.FromArgb(46, 204, 113);
+            lblApprovedToday.Location = new Point(18, 202);
+            lblApprovedToday.Name = "lblApprovedToday";
+            lblApprovedToday.Size = new Size(81, 62);
+            lblApprovedToday.TabIndex = 3;
+            lblApprovedToday.Text = "05";
+            // 
+            // lblApprovedTodayLabel
+            // 
+            lblApprovedTodayLabel.AutoSize = true;
+            lblApprovedTodayLabel.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblApprovedTodayLabel.Location = new Point(18, 178);
+            lblApprovedTodayLabel.Name = "lblApprovedTodayLabel";
+            lblApprovedTodayLabel.Size = new Size(119, 20);
+            lblApprovedTodayLabel.TabIndex = 2;
+            lblApprovedTodayLabel.Text = "Approved Today";
+            // 
+            // lblDeclinedToday
+            // 
+            lblDeclinedToday.AutoSize = true;
+            lblDeclinedToday.Font = new Font("Segoe UI", 28F, FontStyle.Bold);
+            lblDeclinedToday.ForeColor = Color.FromArgb(231, 76, 60);
+            lblDeclinedToday.Location = new Point(18, 335);
+            lblDeclinedToday.Name = "lblDeclinedToday";
+            lblDeclinedToday.Size = new Size(81, 62);
+            lblDeclinedToday.TabIndex = 1;
+            lblDeclinedToday.Text = "02";
+            // 
+            // lblDeclinedTodayLabel
+            // 
+            lblDeclinedTodayLabel.AutoSize = true;
+            lblDeclinedTodayLabel.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblDeclinedTodayLabel.Location = new Point(18, 311);
+            lblDeclinedTodayLabel.Name = "lblDeclinedTodayLabel";
+            lblDeclinedTodayLabel.Size = new Size(112, 20);
+            lblDeclinedTodayLabel.TabIndex = 0;
+            lblDeclinedTodayLabel.Text = "Declined Today";
+            // 
+            // tpUserManagement
+            // 
+            tpUserManagement.Controls.Add(splitContainer2);
+            tpUserManagement.Location = new Point(4, 44);
+            tpUserManagement.Name = "tpUserManagement";
+            tpUserManagement.Padding = new Padding(10, 12, 10, 12);
+            tpUserManagement.Size = new Size(1255, 727);
+            tpUserManagement.TabIndex = 1;
+            tpUserManagement.Text = "All Users";
+            tpUserManagement.UseVisualStyleBackColor = true;
+            // 
+            // splitContainer2
+            // 
+            splitContainer2.Dock = DockStyle.Fill;
+            splitContainer2.Location = new Point(10, 12);
+            splitContainer2.Name = "splitContainer2";
+            splitContainer2.Orientation = Orientation.Horizontal;
+            // 
+            // splitContainer2.Panel1
+            // 
+            splitContainer2.Panel1.Controls.Add(dgvAllUsers);
+            // 
+            // splitContainer2.Panel2
+            // 
+            splitContainer2.Panel2.Controls.Add(gbUserListActions);
+            splitContainer2.Size = new Size(1235, 703);
+            splitContainer2.SplitterDistance = 573;
+            splitContainer2.SplitterWidth = 10;
+            splitContainer2.TabIndex = 0;
+            // 
+            // dgvAllUsers
+            // 
+            dgvAllUsers.AllowUserToAddRows = false;
+            dgvAllUsers.AllowUserToDeleteRows = false;
+            dgvAllUsers.BackgroundColor = Color.White;
+            dgvAllUsers.BorderStyle = BorderStyle.None;
+            dgvAllUsers.ColumnHeadersHeight = 40;
+            dgvAllUsers.Dock = DockStyle.Fill;
+            dgvAllUsers.Location = new Point(0, 0);
+            dgvAllUsers.MultiSelect = false;
+            dgvAllUsers.Name = "dgvAllUsers";
+            dgvAllUsers.ReadOnly = true;
+            dgvAllUsers.RowHeadersVisible = false;
+            dgvAllUsers.RowHeadersWidth = 51;
+            dgvAllUsers.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvAllUsers.Size = new Size(1235, 573);
+            dgvAllUsers.TabIndex = 0;
             // 
             // gbUserListActions
             // 
             gbUserListActions.Controls.Add(btnAddUser);
             gbUserListActions.Controls.Add(btnEditUser);
             gbUserListActions.Controls.Add(btnDeleteUser);
-            gbUserListActions.Controls.Add(btnRefresh);
-            gbUserListActions.Dock = DockStyle.Top;
+            gbUserListActions.Controls.Add(btnRefreshAllUsers);
+            gbUserListActions.Dock = DockStyle.Fill;
             gbUserListActions.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             gbUserListActions.Location = new Point(0, 0);
             gbUserListActions.Name = "gbUserListActions";
-            gbUserListActions.Size = new Size(650, 112);
+            gbUserListActions.Size = new Size(1235, 120);
             gbUserListActions.TabIndex = 0;
             gbUserListActions.TabStop = false;
-            gbUserListActions.Text = "User List";
+            gbUserListActions.Text = "User Management";
             // 
             // btnAddUser
             // 
@@ -180,7 +415,7 @@
             btnAddUser.ForeColor = Color.White;
             btnAddUser.Location = new Point(20, 44);
             btnAddUser.Name = "btnAddUser";
-            btnAddUser.Size = new Size(120, 44);
+            btnAddUser.Size = new Size(140, 44);
             btnAddUser.TabIndex = 0;
             btnAddUser.Text = "+ Add User";
             btnAddUser.UseVisualStyleBackColor = false;
@@ -190,9 +425,9 @@
             btnEditUser.BackColor = Color.FromArgb(243, 156, 18);
             btnEditUser.FlatStyle = FlatStyle.Flat;
             btnEditUser.ForeColor = Color.White;
-            btnEditUser.Location = new Point(160, 44);
+            btnEditUser.Location = new Point(180, 44);
             btnEditUser.Name = "btnEditUser";
-            btnEditUser.Size = new Size(120, 44);
+            btnEditUser.Size = new Size(140, 44);
             btnEditUser.TabIndex = 1;
             btnEditUser.Text = "Edit User";
             btnEditUser.UseVisualStyleBackColor = false;
@@ -202,197 +437,24 @@
             btnDeleteUser.BackColor = Color.FromArgb(231, 76, 60);
             btnDeleteUser.FlatStyle = FlatStyle.Flat;
             btnDeleteUser.ForeColor = Color.White;
-            btnDeleteUser.Location = new Point(300, 44);
+            btnDeleteUser.Location = new Point(340, 44);
             btnDeleteUser.Name = "btnDeleteUser";
-            btnDeleteUser.Size = new Size(120, 44);
+            btnDeleteUser.Size = new Size(140, 44);
             btnDeleteUser.TabIndex = 2;
             btnDeleteUser.Text = "Delete User";
             btnDeleteUser.UseVisualStyleBackColor = false;
             // 
-            // btnRefresh
+            // btnRefreshAllUsers
             // 
-            btnRefresh.BackColor = Color.FromArgb(52, 152, 219);
-            btnRefresh.FlatStyle = FlatStyle.Flat;
-            btnRefresh.ForeColor = Color.White;
-            btnRefresh.Location = new Point(508, 44);
-            btnRefresh.Name = "btnRefresh";
-            btnRefresh.Size = new Size(120, 44);
-            btnRefresh.TabIndex = 3;
-            btnRefresh.Text = "Refresh";
-            btnRefresh.UseVisualStyleBackColor = false;
-            // 
-            // pnlUserManagement
-            // 
-            pnlUserManagement.Controls.Add(gbUserDetails);
-            pnlUserManagement.Controls.Add(gbActions);
-            pnlUserManagement.Dock = DockStyle.Fill;
-            pnlUserManagement.Location = new Point(0, 0);
-            pnlUserManagement.Name = "pnlUserManagement";
-            pnlUserManagement.Padding = new Padding(10, 12, 10, 12);
-            pnlUserManagement.Size = new Size(312, 703);
-            pnlUserManagement.TabIndex = 0;
-            // 
-            // gbUserDetails
-            // 
-            gbUserDetails.Controls.Add(txtEmail);
-            gbUserDetails.Controls.Add(lblEmail);
-            gbUserDetails.Controls.Add(txtUsername);
-            gbUserDetails.Controls.Add(lblUsername);
-            gbUserDetails.Controls.Add(txtFullName);
-            gbUserDetails.Controls.Add(lblFullName);
-            gbUserDetails.Controls.Add(cbRole);
-            gbUserDetails.Controls.Add(lblRole);
-            gbUserDetails.Dock = DockStyle.Top;
-            gbUserDetails.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
-            gbUserDetails.Location = new Point(10, 12);
-            gbUserDetails.Name = "gbUserDetails";
-            gbUserDetails.Size = new Size(292, 335);
-            gbUserDetails.TabIndex = 0;
-            gbUserDetails.TabStop = false;
-            gbUserDetails.Text = "User Details";
-            // 
-            // txtEmail
-            // 
-            txtEmail.Location = new Point(20, 225);
-            txtEmail.Name = "txtEmail";
-            txtEmail.Size = new Size(250, 29);
-            txtEmail.TabIndex = 7;
-            // 
-            // lblEmail
-            // 
-            lblEmail.AutoSize = true;
-            lblEmail.Location = new Point(17, 196);
-            lblEmail.Name = "lblEmail";
-            lblEmail.Size = new Size(48, 21);
-            lblEmail.TabIndex = 6;
-            lblEmail.Text = "Email";
-            // 
-            // txtUsername
-            // 
-            txtUsername.Location = new Point(20, 88);
-            txtUsername.Name = "txtUsername";
-            txtUsername.Size = new Size(250, 29);
-            txtUsername.TabIndex = 5;
-            // 
-            // lblUsername
-            // 
-            lblUsername.AutoSize = true;
-            lblUsername.Location = new Point(17, 59);
-            lblUsername.Name = "lblUsername";
-            lblUsername.Size = new Size(83, 21);
-            lblUsername.TabIndex = 4;
-            lblUsername.Text = "Username";
-            // 
-            // txtFullName
-            // 
-            txtFullName.Location = new Point(20, 156);
-            txtFullName.Name = "txtFullName";
-            txtFullName.Size = new Size(250, 29);
-            txtFullName.TabIndex = 3;
-            // 
-            // lblFullName
-            // 
-            lblFullName.AutoSize = true;
-            lblFullName.Location = new Point(17, 128);
-            lblFullName.Name = "lblFullName";
-            lblFullName.Size = new Size(82, 21);
-            lblFullName.TabIndex = 2;
-            lblFullName.Text = "Full Name";
-            // 
-            // cbRole
-            // 
-            cbRole.DropDownStyle = ComboBoxStyle.DropDownList;
-            cbRole.FormattingEnabled = true;
-            cbRole.Items.AddRange(new object[] { "Administrator", "Manager", "User", "Viewer" });
-            cbRole.Location = new Point(20, 294);
-            cbRole.Name = "cbRole";
-            cbRole.Size = new Size(250, 29);
-            cbRole.TabIndex = 1;
-            // 
-            // lblRole
-            // 
-            lblRole.AutoSize = true;
-            lblRole.Location = new Point(17, 265);
-            lblRole.Name = "lblRole";
-            lblRole.Size = new Size(43, 21);
-            lblRole.TabIndex = 0;
-            lblRole.Text = "Role";
-            // 
-            // gbActions
-            // 
-            gbActions.Controls.Add(btnApprove);
-            gbActions.Controls.Add(btnReject);
-            gbActions.Controls.Add(btnDeactivate);
-            gbActions.Controls.Add(btnResetPassword);
-            gbActions.Controls.Add(btnSaveUser);
-            gbActions.Dock = DockStyle.Fill;
-            gbActions.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
-            gbActions.Location = new Point(10, 12);
-            gbActions.Name = "gbActions";
-            gbActions.Size = new Size(292, 679);
-            gbActions.TabIndex = 1;
-            gbActions.TabStop = false;
-            gbActions.Text = "Actions";
-            // 
-            // btnApprove
-            // 
-            btnApprove.BackColor = Color.FromArgb(46, 204, 113);
-            btnApprove.FlatStyle = FlatStyle.Flat;
-            btnApprove.ForeColor = Color.White;
-            btnApprove.Location = new Point(20, 50);
-            btnApprove.Name = "btnApprove";
-            btnApprove.Size = new Size(250, 44);
-            btnApprove.TabIndex = 0;
-            btnApprove.Text = "Approve User";
-            btnApprove.UseVisualStyleBackColor = false;
-            // 
-            // btnReject
-            // 
-            btnReject.BackColor = Color.FromArgb(231, 76, 60);
-            btnReject.FlatStyle = FlatStyle.Flat;
-            btnReject.ForeColor = Color.White;
-            btnReject.Location = new Point(20, 106);
-            btnReject.Name = "btnReject";
-            btnReject.Size = new Size(250, 44);
-            btnReject.TabIndex = 1;
-            btnReject.Text = "Reject User";
-            btnReject.UseVisualStyleBackColor = false;
-            // 
-            // btnDeactivate
-            // 
-            btnDeactivate.BackColor = Color.FromArgb(149, 165, 166);
-            btnDeactivate.FlatStyle = FlatStyle.Flat;
-            btnDeactivate.ForeColor = Color.White;
-            btnDeactivate.Location = new Point(20, 219);
-            btnDeactivate.Name = "btnDeactivate";
-            btnDeactivate.Size = new Size(250, 44);
-            btnDeactivate.TabIndex = 3;
-            btnDeactivate.Text = "Deactivate User";
-            btnDeactivate.UseVisualStyleBackColor = false;
-            // 
-            // btnResetPassword
-            // 
-            btnResetPassword.BackColor = Color.FromArgb(243, 156, 18);
-            btnResetPassword.FlatStyle = FlatStyle.Flat;
-            btnResetPassword.ForeColor = Color.White;
-            btnResetPassword.Location = new Point(20, 162);
-            btnResetPassword.Name = "btnResetPassword";
-            btnResetPassword.Size = new Size(250, 44);
-            btnResetPassword.TabIndex = 2;
-            btnResetPassword.Text = "Reset Password";
-            btnResetPassword.UseVisualStyleBackColor = false;
-            // 
-            // btnSaveUser
-            // 
-            btnSaveUser.BackColor = Color.FromArgb(52, 152, 219);
-            btnSaveUser.FlatStyle = FlatStyle.Flat;
-            btnSaveUser.ForeColor = Color.White;
-            btnSaveUser.Location = new Point(20, 275);
-            btnSaveUser.Name = "btnSaveUser";
-            btnSaveUser.Size = new Size(250, 44);
-            btnSaveUser.TabIndex = 4;
-            btnSaveUser.Text = "Save Changes";
-            btnSaveUser.UseVisualStyleBackColor = false;
+            btnRefreshAllUsers.BackColor = Color.FromArgb(52, 152, 219);
+            btnRefreshAllUsers.FlatStyle = FlatStyle.Flat;
+            btnRefreshAllUsers.ForeColor = Color.White;
+            btnRefreshAllUsers.Location = new Point(812, 44);
+            btnRefreshAllUsers.Name = "btnRefreshAllUsers";
+            btnRefreshAllUsers.Size = new Size(140, 44);
+            btnRefreshAllUsers.TabIndex = 3;
+            btnRefreshAllUsers.Text = "Refresh";
+            btnRefreshAllUsers.UseVisualStyleBackColor = false;
             // 
             // tpSettings
             // 
@@ -445,21 +507,26 @@
             Controls.Add(tcAdmin);
             Controls.Add(pnlHeader);
             Name = "AdminView";
-            Size = new Size(1000, 875);
+            Size = new Size(1263, 875);
             pnlHeader.ResumeLayout(false);
             pnlHeader.PerformLayout();
             tcAdmin.ResumeLayout(false);
-            tpUsers.ResumeLayout(false);
+            tpPendingApprovals.ResumeLayout(false);
             splitContainer1.Panel1.ResumeLayout(false);
             splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)splitContainer1).EndInit();
             splitContainer1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)dgvUsers).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dgvPendingUsers).EndInit();
+            gbPendingListActions.ResumeLayout(false);
+            gbApprovalStats.ResumeLayout(false);
+            gbApprovalStats.PerformLayout();
+            tpUserManagement.ResumeLayout(false);
+            splitContainer2.Panel1.ResumeLayout(false);
+            splitContainer2.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)splitContainer2).EndInit();
+            splitContainer2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)dgvAllUsers).EndInit();
             gbUserListActions.ResumeLayout(false);
-            pnlUserManagement.ResumeLayout(false);
-            gbUserDetails.ResumeLayout(false);
-            gbUserDetails.PerformLayout();
-            gbActions.ResumeLayout(false);
             tpSettings.ResumeLayout(false);
             tpSettings.PerformLayout();
             ResumeLayout(false);
@@ -470,33 +537,36 @@
         private System.Windows.Forms.Panel pnlHeader;
         private System.Windows.Forms.Label lblTitle;
         private System.Windows.Forms.TabControl tcAdmin;
-        private System.Windows.Forms.TabPage tpUsers;
+        private System.Windows.Forms.TabPage tpPendingApprovals;
         private System.Windows.Forms.SplitContainer splitContainer1;
-        private System.Windows.Forms.DataGridView dgvUsers;
+        private System.Windows.Forms.DataGridView dgvPendingUsers;
+        private System.Windows.Forms.GroupBox gbPendingListActions;
+        private System.Windows.Forms.Button btnRefreshPending;
+        private System.Windows.Forms.Button btnExportPending;
+        private System.Windows.Forms.GroupBox gbApprovalStats;
+        private System.Windows.Forms.Label lblDeclinedToday;
+        private System.Windows.Forms.Label lblDeclinedTodayLabel;
+        private System.Windows.Forms.Label lblApprovedToday;
+        private System.Windows.Forms.Label lblApprovedTodayLabel;
+        private System.Windows.Forms.Label lblTotalPending;
+        private System.Windows.Forms.Label lblTotalLabel;
+        private System.Windows.Forms.TabPage tpUserManagement;
+        private System.Windows.Forms.SplitContainer splitContainer2;
+        private System.Windows.Forms.DataGridView dgvAllUsers;
         private System.Windows.Forms.GroupBox gbUserListActions;
         private System.Windows.Forms.Button btnAddUser;
         private System.Windows.Forms.Button btnEditUser;
         private System.Windows.Forms.Button btnDeleteUser;
-        private System.Windows.Forms.Button btnRefresh;
-        private System.Windows.Forms.Panel pnlUserManagement;
-        private System.Windows.Forms.GroupBox gbUserDetails;
-        private System.Windows.Forms.TextBox txtEmail;
-        private System.Windows.Forms.Label lblEmail;
-        private System.Windows.Forms.TextBox txtUsername;
-        private System.Windows.Forms.Label lblUsername;
-        private System.Windows.Forms.TextBox txtFullName;
-        private System.Windows.Forms.Label lblFullName;
-        private System.Windows.Forms.ComboBox cbRole;
-        private System.Windows.Forms.Label lblRole;
-        private System.Windows.Forms.GroupBox gbActions;
-        private System.Windows.Forms.Button btnApprove;
-        private System.Windows.Forms.Button btnReject;
-        private System.Windows.Forms.Button btnDeactivate;
-        private System.Windows.Forms.Button btnResetPassword;
-        private System.Windows.Forms.Button btnSaveUser;
+        private System.Windows.Forms.Button btnRefreshAllUsers;
         private System.Windows.Forms.TabPage tpSettings;
         private System.Windows.Forms.Button btnSaveSettings;
         private System.Windows.Forms.TextBox txtSystemName;
         private System.Windows.Forms.Label lblSystemName;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colUsername;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colFullName;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colEmail;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colRequestedDate;
+        private System.Windows.Forms.DataGridViewButtonColumn colApprove;
+        private System.Windows.Forms.DataGridViewButtonColumn colDecline;
     }
 }

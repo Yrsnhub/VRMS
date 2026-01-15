@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
 using System.Windows.Forms;
-using VRMS.Enums;
-using VRMS.Models.Accounts;
 using VRMS.Services.Account;
 using VRMS.UI.ApplicationService;
 
@@ -32,54 +28,72 @@ namespace VRMS.Controls
             SetupGrids();
             AddUserFilters();
             WireEvents();
+            LoadStats();
         }
 
         private void SetupGrids()
         {
-            dgvUsers.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(245, 245, 245);
-            dgvUsers.AutoGenerateColumns = false;
-            dgvUsers.Columns.Clear();
+            // Setup Pending Users Grid
+            dgvPendingUsers.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(245, 245, 245);
+            dgvPendingUsers.AutoGenerateColumns = false;
 
-            dgvUsers.Columns.Add(new DataGridViewTextBoxColumn
+            // Clear existing columns if any
+            dgvPendingUsers.Columns.Clear();
+
+            // Setup All Users Grid
+            dgvAllUsers.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(245, 245, 245);
+            dgvAllUsers.AutoGenerateColumns = false;
+
+            // Configure All Users grid columns
+            dgvAllUsers.Columns.Add(new DataGridViewTextBoxColumn
             {
                 HeaderText = "ID",
-                DataPropertyName = nameof(User.Id),
+                DataPropertyName = "Id",
                 Width = 60
             });
 
-            dgvUsers.Columns.Add(new DataGridViewTextBoxColumn
+            dgvAllUsers.Columns.Add(new DataGridViewTextBoxColumn
             {
                 HeaderText = "Username",
-                DataPropertyName = nameof(User.Username),
+                DataPropertyName = "Username",
                 AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill,
                 FillWeight = 40
             });
 
-            dgvUsers.Columns.Add(new DataGridViewTextBoxColumn
+            dgvAllUsers.Columns.Add(new DataGridViewTextBoxColumn
             {
                 HeaderText = "Full Name",
-                DataPropertyName = nameof(User.FullName),
+                DataPropertyName = "FullName",
                 AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill,
                 FillWeight = 60
             });
 
-            dgvUsers.Columns.Add(new DataGridViewTextBoxColumn
+            dgvAllUsers.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                HeaderText = "Email",
+                DataPropertyName = "Email",
+                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill,
+                FillWeight = 50
+            });
+
+            dgvAllUsers.Columns.Add(new DataGridViewTextBoxColumn
             {
                 HeaderText = "Role",
-                DataPropertyName = nameof(User.Role),
+                DataPropertyName = "Role",
                 Width = 120
             });
 
-            dgvUsers.Columns.Add(new DataGridViewCheckBoxColumn
+            dgvAllUsers.Columns.Add(new DataGridViewCheckBoxColumn
             {
                 HeaderText = "Active",
-                DataPropertyName = nameof(User.IsActive),
+                DataPropertyName = "IsActive",
                 Width = 60
             });
         }
 
         private void AddUserFilters()
         {
+            // Add filters for All Users tab
             chkShowInactive = new CheckBox
             {
                 Text = "Show inactive users",
@@ -94,70 +108,153 @@ namespace VRMS.Controls
                 DropDownStyle = ComboBoxStyle.DropDownList
             };
 
-            cmbRoleFilter.Items.Add("All");
-            cmbRoleFilter.Items.AddRange(Enum.GetNames(typeof(UserRole)));
+            cmbRoleFilter.Items.Add("All Roles");
+            cmbRoleFilter.Items.Add("Administrator");
+            cmbRoleFilter.Items.Add("Manager");
+            cmbRoleFilter.Items.Add("User");
+            cmbRoleFilter.Items.Add("Viewer");
             cmbRoleFilter.SelectedIndex = 0;
 
-            tpUsers.Controls.Add(chkShowInactive);
-            tpUsers.Controls.Add(cmbRoleFilter);
+            tpUserManagement.Controls.Add(chkShowInactive);
+            tpUserManagement.Controls.Add(cmbRoleFilter);
         }
 
         private void WireEvents()
         {
-            Load += (_, __) => ReloadUsers();
-            chkShowInactive.CheckedChanged += (_, __) => ReloadUsers();
-            cmbRoleFilter.SelectedIndexChanged += (_, __) => ReloadUsers();
-            btnAddUser.Click += btnAddUser_Click;
-            btnEditUser.Click += btnEditUser_Click;
-            btnDeleteUser.Click += btnDeleteUser_Click;
-            btnRefresh.Click += (_, __) => ReloadUsers();
+            Load += (_, __) =>
+            {
+                // Sample data for UI testing
+                LoadSampleData();
+            };
+
+            // Pending Users events
+            btnRefreshPending.Click += (_, __) => LoadSamplePendingData();
+            btnExportPending.Click += (_, __) => MessageBox.Show("Export functionality will be implemented later.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            // All Users events
+            chkShowInactive.CheckedChanged += (_, __) => LoadSampleAllUsersData();
+            cmbRoleFilter.SelectedIndexChanged += (_, __) => LoadSampleAllUsersData();
+            btnAddUser.Click += (_, __) => MessageBox.Show("Add User functionality will be implemented later.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            btnEditUser.Click += (_, __) => MessageBox.Show("Edit User functionality will be implemented later.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            btnDeleteUser.Click += (_, __) => MessageBox.Show("Delete User functionality will be implemented later.", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            btnRefreshAllUsers.Click += (_, __) => LoadSampleAllUsersData();
+
+            // Grid events - for approve/decline buttons
+            dgvPendingUsers.CellContentClick += dgvPendingUsers_CellContentClick;
         }
 
-        private void ReloadUsers()
+        private void LoadStats()
         {
-            IEnumerable<User> users = chkShowInactive.Checked
-                ? _userService.ListUsers()
-                : _userService.ListActiveUsers();
+            // Sample statistics for UI testing
+            lblTotalPending.Text = "12";
+            lblApprovedToday.Text = "5";
+            lblDeclinedToday.Text = "2";
+        }
 
-            if (cmbRoleFilter.SelectedItem is string roleText && roleText != "All")
+        private void LoadSampleData()
+        {
+            LoadSamplePendingData();
+            LoadSampleAllUsersData();
+            LoadStats();
+        }
+
+        private void LoadSamplePendingData()
+        {
+            // Create sample data for pending users grid
+            var sampleData = new[]
             {
-                var role = Enum.Parse<UserRole>(roleText);
-                users = users.Where(u => u.Role == role);
-            }
+                new { Username = "john.doe", FullName = "John Doe", Email = "john.doe@example.com", RequestedDate = "2024-01-15 09:30:00" },
+                new { Username = "jane.smith", FullName = "Jane Smith", Email = "jane.smith@example.com", RequestedDate = "2024-01-15 10:15:00" },
+                new { Username = "bob.johnson", FullName = "Bob Johnson", Email = "bob.j@example.com", RequestedDate = "2024-01-14 14:20:00" },
+                new { Username = "alice.williams", FullName = "Alice Williams", Email = "alice.w@example.com", RequestedDate = "2024-01-14 16:45:00" },
+                new { Username = "charlie.brown", FullName = "Charlie Brown", Email = "charlie.b@example.com", RequestedDate = "2024-01-13 11:10:00" }
+            };
 
-            dgvUsers.DataSource = users.ToList();
+            dgvPendingUsers.DataSource = sampleData;
+        }
+
+        private void LoadSampleAllUsersData()
+        {
+            // Create sample data for all users grid
+            var sampleData = new[]
+            {
+                new { Id = 1, Username = "admin", FullName = "System Administrator", Email = "admin@system.com", Role = "Administrator", IsActive = true },
+                new { Id = 2, Username = "manager1", FullName = "Project Manager", Email = "manager@company.com", Role = "Manager", IsActive = true },
+                new { Id = 3, Username = "user1", FullName = "Regular User", Email = "user@company.com", Role = "User", IsActive = true },
+                new { Id = 4, Username = "inactive1", FullName = "Inactive User", Email = "inactive@company.com", Role = "Viewer", IsActive = false },
+                new { Id = 5, Username = "viewer1", FullName = "Data Viewer", Email = "viewer@company.com", Role = "Viewer", IsActive = true }
+            };
+
+            dgvAllUsers.DataSource = sampleData;
+        }
+
+        private void dgvPendingUsers_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            // Check if click is on a button column
+            if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
+
+            var grid = sender as DataGridView;
+            var column = grid?.Columns[e.ColumnIndex];
+
+            if (column is DataGridViewButtonColumn && grid?.Rows[e.RowIndex].DataBoundItem is object user)
+            {
+                // Get username from the row data
+                var username = grid.Rows[e.RowIndex].Cells["colUsername"].Value?.ToString() ?? "Unknown";
+
+                if (column.Name == "colApprove")
+                {
+                    if (MessageBox.Show(
+                        $"Approve user '{username}'?",
+                        "Confirm Approval",
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Question) == DialogResult.Yes)
+                    {
+                        MessageBox.Show($"User '{username}' approved (UI only - no backend).",
+                            "UI Demo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        // In real implementation, remove from grid or update status
+                    }
+                }
+                else if (column.Name == "colDecline")
+                {
+                    if (MessageBox.Show(
+                        $"Decline user '{username}'?",
+                        "Confirm Decline",
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Warning) == DialogResult.Yes)
+                    {
+                        MessageBox.Show($"User '{username}' declined (UI only - no backend).",
+                            "UI Demo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        // In real implementation, remove from grid or update status
+                    }
+                }
+            }
+        }
+
+        private void btnRefreshPending_Click(object sender, EventArgs e)
+        {
+            // This is already wired in WireEvents(), but keep as separate method if needed
+            LoadSamplePendingData();
+        }
+
+        private void btnRefreshAllUsers_Click(object sender, EventArgs e)
+        {
+            // This is already wired in WireEvents(), but keep as separate method if needed
+            LoadSampleAllUsersData();
         }
 
         private void btnAddUser_Click(object sender, EventArgs e)
-            => MessageBox.Show("Add User wiring is next.");
+        {
+            // Already wired in WireEvents()
+        }
 
         private void btnEditUser_Click(object sender, EventArgs e)
-            => MessageBox.Show("Edit User wiring is next.");
+        {
+            // Already wired in WireEvents()
+        }
 
         private void btnDeleteUser_Click(object sender, EventArgs e)
         {
-            if (dgvUsers.CurrentRow?.DataBoundItem is not User user) return;
-
-            if (MessageBox.Show(
-                $"Deactivate '{user.Username}'?",
-                "Confirm",
-                MessageBoxButtons.YesNo) == DialogResult.Yes)
-            {
-                _userService.Deactivate(user.Id);
-                ReloadUsers();
-            }
-        }
-
-        private void splitContainer1_SplitterMoved(object sender, SplitterEventArgs e)
-        {
-            BeginInvoke((MethodInvoker)delegate
-            {
-                if (!dgvUsers.IsDisposed)
-                {
-                    dgvUsers.PerformLayout();
-                    dgvUsers.Refresh();
-                }
-            });
+            // Already wired in WireEvents()
         }
     }
 }

@@ -21,14 +21,15 @@
             DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             pnlHeader = new Panel();
+            dtpWeekView = new DateTimePicker();
             dtpMonthYear = new DateTimePicker();
-            btnNextMonth = new Button();
-            btnPrevMonth = new Button();
+            btnNext = new Button();
+            btnPrev = new Button();
             lblTitle = new Label();
             cmbFilter = new ComboBox();
             cmbSort = new ComboBox();
-            btnList = new Button();
-            btnNewRental = new Button();
+            btnWeekView = new Button();
+            btnMonthView = new Button();
             pnlMain = new Panel();
             splitContainer = new SplitContainer();
             pnlVehicleList = new Panel();
@@ -52,20 +53,32 @@
             // 
             pnlHeader.BackColor = Color.White;
             pnlHeader.BorderStyle = BorderStyle.FixedSingle;
+            pnlHeader.Controls.Add(dtpWeekView);
             pnlHeader.Controls.Add(dtpMonthYear);
-            pnlHeader.Controls.Add(btnNextMonth);
-            pnlHeader.Controls.Add(btnPrevMonth);
+            pnlHeader.Controls.Add(btnNext);
+            pnlHeader.Controls.Add(btnPrev);
             pnlHeader.Controls.Add(lblTitle);
             pnlHeader.Controls.Add(cmbFilter);
             pnlHeader.Controls.Add(cmbSort);
-            pnlHeader.Controls.Add(btnList);
-            pnlHeader.Controls.Add(btnNewRental);
+            pnlHeader.Controls.Add(btnWeekView);
+            pnlHeader.Controls.Add(btnMonthView);
             pnlHeader.Dock = DockStyle.Top;
             pnlHeader.Location = new Point(0, 0);
             pnlHeader.Margin = new Padding(3, 4, 3, 4);
             pnlHeader.Name = "pnlHeader";
             pnlHeader.Size = new Size(1371, 66);
             pnlHeader.TabIndex = 0;
+            // 
+            // dtpWeekView
+            // 
+            dtpWeekView.CustomFormat = "MMM dd, yyyy";
+            dtpWeekView.Format = DateTimePickerFormat.Custom;
+            dtpWeekView.Location = new Point(171, 17);
+            dtpWeekView.Margin = new Padding(3, 4, 3, 4);
+            dtpWeekView.Name = "dtpWeekView";
+            dtpWeekView.Size = new Size(171, 27);
+            dtpWeekView.TabIndex = 11;
+            dtpWeekView.Visible = false;
             // 
             // dtpMonthYear
             // 
@@ -78,25 +91,27 @@
             dtpMonthYear.Size = new Size(171, 27);
             dtpMonthYear.TabIndex = 7;
             // 
-            // btnNextMonth
+            // btnNext
             // 
-            btnNextMonth.Location = new Point(350, 17);
-            btnNextMonth.Margin = new Padding(3, 4, 3, 4);
-            btnNextMonth.Name = "btnNextMonth";
-            btnNextMonth.Size = new Size(34, 31);
-            btnNextMonth.TabIndex = 6;
-            btnNextMonth.Text = ">";
-            btnNextMonth.UseVisualStyleBackColor = true;
+            btnNext.Location = new Point(350, 17);
+            btnNext.Margin = new Padding(3, 4, 3, 4);
+            btnNext.Name = "btnNext";
+            btnNext.Size = new Size(34, 31);
+            btnNext.TabIndex = 6;
+            btnNext.Text = ">";
+            btnNext.UseVisualStyleBackColor = true;
+            btnNext.Click += btnNext_Click;
             // 
-            // btnPrevMonth
+            // btnPrev
             // 
-            btnPrevMonth.Location = new Point(130, 17);
-            btnPrevMonth.Margin = new Padding(3, 4, 3, 4);
-            btnPrevMonth.Name = "btnPrevMonth";
-            btnPrevMonth.Size = new Size(34, 31);
-            btnPrevMonth.TabIndex = 5;
-            btnPrevMonth.Text = "<";
-            btnPrevMonth.UseVisualStyleBackColor = true;
+            btnPrev.Location = new Point(130, 17);
+            btnPrev.Margin = new Padding(3, 4, 3, 4);
+            btnPrev.Name = "btnPrev";
+            btnPrev.Size = new Size(34, 31);
+            btnPrev.TabIndex = 5;
+            btnPrev.Text = "<";
+            btnPrev.UseVisualStyleBackColor = true;
+            btnPrev.Click += btnPrev_Click;
             // 
             // lblTitle
             // 
@@ -106,8 +121,7 @@
             lblTitle.Name = "lblTitle";
             lblTitle.Size = new Size(115, 32);
             lblTitle.TabIndex = 4;
-            lblTitle.Text = "Rentals s";
-            lblTitle.Click += lblTitle_Click;
+            lblTitle.Text = "Calendar";
             // 
             // cmbFilter
             // 
@@ -131,28 +145,32 @@
             cmbSort.Size = new Size(137, 28);
             cmbSort.TabIndex = 2;
             // 
-            // btnList
+            // btnWeekView
             // 
-            btnList.Location = new Point(697, 16);
-            btnList.Margin = new Padding(3, 4, 3, 4);
-            btnList.Name = "btnList";
-            btnList.Size = new Size(86, 31);
-            btnList.TabIndex = 1;
-            btnList.Text = "List View";
-            btnList.UseVisualStyleBackColor = true;
+            btnWeekView.BackColor = SystemColors.Control;
+            btnWeekView.FlatStyle = FlatStyle.Flat;
+            btnWeekView.Location = new Point(922, 16);
+            btnWeekView.Margin = new Padding(3, 4, 3, 4);
+            btnWeekView.Name = "btnWeekView";
+            btnWeekView.Size = new Size(96, 31);
+            btnWeekView.TabIndex = 8;
+            btnWeekView.Text = "Week";
+            btnWeekView.UseVisualStyleBackColor = false;
+            btnWeekView.Click += btnWeekView_Click;
             // 
-            // btnNewRental
+            // btnMonthView
             // 
-            btnNewRental.BackColor = Color.SteelBlue;
-            btnNewRental.FlatStyle = FlatStyle.Flat;
-            btnNewRental.ForeColor = Color.White;
-            btnNewRental.Location = new Point(800, 16);
-            btnNewRental.Margin = new Padding(3, 4, 3, 4);
-            btnNewRental.Name = "btnNewRental";
-            btnNewRental.Size = new Size(114, 31);
-            btnNewRental.TabIndex = 0;
-            btnNewRental.Text = "New Rental";
-            btnNewRental.UseVisualStyleBackColor = false;
+            btnMonthView.BackColor = Color.SteelBlue;
+            btnMonthView.FlatStyle = FlatStyle.Flat;
+            btnMonthView.ForeColor = Color.White;
+            btnMonthView.Location = new Point(1026, 16);
+            btnMonthView.Margin = new Padding(3, 4, 3, 4);
+            btnMonthView.Name = "btnMonthView";
+            btnMonthView.Size = new Size(96, 31);
+            btnMonthView.TabIndex = 9;
+            btnMonthView.Text = "Month";
+            btnMonthView.UseVisualStyleBackColor = false;
+            btnMonthView.Click += btnMonthView_Click;
             // 
             // pnlMain
             // 
@@ -288,28 +306,28 @@
             pnlVehicleList.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dgvVehicles).EndInit();
             ResumeLayout(false);
-
         }
 
         #endregion
 
-        private System.Windows.Forms.Panel pnlHeader;
-        private System.Windows.Forms.DateTimePicker dtpMonthYear;
-        private System.Windows.Forms.Button btnNextMonth;
-        private System.Windows.Forms.Button btnPrevMonth;
-        private System.Windows.Forms.Label lblTitle;
-        private System.Windows.Forms.ComboBox cmbFilter;
-        private System.Windows.Forms.ComboBox cmbSort;
-        private System.Windows.Forms.Button btnList;
-        private System.Windows.Forms.Button btnNewRental;
-        private System.Windows.Forms.Panel pnlMain;
-        private System.Windows.Forms.SplitContainer splitContainer;
-        private System.Windows.Forms.Panel pnlVehicleList;
-        private System.Windows.Forms.DataGridView dgvVehicles;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colYear;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colLicense;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colModel;
-        private System.Windows.Forms.Panel pnlCalendarCanvas;
-        private System.Windows.Forms.ToolTip toolTip;
+        private Panel pnlHeader;
+        private DateTimePicker dtpMonthYear;
+        private Button btnNext;
+        private Button btnPrev;
+        private Label lblTitle;
+        private ComboBox cmbFilter;
+        private ComboBox cmbSort;
+        private Panel pnlMain;
+        private SplitContainer splitContainer;
+        private Panel pnlVehicleList;
+        private DataGridView dgvVehicles;
+        private DataGridViewTextBoxColumn colYear;
+        private DataGridViewTextBoxColumn colLicense;
+        private DataGridViewTextBoxColumn colModel;
+        private Panel pnlCalendarCanvas;
+        private ToolTip toolTip;
+        private Button btnWeekView;
+        private Button btnMonthView;
+        private DateTimePicker dtpWeekView;
     }
 }
