@@ -207,7 +207,7 @@ namespace VRMS.UI.Forms.Rentals
         {
             try
             {
-                // ---------------- VALIDATION ---------------- //asd
+                // ---------------- VALIDATION ---------------- 
 
                 if (_selectedCustomer == null)
                     throw new InvalidOperationException("Please select a customer.");
@@ -247,6 +247,32 @@ namespace VRMS.UI.Forms.Rentals
 
                 decimal securityDeposit =
                     category?.SecurityDeposit ?? 0m;
+                
+                // ---------- CHECK FOR RENTAL DATE OVERLAP ----------
+                var overlappingRentals =
+                    _vehicleService.GetOverlappingRentalsForVehicle(
+                        _selectedVehicle.Id,
+                        dtPickup.Value.Date,
+                        dtReturn.Value.Date);
+
+                if (overlappingRentals.Count > 0)
+                {
+                    var r = overlappingRentals[0];
+
+                    var overlapEnd =
+                        r.ActualReturnDate ?? r.ExpectedReturnDate;
+
+                    MessageBox.Show(
+                        $"This vehicle is already rented from " +
+                        $"{r.PickupDate:yyyy-MM-dd} to {overlapEnd:yyyy-MM-dd}.\n\n" +
+                        $"Please choose another vehicle or adjust the dates.",
+                        "Rental Conflict",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+
+                    return;
+                }
+
 
                 // ---------------- PAYMENT UI ----------------
 
