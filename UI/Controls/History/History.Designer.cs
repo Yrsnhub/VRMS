@@ -74,6 +74,13 @@
             lblSummary = new Label();
             splitContainerMain = new SplitContainer();
             panelHistoryList = new Panel();
+            dgvRentals = new DataGridView();
+            colRentalId = new DataGridViewTextBoxColumn();
+            colRentalVehicle = new DataGridViewTextBoxColumn();
+            colRentalDates = new DataGridViewTextBoxColumn();
+            colRentalStatus = new DataGridViewTextBoxColumn();
+            colRentalAmount = new DataGridViewTextBoxColumn();
+            colRentalOdo = new DataGridViewTextBoxColumn();
             panelDetailsArea = new Panel();
             panelActions = new Panel();
             btnViewReceipt = new Button();
@@ -103,18 +110,12 @@
             lblNoSelection = new Label();
             toolTip = new ToolTip(components);
             panelHeader = new Panel();
-            dgvRentals = new DataGridView();
-            colRentalId = new DataGridViewTextBoxColumn();
-            colRentalVehicle = new DataGridViewTextBoxColumn();
-            colRentalDates = new DataGridViewTextBoxColumn();
-            colRentalStatus = new DataGridViewTextBoxColumn();
-            colRentalAmount = new DataGridViewTextBoxColumn();
-            colRentalOdo = new DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)splitContainerMain).BeginInit();
             splitContainerMain.Panel1.SuspendLayout();
             splitContainerMain.Panel2.SuspendLayout();
             splitContainerMain.SuspendLayout();
             panelHistoryList.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvRentals).BeginInit();
             panelDetailsArea.SuspendLayout();
             panelActions.SuspendLayout();
             panelDetailsContent.SuspendLayout();
@@ -123,26 +124,25 @@
             ((System.ComponentModel.ISupportInitialize)picVehicle).BeginInit();
             panelDetailsHeader.SuspendLayout();
             panelNoSelection.SuspendLayout();
-            panelHeader.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)dgvRentals).BeginInit();
             SuspendLayout();
             // 
             // lblSummary
             // 
             lblSummary.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            lblSummary.BackColor = Color.Transparent;
             lblSummary.Font = new Font("Segoe UI", 10F);
-            lblSummary.ForeColor = Color.Black;
-            lblSummary.Location = new Point(900, 13);
+            lblSummary.ForeColor = Color.White;
+            lblSummary.Location = new Point(-18, 0);
             lblSummary.Name = "lblSummary";
-            lblSummary.Size = new Size(280, 40);
+            lblSummary.Size = new Size(140, 40);
             lblSummary.TabIndex = 1;
-            lblSummary.Text = "Total: 0 reservations | 0 rentals";
+            lblSummary.Text = "Total: 0 rentals";
             lblSummary.TextAlign = ContentAlignment.MiddleRight;
             // 
             // splitContainerMain
             // 
             splitContainerMain.Dock = DockStyle.Fill;
-            splitContainerMain.Location = new Point(0, 70);
+            splitContainerMain.Location = new Point(0, 10);
             splitContainerMain.Name = "splitContainerMain";
             // 
             // splitContainerMain.Panel1
@@ -154,7 +154,7 @@
             // 
             splitContainerMain.Panel2.Controls.Add(panelDetailsArea);
             splitContainerMain.Panel2.Padding = new Padding(10);
-            splitContainerMain.Size = new Size(1200, 730);
+            splitContainerMain.Size = new Size(1200, 790);
             splitContainerMain.SplitterDistance = 800;
             splitContainerMain.SplitterWidth = 1;
             splitContainerMain.TabIndex = 1;
@@ -166,8 +166,95 @@
             panelHistoryList.Dock = DockStyle.Fill;
             panelHistoryList.Location = new Point(10, 10);
             panelHistoryList.Name = "panelHistoryList";
-            panelHistoryList.Size = new Size(780, 710);
+            panelHistoryList.Size = new Size(780, 770);
             panelHistoryList.TabIndex = 0;
+            // 
+            // dgvRentals
+            // 
+            dgvRentals.AllowUserToAddRows = false;
+            dgvRentals.AllowUserToDeleteRows = false;
+            dgvRentals.AllowUserToResizeRows = false;
+            dgvRentals.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvRentals.BackgroundColor = Color.White;
+            dgvRentals.BorderStyle = BorderStyle.None;
+            dgvRentals.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+            dgvRentals.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = Color.FromArgb(32, 191, 158);
+            dataGridViewCellStyle1.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
+            dataGridViewCellStyle1.ForeColor = Color.White;
+            dataGridViewCellStyle1.Padding = new Padding(8, 0, 0, 0);
+            dataGridViewCellStyle1.SelectionBackColor = Color.FromArgb(32, 191, 158);
+            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
+            dgvRentals.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dgvRentals.ColumnHeadersHeight = 40;
+            dgvRentals.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            dgvRentals.Columns.AddRange(new DataGridViewColumn[] { colRentalId, colRentalVehicle, colRentalDates, colRentalStatus, colRentalAmount, colRentalOdo });
+            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = SystemColors.Window;
+            dataGridViewCellStyle2.Font = new Font("Segoe UI", 9F);
+            dataGridViewCellStyle2.ForeColor = Color.FromArgb(64, 64, 64);
+            dataGridViewCellStyle2.Padding = new Padding(8, 0, 0, 0);
+            dataGridViewCellStyle2.SelectionBackColor = Color.FromArgb(236, 240, 241);
+            dataGridViewCellStyle2.SelectionForeColor = Color.Black;
+            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
+            dgvRentals.DefaultCellStyle = dataGridViewCellStyle2;
+            dgvRentals.Dock = DockStyle.Fill;
+            dgvRentals.EnableHeadersVisualStyles = false;
+            dgvRentals.GridColor = Color.WhiteSmoke;
+            dgvRentals.Location = new Point(0, 0);
+            dgvRentals.MultiSelect = false;
+            dgvRentals.Name = "dgvRentals";
+            dgvRentals.ReadOnly = true;
+            dgvRentals.RowHeadersVisible = false;
+            dgvRentals.RowHeadersWidth = 51;
+            dgvRentals.RowTemplate.Height = 35;
+            dgvRentals.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvRentals.Size = new Size(780, 770);
+            dgvRentals.TabIndex = 2;
+            // 
+            // colRentalId
+            // 
+            colRentalId.HeaderText = "ID";
+            colRentalId.MinimumWidth = 6;
+            colRentalId.Name = "colRentalId";
+            colRentalId.ReadOnly = true;
+            // 
+            // colRentalVehicle
+            // 
+            colRentalVehicle.HeaderText = "Vehicle";
+            colRentalVehicle.MinimumWidth = 6;
+            colRentalVehicle.Name = "colRentalVehicle";
+            colRentalVehicle.ReadOnly = true;
+            // 
+            // colRentalDates
+            // 
+            colRentalDates.HeaderText = "Dates";
+            colRentalDates.MinimumWidth = 6;
+            colRentalDates.Name = "colRentalDates";
+            colRentalDates.ReadOnly = true;
+            // 
+            // colRentalStatus
+            // 
+            colRentalStatus.HeaderText = "Status";
+            colRentalStatus.MinimumWidth = 6;
+            colRentalStatus.Name = "colRentalStatus";
+            colRentalStatus.ReadOnly = true;
+            // 
+            // colRentalAmount
+            // 
+            colRentalAmount.HeaderText = "Amount";
+            colRentalAmount.MinimumWidth = 6;
+            colRentalAmount.Name = "colRentalAmount";
+            colRentalAmount.ReadOnly = true;
+            // 
+            // colRentalOdo
+            // 
+            colRentalOdo.HeaderText = "Odometer";
+            colRentalOdo.MinimumWidth = 6;
+            colRentalOdo.Name = "colRentalOdo";
+            colRentalOdo.ReadOnly = true;
             // 
             // panelDetailsArea
             // 
@@ -178,7 +265,7 @@
             panelDetailsArea.Dock = DockStyle.Fill;
             panelDetailsArea.Location = new Point(10, 10);
             panelDetailsArea.Name = "panelDetailsArea";
-            panelDetailsArea.Size = new Size(379, 710);
+            panelDetailsArea.Size = new Size(379, 770);
             panelDetailsArea.TabIndex = 0;
             // 
             // panelActions
@@ -187,7 +274,7 @@
             panelActions.Controls.Add(btnViewReceipt);
             panelActions.Controls.Add(btnRefund);
             panelActions.Dock = DockStyle.Bottom;
-            panelActions.Location = new Point(0, 587);
+            panelActions.Location = new Point(0, 647);
             panelActions.Name = "panelActions";
             panelActions.Padding = new Padding(10);
             panelActions.Size = new Size(379, 123);
@@ -233,7 +320,7 @@
             panelDetailsContent.Dock = DockStyle.Fill;
             panelDetailsContent.Location = new Point(0, 0);
             panelDetailsContent.Name = "panelDetailsContent";
-            panelDetailsContent.Size = new Size(379, 710);
+            panelDetailsContent.Size = new Size(379, 770);
             panelDetailsContent.TabIndex = 0;
             panelDetailsContent.Visible = false;
             // 
@@ -453,6 +540,7 @@
             // panelDetailsHeader
             // 
             panelDetailsHeader.BackColor = Color.FromArgb(30, 60, 90);
+            panelDetailsHeader.Controls.Add(lblSummary);
             panelDetailsHeader.Controls.Add(lblDetailsTitle);
             panelDetailsHeader.Dock = DockStyle.Top;
             panelDetailsHeader.Location = new Point(0, 0);
@@ -479,7 +567,7 @@
             panelNoSelection.Dock = DockStyle.Fill;
             panelNoSelection.Location = new Point(0, 0);
             panelNoSelection.Name = "panelNoSelection";
-            panelNoSelection.Size = new Size(379, 710);
+            panelNoSelection.Size = new Size(379, 770);
             panelNoSelection.TabIndex = 1;
             // 
             // lblNoSelection
@@ -489,7 +577,7 @@
             lblNoSelection.ForeColor = Color.FromArgb(108, 117, 125);
             lblNoSelection.Location = new Point(0, 0);
             lblNoSelection.Name = "lblNoSelection";
-            lblNoSelection.Size = new Size(379, 710);
+            lblNoSelection.Size = new Size(379, 770);
             lblNoSelection.TabIndex = 0;
             lblNoSelection.Text = "Select a record to view details";
             lblNoSelection.TextAlign = ContentAlignment.MiddleCenter;
@@ -497,99 +585,11 @@
             // panelHeader
             // 
             panelHeader.BackColor = Color.White;
-            panelHeader.Controls.Add(lblSummary);
             panelHeader.Dock = DockStyle.Top;
             panelHeader.Location = new Point(0, 0);
             panelHeader.Name = "panelHeader";
-            panelHeader.Size = new Size(1200, 70);
+            panelHeader.Size = new Size(1200, 10);
             panelHeader.TabIndex = 0;
-            // 
-            // dgvRentals
-            // 
-            dgvRentals.AllowUserToAddRows = false;
-            dgvRentals.AllowUserToDeleteRows = false;
-            dgvRentals.AllowUserToResizeRows = false;
-            dgvRentals.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dgvRentals.BackgroundColor = Color.White;
-            dgvRentals.BorderStyle = BorderStyle.None;
-            dgvRentals.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
-            dgvRentals.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = Color.FromArgb(32, 191, 158);
-            dataGridViewCellStyle1.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
-            dataGridViewCellStyle1.ForeColor = Color.White;
-            dataGridViewCellStyle1.Padding = new Padding(8, 0, 0, 0);
-            dataGridViewCellStyle1.SelectionBackColor = Color.FromArgb(32, 191, 158);
-            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
-            dgvRentals.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
-            dgvRentals.ColumnHeadersHeight = 40;
-            dgvRentals.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            dgvRentals.Columns.AddRange(new DataGridViewColumn[] { colRentalId, colRentalVehicle, colRentalDates, colRentalStatus, colRentalAmount, colRentalOdo });
-            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = SystemColors.Window;
-            dataGridViewCellStyle2.Font = new Font("Segoe UI", 9F);
-            dataGridViewCellStyle2.ForeColor = Color.FromArgb(64, 64, 64);
-            dataGridViewCellStyle2.Padding = new Padding(8, 0, 0, 0);
-            dataGridViewCellStyle2.SelectionBackColor = Color.FromArgb(236, 240, 241);
-            dataGridViewCellStyle2.SelectionForeColor = Color.Black;
-            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
-            dgvRentals.DefaultCellStyle = dataGridViewCellStyle2;
-            dgvRentals.Dock = DockStyle.Fill;
-            dgvRentals.EnableHeadersVisualStyles = false;
-            dgvRentals.GridColor = Color.WhiteSmoke;
-            dgvRentals.Location = new Point(0, 0);
-            dgvRentals.MultiSelect = false;
-            dgvRentals.Name = "dgvRentals";
-            dgvRentals.ReadOnly = true;
-            dgvRentals.RowHeadersVisible = false;
-            dgvRentals.RowHeadersWidth = 51;
-            dgvRentals.RowTemplate.Height = 35;
-            dgvRentals.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvRentals.Size = new Size(780, 710);
-            dgvRentals.TabIndex = 2;
-            // 
-            // colRentalId
-            // 
-            colRentalId.HeaderText = "ID";
-            colRentalId.MinimumWidth = 6;
-            colRentalId.Name = "colRentalId";
-            colRentalId.ReadOnly = true;
-            // 
-            // colRentalVehicle
-            // 
-            colRentalVehicle.HeaderText = "Vehicle";
-            colRentalVehicle.MinimumWidth = 6;
-            colRentalVehicle.Name = "colRentalVehicle";
-            colRentalVehicle.ReadOnly = true;
-            // 
-            // colRentalDates
-            // 
-            colRentalDates.HeaderText = "Dates";
-            colRentalDates.MinimumWidth = 6;
-            colRentalDates.Name = "colRentalDates";
-            colRentalDates.ReadOnly = true;
-            // 
-            // colRentalStatus
-            // 
-            colRentalStatus.HeaderText = "Status";
-            colRentalStatus.MinimumWidth = 6;
-            colRentalStatus.Name = "colRentalStatus";
-            colRentalStatus.ReadOnly = true;
-            // 
-            // colRentalAmount
-            // 
-            colRentalAmount.HeaderText = "Amount";
-            colRentalAmount.MinimumWidth = 6;
-            colRentalAmount.Name = "colRentalAmount";
-            colRentalAmount.ReadOnly = true;
-            // 
-            // colRentalOdo
-            // 
-            colRentalOdo.HeaderText = "Odometer";
-            colRentalOdo.MinimumWidth = 6;
-            colRentalOdo.Name = "colRentalOdo";
-            colRentalOdo.ReadOnly = true;
             // 
             // History
             // 
@@ -605,6 +605,7 @@
             ((System.ComponentModel.ISupportInitialize)splitContainerMain).EndInit();
             splitContainerMain.ResumeLayout(false);
             panelHistoryList.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)dgvRentals).EndInit();
             panelDetailsArea.ResumeLayout(false);
             panelActions.ResumeLayout(false);
             panelDetailsContent.ResumeLayout(false);
@@ -614,8 +615,6 @@
             ((System.ComponentModel.ISupportInitialize)picVehicle).EndInit();
             panelDetailsHeader.ResumeLayout(false);
             panelNoSelection.ResumeLayout(false);
-            panelHeader.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)dgvRentals).EndInit();
             ResumeLayout(false);
         }
 

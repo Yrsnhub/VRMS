@@ -32,8 +32,8 @@ namespace VRMS.UI.Controls.RentalCalendar
         private List<Rental> _monthRentals = new();
         private List<MaintenanceRecord> _monthMaintenance = new();
         private List<Vehicle> _vehicles = new();
-        private int CalendarLeftOffset =>
-            0;
+        private int _horizontalScrollOffset = 0;
+        private int CalendarLeftOffset => -_horizontalScrollOffset;
 
         public CalendarView()
         {
@@ -52,6 +52,9 @@ namespace VRMS.UI.Controls.RentalCalendar
 
             // Position DGV correctly
             PositionDGV();
+
+            // Initialize scrollbar
+            UpdateHorizontalScroll();
         }
 
         // ===============================
@@ -114,7 +117,6 @@ namespace VRMS.UI.Controls.RentalCalendar
             }
         }
 
-
         // ===============================
         // VEHICLE HEADER PAINT
         // ===============================
@@ -151,6 +153,11 @@ namespace VRMS.UI.Controls.RentalCalendar
         {
             _currentDate = _currentDate.AddMonths(-1);
             dtpMonthYear.Value = _currentDate;
+
+            hScrollCalendar.Value = 0;
+            _horizontalScrollOffset = 0;
+            UpdateHorizontalScroll();
+
             pnlCalendarCanvas.Invalidate();
         }
 
@@ -158,27 +165,69 @@ namespace VRMS.UI.Controls.RentalCalendar
         {
             _currentDate = _currentDate.AddMonths(1);
             dtpMonthYear.Value = _currentDate;
+
+            hScrollCalendar.Value = 0;
+            _horizontalScrollOffset = 0;
+            UpdateHorizontalScroll();
+
             pnlCalendarCanvas.Invalidate();
         }
 
         private void dtpMonthYear_ValueChanged(object sender, EventArgs e)
         {
             _currentDate = dtpMonthYear.Value;
+
+            hScrollCalendar.Value = 0;
+            _horizontalScrollOffset = 0;
+            UpdateHorizontalScroll();
+
             pnlCalendarCanvas.Invalidate();
         }
 
         private void cmbFilter_SelectedIndexChanged(object sender, EventArgs e)
         {
-            // Category filtering will be reintroduced once
-            // category names are resolved from VehicleCategoryService.
             SetupVehicleDataGrid();
             pnlCalendarCanvas.Invalidate();
         }
 
         private void cmbSort_SelectedIndexChanged(object sender, EventArgs e)
         {
-            // Sort functionality - can be enhanced based on your needs
             pnlCalendarCanvas.Invalidate();
+        }
+
+        // ===============================
+        // SCROLL EVENT HANDLER
+        // ===============================
+        private void hScrollCalendar_Scroll(object sender, ScrollEventArgs e)
+        {
+            _horizontalScrollOffset = e.NewValue;
+            pnlCalendarCanvas.Invalidate();
+        }
+
+        // ===============================
+        // SCROLL HELPERS
+        // ===============================
+        private void UpdateHorizontalScroll()
+        {
+            int daysInMonth = DateTime.DaysInMonth(
+                _currentDate.Year,
+                _currentDate.Month
+            );
+
+            int totalWidth = daysInMonth * DayColumnWidth;
+            int visibleWidth = pnlCalendarCanvas.Width;
+
+            if (totalWidth > visibleWidth)
+            {
+                hScrollCalendar.Maximum = totalWidth - visibleWidth + hScrollCalendar.LargeChange;
+                hScrollCalendar.Enabled = true;
+            }
+            else
+            {
+                hScrollCalendar.Value = 0;
+                _horizontalScrollOffset = 0;
+                hScrollCalendar.Enabled = false;
+            }
         }
 
         // ===============================
@@ -206,6 +255,7 @@ namespace VRMS.UI.Controls.RentalCalendar
 
         private void pnlCalendarCanvas_Resize(object sender, EventArgs e)
         {
+            UpdateHorizontalScroll();
             pnlCalendarCanvas.Invalidate();
         }
 
@@ -218,6 +268,8 @@ namespace VRMS.UI.Controls.RentalCalendar
                 _currentDate.Year,
                 _currentDate.Month
             );
+
+            UpdateHorizontalScroll();
             LoadMonthData();
 
             DrawDayHeaders(g, daysInMonth);
@@ -225,7 +277,7 @@ namespace VRMS.UI.Controls.RentalCalendar
             DrawMonthRentals(g);
             DrawMonthMaintenance(g);
         }
-        
+
         private void LoadMonthData()
         {
             _vehicles = _vehicleService.GetAllVehicles();
@@ -269,7 +321,6 @@ namespace VRMS.UI.Controls.RentalCalendar
                 }
             }
         }
-
 
         private void DrawDayHeaders(Graphics g, int daysInMonth)
         {
@@ -358,7 +409,8 @@ namespace VRMS.UI.Controls.RentalCalendar
             for (int i = 0; i <= rowCount; i++)
             {
                 int y = HeaderHeight + (i * RowHeight);
-                g.DrawLine(pen, 0, y, totalWidth, y);
+                int endX = CalendarLeftOffset + totalWidth;
+                g.DrawLine(pen, CalendarLeftOffset, y, endX, y);
             }
         }
 
@@ -425,7 +477,6 @@ namespace VRMS.UI.Controls.RentalCalendar
                     TextFormatFlags.EndEllipsis
                 );
             }
-
         }
 
         private void DrawMonthMaintenance(Graphics g)
@@ -484,7 +535,6 @@ namespace VRMS.UI.Controls.RentalCalendar
                     TextFormatFlags.VerticalCenter
                 );
             }
-
         }
 
         private void dgvVehicles_RowPrePaint(object sender, DataGridViewRowPrePaintEventArgs e)
