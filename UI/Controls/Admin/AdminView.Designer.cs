@@ -1,16 +1,9 @@
-﻿namespace VRMS.Controls
+﻿namespace VRMS.UI.Controls.Admin
 {
-    partial class AdminView
+    partial class AdminUserManagement
     {
-        /// <summary> 
-        /// Required designer variable.
-        /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary> 
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -22,481 +15,639 @@
 
         #region Component Designer generated code
 
-        /// <summary> 
-        /// Required method for Designer support - do not modify 
-        /// the contents of this method with the code editor.
-        /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
             pnlHeader = new Panel();
-            lblTitle = new Label();
-            tcAdmin = new TabControl();
-            tpUsers = new TabPage();
-            splitContainer1 = new SplitContainer();
-            dgvUsers = new DataGridView();
-            gbUserListActions = new GroupBox();
-            btnAddUser = new Button();
-            btnEditUser = new Button();
-            btnDeleteUser = new Button();
+            txtSearch = new TextBox();
             btnRefresh = new Button();
-            pnlUserManagement = new Panel();
-            gbUserDetails = new GroupBox();
-            txtEmail = new TextBox();
-            lblEmail = new Label();
-            txtUsername = new TextBox();
-            lblUsername = new Label();
-            txtFullName = new TextBox();
-            lblFullName = new Label();
-            cbRole = new ComboBox();
+            pnlMain = new Panel();
+            splitContainer = new SplitContainer();
+            pnlUserList = new Panel();
+            dgvUsers = new DataGridView();
+            colSelect = new DataGridViewCheckBoxColumn();
+            colID = new DataGridViewTextBoxColumn();
+            colFullName = new DataGridViewTextBoxColumn();
+            colEmail = new DataGridViewTextBoxColumn();
+            colRole = new DataGridViewTextBoxColumn();
+            colStatus = new DataGridViewTextBoxColumn();
+            colLastLogin = new DataGridViewTextBoxColumn();
+            colCreatedDate = new DataGridViewTextBoxColumn();
+            contextMenuActions = new ContextMenuStrip(components);
+            enableToolStripMenuItem = new ToolStripMenuItem();
+            disableToolStripMenuItem = new ToolStripMenuItem();
+            editToolStripMenuItem = new ToolStripMenuItem();
+            removeToolStripMenuItem = new ToolStripMenuItem();
+            pnlUserDetails = new Panel();
+            gbUserActions = new GroupBox();
+            btnRemoveAccount = new Button();
+            btnDisableAccount = new Button();
+            btnEnableAccount = new Button();
+            btnEditUser = new Button();
+            gbUserInfo = new GroupBox();
+            lblCreatedDate = new Label();
+            lblLastLogin = new Label();
+            lblStatus = new Label();
             lblRole = new Label();
-            gbActions = new GroupBox();
-            btnApprove = new Button();
-            btnReject = new Button();
-            btnDeactivate = new Button();
-            btnResetPassword = new Button();
-            btnSaveUser = new Button();
-            tpSettings = new TabPage();
-            btnSaveSettings = new Button();
-            txtSystemName = new TextBox();
-            lblSystemName = new Label();
+            lblEmail = new Label();
+            lblFullName = new Label();
+            lblUserId = new Label();
+            label7 = new Label();
+            label6 = new Label();
+            label5 = new Label();
+            label4 = new Label();
+            label3 = new Label();
+            label2 = new Label();
+            label1 = new Label();
+            toolTip = new ToolTip(components);
             pnlHeader.SuspendLayout();
-            tcAdmin.SuspendLayout();
-            tpUsers.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
-            splitContainer1.Panel1.SuspendLayout();
-            splitContainer1.Panel2.SuspendLayout();
-            splitContainer1.SuspendLayout();
+            pnlMain.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)splitContainer).BeginInit();
+            splitContainer.Panel1.SuspendLayout();
+            splitContainer.Panel2.SuspendLayout();
+            splitContainer.SuspendLayout();
+            pnlUserList.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvUsers).BeginInit();
-            gbUserListActions.SuspendLayout();
-            pnlUserManagement.SuspendLayout();
-            gbUserDetails.SuspendLayout();
-            gbActions.SuspendLayout();
-            tpSettings.SuspendLayout();
+            contextMenuActions.SuspendLayout();
+            pnlUserDetails.SuspendLayout();
+            gbUserActions.SuspendLayout();
+            gbUserInfo.SuspendLayout();
             SuspendLayout();
             // 
             // pnlHeader
             // 
-            pnlHeader.BackColor = Color.WhiteSmoke;
-            pnlHeader.Controls.Add(lblTitle);
+            pnlHeader.BackColor = Color.White;
+            pnlHeader.BorderStyle = BorderStyle.FixedSingle;
+            pnlHeader.Controls.Add(txtSearch);
+            pnlHeader.Controls.Add(btnRefresh);
             pnlHeader.Dock = DockStyle.Top;
             pnlHeader.Location = new Point(0, 0);
+            pnlHeader.Margin = new Padding(3, 4, 3, 4);
             pnlHeader.Name = "pnlHeader";
-            pnlHeader.Size = new Size(1000, 100);
+            pnlHeader.Size = new Size(1371, 66);
             pnlHeader.TabIndex = 0;
             // 
-            // lblTitle
+            // txtSearch
             // 
-            lblTitle.AutoSize = true;
-            lblTitle.Font = new Font("Segoe UI", 22F, FontStyle.Bold);
-            lblTitle.ForeColor = Color.FromArgb(44, 62, 80);
-            lblTitle.Location = new Point(20, 19);
-            lblTitle.Name = "lblTitle";
-            lblTitle.Size = new Size(284, 50);
-            lblTitle.TabIndex = 0;
-            lblTitle.Text = "Administration";
+            txtSearch.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            txtSearch.Location = new Point(850, 19);
+            txtSearch.Margin = new Padding(3, 4, 3, 4);
+            txtSearch.Name = "txtSearch";
+            txtSearch.PlaceholderText = "Search users...";
+            txtSearch.Size = new Size(320, 27);
+            txtSearch.TabIndex = 2;
+            txtSearch.TextChanged += txtSearch_TextChanged;
             // 
-            // tcAdmin
+            // btnRefresh
             // 
-            tcAdmin.Controls.Add(tpUsers);
-            tcAdmin.Controls.Add(tpSettings);
-            tcAdmin.Dock = DockStyle.Fill;
-            tcAdmin.Font = new Font("Segoe UI", 10F);
-            tcAdmin.ItemSize = new Size(180, 40);
-            tcAdmin.Location = new Point(0, 100);
-            tcAdmin.Name = "tcAdmin";
-            tcAdmin.SelectedIndex = 0;
-            tcAdmin.Size = new Size(1000, 775);
-            tcAdmin.SizeMode = TabSizeMode.FillToRight;
-            tcAdmin.TabIndex = 1;
+            btnRefresh.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnRefresh.BackColor = Color.SteelBlue;
+            btnRefresh.FlatStyle = FlatStyle.Flat;
+            btnRefresh.ForeColor = Color.White;
+            btnRefresh.Location = new Point(1185, 16);
+            btnRefresh.Margin = new Padding(3, 4, 3, 4);
+            btnRefresh.Name = "btnRefresh";
+            btnRefresh.Size = new Size(114, 31);
+            btnRefresh.TabIndex = 0;
+            btnRefresh.Text = "Refresh";
+            btnRefresh.UseVisualStyleBackColor = false;
+            btnRefresh.Click += btnRefresh_Click;
             // 
-            // tpUsers
+            // pnlMain
             // 
-            tpUsers.Controls.Add(splitContainer1);
-            tpUsers.Location = new Point(4, 44);
-            tpUsers.Name = "tpUsers";
-            tpUsers.Padding = new Padding(10, 12, 10, 12);
-            tpUsers.Size = new Size(992, 727);
-            tpUsers.TabIndex = 0;
-            tpUsers.Text = "User Management";
-            tpUsers.UseVisualStyleBackColor = true;
+            pnlMain.Controls.Add(splitContainer);
+            pnlMain.Dock = DockStyle.Fill;
+            pnlMain.Location = new Point(0, 66);
+            pnlMain.Margin = new Padding(3, 4, 3, 4);
+            pnlMain.Name = "pnlMain";
+            pnlMain.Size = new Size(1371, 734);
+            pnlMain.TabIndex = 1;
             // 
-            // splitContainer1
+            // splitContainer
             // 
-            splitContainer1.Dock = DockStyle.Fill;
-            splitContainer1.Location = new Point(10, 12);
-            splitContainer1.Name = "splitContainer1";
+            splitContainer.Dock = DockStyle.Fill;
+            splitContainer.Location = new Point(0, 0);
+            splitContainer.Margin = new Padding(3, 4, 3, 4);
+            splitContainer.Name = "splitContainer";
             // 
-            // splitContainer1.Panel1
+            // splitContainer.Panel1
             // 
-            splitContainer1.Panel1.Controls.Add(dgvUsers);
-            splitContainer1.Panel1.Controls.Add(gbUserListActions);
+            splitContainer.Panel1.Controls.Add(pnlUserList);
+            splitContainer.Panel1MinSize = 400;
             // 
-            // splitContainer1.Panel2
+            // splitContainer.Panel2
             // 
-            splitContainer1.Panel2.Controls.Add(pnlUserManagement);
-            splitContainer1.Size = new Size(972, 703);
-            splitContainer1.SplitterDistance = 650;
-            splitContainer1.SplitterWidth = 10;
-            splitContainer1.TabIndex = 0;
-            splitContainer1.SplitterMoved += splitContainer1_SplitterMoved;
+            splitContainer.Panel2.Controls.Add(pnlUserDetails);
+            splitContainer.Panel2MinSize = 350;
+            splitContainer.Size = new Size(1371, 734);
+            splitContainer.SplitterDistance = 850;
+            splitContainer.SplitterWidth = 5;
+            splitContainer.TabIndex = 0;
+            // 
+            // pnlUserList
+            // 
+            pnlUserList.Controls.Add(dgvUsers);
+            pnlUserList.Dock = DockStyle.Fill;
+            pnlUserList.Location = new Point(0, 0);
+            pnlUserList.Margin = new Padding(3, 4, 3, 4);
+            pnlUserList.Name = "pnlUserList";
+            pnlUserList.Padding = new Padding(6, 7, 6, 7);
+            pnlUserList.Size = new Size(850, 734);
+            pnlUserList.TabIndex = 0;
             // 
             // dgvUsers
             // 
             dgvUsers.AllowUserToAddRows = false;
             dgvUsers.AllowUserToDeleteRows = false;
+            dgvUsers.AllowUserToResizeRows = false;
+            dgvUsers.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvUsers.BackgroundColor = Color.White;
             dgvUsers.BorderStyle = BorderStyle.None;
-            dgvUsers.ColumnHeadersHeight = 40;
+            dgvUsers.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+            dgvUsers.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = Color.FromArgb(45, 45, 65);
+            dataGridViewCellStyle1.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            dataGridViewCellStyle1.ForeColor = Color.White;
+            dataGridViewCellStyle1.Padding = new Padding(5, 0, 0, 0);
+            dataGridViewCellStyle1.SelectionBackColor = Color.FromArgb(45, 45, 65);
+            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
+            dgvUsers.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dgvUsers.ColumnHeadersHeight = 50;
+            dgvUsers.Columns.AddRange(new DataGridViewColumn[] { colSelect, colID, colFullName, colEmail, colRole, colStatus, colLastLogin, colCreatedDate });
+            dgvUsers.ContextMenuStrip = contextMenuActions;
             dgvUsers.Dock = DockStyle.Fill;
-            dgvUsers.Location = new Point(0, 112);
+            dgvUsers.EnableHeadersVisualStyles = false;
+            dgvUsers.GridColor = Color.Gainsboro;
+            dgvUsers.Location = new Point(6, 7);
+            dgvUsers.Margin = new Padding(3, 4, 3, 4);
             dgvUsers.MultiSelect = false;
             dgvUsers.Name = "dgvUsers";
-            dgvUsers.ReadOnly = true;
+            dgvUsers.RowHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
+            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = SystemColors.Control;
+            dataGridViewCellStyle2.Font = new Font("Segoe UI", 9F);
+            dataGridViewCellStyle2.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle2.Padding = new Padding(5, 0, 0, 0);
+            dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
+            dgvUsers.RowHeadersDefaultCellStyle = dataGridViewCellStyle2;
             dgvUsers.RowHeadersVisible = false;
             dgvUsers.RowHeadersWidth = 51;
+            dataGridViewCellStyle3.BackColor = Color.White;
+            dataGridViewCellStyle3.ForeColor = Color.FromArgb(64, 64, 64);
+            dataGridViewCellStyle3.Padding = new Padding(5, 0, 0, 0);
+            dataGridViewCellStyle3.SelectionBackColor = Color.FromArgb(240, 245, 255);
+            dataGridViewCellStyle3.SelectionForeColor = Color.FromArgb(64, 64, 64);
+            dgvUsers.RowsDefaultCellStyle = dataGridViewCellStyle3;
+            dgvUsers.RowTemplate.Height = 40;
             dgvUsers.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvUsers.Size = new Size(650, 591);
-            dgvUsers.TabIndex = 1;
+            dgvUsers.Size = new Size(838, 720);
+            dgvUsers.TabIndex = 0;
+            dgvUsers.CellClick += dgvUsers_CellClick;
+            dgvUsers.CellContentClick += dgvUsers_CellContentClick;
+            dgvUsers.SelectionChanged += dgvUsers_SelectionChanged;
             // 
-            // gbUserListActions
+            // colSelect
             // 
-            gbUserListActions.Controls.Add(btnAddUser);
-            gbUserListActions.Controls.Add(btnEditUser);
-            gbUserListActions.Controls.Add(btnDeleteUser);
-            gbUserListActions.Controls.Add(btnRefresh);
-            gbUserListActions.Dock = DockStyle.Top;
-            gbUserListActions.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
-            gbUserListActions.Location = new Point(0, 0);
-            gbUserListActions.Name = "gbUserListActions";
-            gbUserListActions.Size = new Size(650, 112);
-            gbUserListActions.TabIndex = 0;
-            gbUserListActions.TabStop = false;
-            gbUserListActions.Text = "User List";
+            colSelect.FillWeight = 30F;
+            colSelect.HeaderText = "";
+            colSelect.MinimumWidth = 30;
+            colSelect.Name = "colSelect";
+            colSelect.Resizable = DataGridViewTriState.False;
             // 
-            // btnAddUser
+            // colID
             // 
-            btnAddUser.BackColor = Color.FromArgb(46, 204, 113);
-            btnAddUser.FlatStyle = FlatStyle.Flat;
-            btnAddUser.ForeColor = Color.White;
-            btnAddUser.Location = new Point(20, 44);
-            btnAddUser.Name = "btnAddUser";
-            btnAddUser.Size = new Size(120, 44);
-            btnAddUser.TabIndex = 0;
-            btnAddUser.Text = "+ Add User";
-            btnAddUser.UseVisualStyleBackColor = false;
+            colID.DataPropertyName = "Id";
+            colID.FillWeight = 60F;
+            colID.HeaderText = "ID";
+            colID.MinimumWidth = 60;
+            colID.Name = "colID";
+            colID.ReadOnly = true;
+            // 
+            // colFullName
+            // 
+            colFullName.DataPropertyName = "FullName";
+            colFullName.FillWeight = 120F;
+            colFullName.HeaderText = "Full Name";
+            colFullName.MinimumWidth = 120;
+            colFullName.Name = "colFullName";
+            colFullName.ReadOnly = true;
+            // 
+            // colEmail
+            // 
+            colEmail.DataPropertyName = "Email";
+            colEmail.FillWeight = 150F;
+            colEmail.HeaderText = "Email";
+            colEmail.MinimumWidth = 150;
+            colEmail.Name = "colEmail";
+            colEmail.ReadOnly = true;
+            // 
+            // colRole
+            // 
+            colRole.DataPropertyName = "Role";
+            colRole.FillWeight = 80F;
+            colRole.HeaderText = "Role";
+            colRole.MinimumWidth = 80;
+            colRole.Name = "colRole";
+            colRole.ReadOnly = true;
+            // 
+            // colStatus
+            // 
+            colStatus.DataPropertyName = "Status";
+            colStatus.FillWeight = 80F;
+            colStatus.HeaderText = "Status";
+            colStatus.MinimumWidth = 80;
+            colStatus.Name = "colStatus";
+            colStatus.ReadOnly = true;
+            // 
+            // colLastLogin
+            // 
+            colLastLogin.DataPropertyName = "LastLogin";
+            colLastLogin.FillWeight = 120F;
+            colLastLogin.HeaderText = "Last Login";
+            colLastLogin.MinimumWidth = 120;
+            colLastLogin.Name = "colLastLogin";
+            colLastLogin.ReadOnly = true;
+            // 
+            // colCreatedDate
+            // 
+            colCreatedDate.DataPropertyName = "CreatedDate";
+            colCreatedDate.FillWeight = 120F;
+            colCreatedDate.HeaderText = "Created Date";
+            colCreatedDate.MinimumWidth = 120;
+            colCreatedDate.Name = "colCreatedDate";
+            colCreatedDate.ReadOnly = true;
+            // 
+            // contextMenuActions
+            // 
+            contextMenuActions.ImageScalingSize = new Size(20, 20);
+            contextMenuActions.Items.AddRange(new ToolStripItem[] { enableToolStripMenuItem, disableToolStripMenuItem, editToolStripMenuItem, removeToolStripMenuItem });
+            contextMenuActions.Name = "contextMenuActions";
+            contextMenuActions.Size = new Size(191, 100);
+            // 
+            // enableToolStripMenuItem
+            // 
+            enableToolStripMenuItem.BackColor = Color.FromArgb(40, 167, 69);
+            enableToolStripMenuItem.ForeColor = Color.White;
+            enableToolStripMenuItem.Name = "enableToolStripMenuItem";
+            enableToolStripMenuItem.Size = new Size(190, 24);
+            enableToolStripMenuItem.Text = "Enable Account";
+            enableToolStripMenuItem.Click += enableToolStripMenuItem_Click;
+            // 
+            // disableToolStripMenuItem
+            // 
+            disableToolStripMenuItem.BackColor = Color.FromArgb(255, 193, 7);
+            disableToolStripMenuItem.Name = "disableToolStripMenuItem";
+            disableToolStripMenuItem.Size = new Size(190, 24);
+            disableToolStripMenuItem.Text = "Disable Account";
+            disableToolStripMenuItem.Click += disableToolStripMenuItem_Click;
+            // 
+            // editToolStripMenuItem
+            // 
+            editToolStripMenuItem.BackColor = Color.SteelBlue;
+            editToolStripMenuItem.ForeColor = Color.White;
+            editToolStripMenuItem.Name = "editToolStripMenuItem";
+            editToolStripMenuItem.Size = new Size(190, 24);
+            editToolStripMenuItem.Text = "Edit User";
+            editToolStripMenuItem.Click += editToolStripMenuItem_Click;
+            // 
+            // removeToolStripMenuItem
+            // 
+            removeToolStripMenuItem.BackColor = Color.FromArgb(220, 53, 69);
+            removeToolStripMenuItem.ForeColor = Color.White;
+            removeToolStripMenuItem.Name = "removeToolStripMenuItem";
+            removeToolStripMenuItem.Size = new Size(190, 24);
+            removeToolStripMenuItem.Text = "Remove Account";
+            removeToolStripMenuItem.Click += removeToolStripMenuItem_Click;
+            // 
+            // pnlUserDetails
+            // 
+            pnlUserDetails.BackColor = Color.White;
+            pnlUserDetails.Controls.Add(gbUserActions);
+            pnlUserDetails.Controls.Add(gbUserInfo);
+            pnlUserDetails.Dock = DockStyle.Fill;
+            pnlUserDetails.Location = new Point(0, 0);
+            pnlUserDetails.Margin = new Padding(3, 4, 3, 4);
+            pnlUserDetails.Name = "pnlUserDetails";
+            pnlUserDetails.Padding = new Padding(12);
+            pnlUserDetails.Size = new Size(516, 734);
+            pnlUserDetails.TabIndex = 0;
+            // 
+            // gbUserActions
+            // 
+            gbUserActions.Controls.Add(btnRemoveAccount);
+            gbUserActions.Controls.Add(btnDisableAccount);
+            gbUserActions.Controls.Add(btnEnableAccount);
+            gbUserActions.Controls.Add(btnEditUser);
+            gbUserActions.Dock = DockStyle.Bottom;
+            gbUserActions.Location = new Point(12, 572);
+            gbUserActions.Margin = new Padding(3, 4, 3, 4);
+            gbUserActions.Name = "gbUserActions";
+            gbUserActions.Padding = new Padding(3, 4, 3, 4);
+            gbUserActions.Size = new Size(492, 150);
+            gbUserActions.TabIndex = 1;
+            gbUserActions.TabStop = false;
+            gbUserActions.Text = "User Actions";
+            // 
+            // btnRemoveAccount
+            // 
+            btnRemoveAccount.BackColor = Color.FromArgb(220, 53, 69);
+            btnRemoveAccount.FlatStyle = FlatStyle.Flat;
+            btnRemoveAccount.ForeColor = Color.White;
+            btnRemoveAccount.Location = new Point(265, 91);
+            btnRemoveAccount.Margin = new Padding(3, 4, 3, 4);
+            btnRemoveAccount.Name = "btnRemoveAccount";
+            btnRemoveAccount.Size = new Size(218, 45);
+            btnRemoveAccount.TabIndex = 3;
+            btnRemoveAccount.Text = "Remove Account";
+            btnRemoveAccount.UseVisualStyleBackColor = false;
+            btnRemoveAccount.Click += btnRemoveAccount_Click;
+            // 
+            // btnDisableAccount
+            // 
+            btnDisableAccount.BackColor = Color.FromArgb(255, 193, 7);
+            btnDisableAccount.FlatStyle = FlatStyle.Flat;
+            btnDisableAccount.ForeColor = Color.Black;
+            btnDisableAccount.Location = new Point(265, 31);
+            btnDisableAccount.Margin = new Padding(3, 4, 3, 4);
+            btnDisableAccount.Name = "btnDisableAccount";
+            btnDisableAccount.Size = new Size(218, 45);
+            btnDisableAccount.TabIndex = 2;
+            btnDisableAccount.Text = "Disable Account";
+            btnDisableAccount.UseVisualStyleBackColor = false;
+            btnDisableAccount.Click += btnDisableAccount_Click;
+            // 
+            // btnEnableAccount
+            // 
+            btnEnableAccount.BackColor = Color.FromArgb(40, 167, 69);
+            btnEnableAccount.FlatStyle = FlatStyle.Flat;
+            btnEnableAccount.ForeColor = Color.White;
+            btnEnableAccount.Location = new Point(13, 91);
+            btnEnableAccount.Margin = new Padding(3, 4, 3, 4);
+            btnEnableAccount.Name = "btnEnableAccount";
+            btnEnableAccount.Size = new Size(218, 45);
+            btnEnableAccount.TabIndex = 1;
+            btnEnableAccount.Text = "Enable Account";
+            btnEnableAccount.UseVisualStyleBackColor = false;
+            btnEnableAccount.Click += btnEnableAccount_Click;
             // 
             // btnEditUser
             // 
-            btnEditUser.BackColor = Color.FromArgb(243, 156, 18);
+            btnEditUser.BackColor = Color.SteelBlue;
             btnEditUser.FlatStyle = FlatStyle.Flat;
             btnEditUser.ForeColor = Color.White;
-            btnEditUser.Location = new Point(160, 44);
+            btnEditUser.Location = new Point(13, 31);
+            btnEditUser.Margin = new Padding(3, 4, 3, 4);
             btnEditUser.Name = "btnEditUser";
-            btnEditUser.Size = new Size(120, 44);
-            btnEditUser.TabIndex = 1;
-            btnEditUser.Text = "Edit User";
+            btnEditUser.Size = new Size(218, 45);
+            btnEditUser.TabIndex = 0;
+            btnEditUser.Text = "Edit User Details";
             btnEditUser.UseVisualStyleBackColor = false;
+            btnEditUser.Click += btnEditUser_Click;
             // 
-            // btnDeleteUser
+            // gbUserInfo
             // 
-            btnDeleteUser.BackColor = Color.FromArgb(231, 76, 60);
-            btnDeleteUser.FlatStyle = FlatStyle.Flat;
-            btnDeleteUser.ForeColor = Color.White;
-            btnDeleteUser.Location = new Point(300, 44);
-            btnDeleteUser.Name = "btnDeleteUser";
-            btnDeleteUser.Size = new Size(120, 44);
-            btnDeleteUser.TabIndex = 2;
-            btnDeleteUser.Text = "Delete User";
-            btnDeleteUser.UseVisualStyleBackColor = false;
+            gbUserInfo.Controls.Add(lblCreatedDate);
+            gbUserInfo.Controls.Add(lblLastLogin);
+            gbUserInfo.Controls.Add(lblStatus);
+            gbUserInfo.Controls.Add(lblRole);
+            gbUserInfo.Controls.Add(lblEmail);
+            gbUserInfo.Controls.Add(lblFullName);
+            gbUserInfo.Controls.Add(lblUserId);
+            gbUserInfo.Controls.Add(label7);
+            gbUserInfo.Controls.Add(label6);
+            gbUserInfo.Controls.Add(label5);
+            gbUserInfo.Controls.Add(label4);
+            gbUserInfo.Controls.Add(label3);
+            gbUserInfo.Controls.Add(label2);
+            gbUserInfo.Controls.Add(label1);
+            gbUserInfo.Dock = DockStyle.Top;
+            gbUserInfo.Location = new Point(12, 12);
+            gbUserInfo.Margin = new Padding(3, 4, 3, 4);
+            gbUserInfo.Name = "gbUserInfo";
+            gbUserInfo.Padding = new Padding(3, 4, 3, 4);
+            gbUserInfo.Size = new Size(492, 500);
+            gbUserInfo.TabIndex = 0;
+            gbUserInfo.TabStop = false;
+            gbUserInfo.Text = "User Information";
             // 
-            // btnRefresh
+            // lblCreatedDate
             // 
-            btnRefresh.BackColor = Color.FromArgb(52, 152, 219);
-            btnRefresh.FlatStyle = FlatStyle.Flat;
-            btnRefresh.ForeColor = Color.White;
-            btnRefresh.Location = new Point(508, 44);
-            btnRefresh.Name = "btnRefresh";
-            btnRefresh.Size = new Size(120, 44);
-            btnRefresh.TabIndex = 3;
-            btnRefresh.Text = "Refresh";
-            btnRefresh.UseVisualStyleBackColor = false;
+            lblCreatedDate.AutoSize = true;
+            lblCreatedDate.Font = new Font("Segoe UI", 10F);
+            lblCreatedDate.Location = new Point(170, 440);
+            lblCreatedDate.Name = "lblCreatedDate";
+            lblCreatedDate.Size = new Size(17, 23);
+            lblCreatedDate.TabIndex = 13;
+            lblCreatedDate.Text = "-";
             // 
-            // pnlUserManagement
+            // lblLastLogin
             // 
-            pnlUserManagement.Controls.Add(gbUserDetails);
-            pnlUserManagement.Controls.Add(gbActions);
-            pnlUserManagement.Dock = DockStyle.Fill;
-            pnlUserManagement.Location = new Point(0, 0);
-            pnlUserManagement.Name = "pnlUserManagement";
-            pnlUserManagement.Padding = new Padding(10, 12, 10, 12);
-            pnlUserManagement.Size = new Size(312, 703);
-            pnlUserManagement.TabIndex = 0;
+            lblLastLogin.AutoSize = true;
+            lblLastLogin.Font = new Font("Segoe UI", 10F);
+            lblLastLogin.Location = new Point(170, 385);
+            lblLastLogin.Name = "lblLastLogin";
+            lblLastLogin.Size = new Size(17, 23);
+            lblLastLogin.TabIndex = 12;
+            lblLastLogin.Text = "-";
             // 
-            // gbUserDetails
+            // lblStatus
             // 
-            gbUserDetails.Controls.Add(txtEmail);
-            gbUserDetails.Controls.Add(lblEmail);
-            gbUserDetails.Controls.Add(txtUsername);
-            gbUserDetails.Controls.Add(lblUsername);
-            gbUserDetails.Controls.Add(txtFullName);
-            gbUserDetails.Controls.Add(lblFullName);
-            gbUserDetails.Controls.Add(cbRole);
-            gbUserDetails.Controls.Add(lblRole);
-            gbUserDetails.Dock = DockStyle.Top;
-            gbUserDetails.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
-            gbUserDetails.Location = new Point(10, 12);
-            gbUserDetails.Name = "gbUserDetails";
-            gbUserDetails.Size = new Size(292, 335);
-            gbUserDetails.TabIndex = 0;
-            gbUserDetails.TabStop = false;
-            gbUserDetails.Text = "User Details";
-            // 
-            // txtEmail
-            // 
-            txtEmail.Location = new Point(20, 225);
-            txtEmail.Name = "txtEmail";
-            txtEmail.Size = new Size(250, 29);
-            txtEmail.TabIndex = 7;
-            // 
-            // lblEmail
-            // 
-            lblEmail.AutoSize = true;
-            lblEmail.Location = new Point(17, 196);
-            lblEmail.Name = "lblEmail";
-            lblEmail.Size = new Size(48, 21);
-            lblEmail.TabIndex = 6;
-            lblEmail.Text = "Email";
-            // 
-            // txtUsername
-            // 
-            txtUsername.Location = new Point(20, 88);
-            txtUsername.Name = "txtUsername";
-            txtUsername.Size = new Size(250, 29);
-            txtUsername.TabIndex = 5;
-            // 
-            // lblUsername
-            // 
-            lblUsername.AutoSize = true;
-            lblUsername.Location = new Point(17, 59);
-            lblUsername.Name = "lblUsername";
-            lblUsername.Size = new Size(83, 21);
-            lblUsername.TabIndex = 4;
-            lblUsername.Text = "Username";
-            // 
-            // txtFullName
-            // 
-            txtFullName.Location = new Point(20, 156);
-            txtFullName.Name = "txtFullName";
-            txtFullName.Size = new Size(250, 29);
-            txtFullName.TabIndex = 3;
-            // 
-            // lblFullName
-            // 
-            lblFullName.AutoSize = true;
-            lblFullName.Location = new Point(17, 128);
-            lblFullName.Name = "lblFullName";
-            lblFullName.Size = new Size(82, 21);
-            lblFullName.TabIndex = 2;
-            lblFullName.Text = "Full Name";
-            // 
-            // cbRole
-            // 
-            cbRole.DropDownStyle = ComboBoxStyle.DropDownList;
-            cbRole.FormattingEnabled = true;
-            cbRole.Items.AddRange(new object[] { "Administrator", "Manager", "User", "Viewer" });
-            cbRole.Location = new Point(20, 294);
-            cbRole.Name = "cbRole";
-            cbRole.Size = new Size(250, 29);
-            cbRole.TabIndex = 1;
+            lblStatus.AutoSize = true;
+            lblStatus.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            lblStatus.Location = new Point(170, 330);
+            lblStatus.Name = "lblStatus";
+            lblStatus.Size = new Size(17, 23);
+            lblStatus.TabIndex = 11;
+            lblStatus.Text = "-";
             // 
             // lblRole
             // 
             lblRole.AutoSize = true;
-            lblRole.Location = new Point(17, 265);
+            lblRole.Font = new Font("Segoe UI", 10F);
+            lblRole.Location = new Point(170, 275);
             lblRole.Name = "lblRole";
-            lblRole.Size = new Size(43, 21);
-            lblRole.TabIndex = 0;
-            lblRole.Text = "Role";
+            lblRole.Size = new Size(17, 23);
+            lblRole.TabIndex = 10;
+            lblRole.Text = "-";
             // 
-            // gbActions
+            // lblEmail
             // 
-            gbActions.Controls.Add(btnApprove);
-            gbActions.Controls.Add(btnReject);
-            gbActions.Controls.Add(btnDeactivate);
-            gbActions.Controls.Add(btnResetPassword);
-            gbActions.Controls.Add(btnSaveUser);
-            gbActions.Dock = DockStyle.Fill;
-            gbActions.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
-            gbActions.Location = new Point(10, 12);
-            gbActions.Name = "gbActions";
-            gbActions.Size = new Size(292, 679);
-            gbActions.TabIndex = 1;
-            gbActions.TabStop = false;
-            gbActions.Text = "Actions";
+            lblEmail.AutoSize = true;
+            lblEmail.Font = new Font("Segoe UI", 10F);
+            lblEmail.Location = new Point(170, 165);
+            lblEmail.Name = "lblEmail";
+            lblEmail.Size = new Size(17, 23);
+            lblEmail.TabIndex = 9;
+            lblEmail.Text = "-";
             // 
-            // btnApprove
+            // lblFullName
             // 
-            btnApprove.BackColor = Color.FromArgb(46, 204, 113);
-            btnApprove.FlatStyle = FlatStyle.Flat;
-            btnApprove.ForeColor = Color.White;
-            btnApprove.Location = new Point(20, 50);
-            btnApprove.Name = "btnApprove";
-            btnApprove.Size = new Size(250, 44);
-            btnApprove.TabIndex = 0;
-            btnApprove.Text = "Approve User";
-            btnApprove.UseVisualStyleBackColor = false;
+            lblFullName.AutoSize = true;
+            lblFullName.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            lblFullName.Location = new Point(170, 110);
+            lblFullName.Name = "lblFullName";
+            lblFullName.Size = new Size(17, 23);
+            lblFullName.TabIndex = 8;
+            lblFullName.Text = "-";
             // 
-            // btnReject
+            // lblUserId
             // 
-            btnReject.BackColor = Color.FromArgb(231, 76, 60);
-            btnReject.FlatStyle = FlatStyle.Flat;
-            btnReject.ForeColor = Color.White;
-            btnReject.Location = new Point(20, 106);
-            btnReject.Name = "btnReject";
-            btnReject.Size = new Size(250, 44);
-            btnReject.TabIndex = 1;
-            btnReject.Text = "Reject User";
-            btnReject.UseVisualStyleBackColor = false;
+            lblUserId.AutoSize = true;
+            lblUserId.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            lblUserId.Location = new Point(170, 55);
+            lblUserId.Name = "lblUserId";
+            lblUserId.Size = new Size(17, 23);
+            lblUserId.TabIndex = 7;
+            lblUserId.Text = "-";
             // 
-            // btnDeactivate
+            // label7
             // 
-            btnDeactivate.BackColor = Color.FromArgb(149, 165, 166);
-            btnDeactivate.FlatStyle = FlatStyle.Flat;
-            btnDeactivate.ForeColor = Color.White;
-            btnDeactivate.Location = new Point(20, 219);
-            btnDeactivate.Name = "btnDeactivate";
-            btnDeactivate.Size = new Size(250, 44);
-            btnDeactivate.TabIndex = 3;
-            btnDeactivate.Text = "Deactivate User";
-            btnDeactivate.UseVisualStyleBackColor = false;
+            label7.AutoSize = true;
+            label7.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            label7.Location = new Point(13, 440);
+            label7.Name = "label7";
+            label7.Size = new Size(121, 23);
+            label7.TabIndex = 6;
+            label7.Text = "Created Date:";
             // 
-            // btnResetPassword
+            // label6
             // 
-            btnResetPassword.BackColor = Color.FromArgb(243, 156, 18);
-            btnResetPassword.FlatStyle = FlatStyle.Flat;
-            btnResetPassword.ForeColor = Color.White;
-            btnResetPassword.Location = new Point(20, 162);
-            btnResetPassword.Name = "btnResetPassword";
-            btnResetPassword.Size = new Size(250, 44);
-            btnResetPassword.TabIndex = 2;
-            btnResetPassword.Text = "Reset Password";
-            btnResetPassword.UseVisualStyleBackColor = false;
+            label6.AutoSize = true;
+            label6.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            label6.Location = new Point(13, 385);
+            label6.Name = "label6";
+            label6.Size = new Size(97, 23);
+            label6.TabIndex = 5;
+            label6.Text = "Last Login:";
             // 
-            // btnSaveUser
+            // label5
             // 
-            btnSaveUser.BackColor = Color.FromArgb(52, 152, 219);
-            btnSaveUser.FlatStyle = FlatStyle.Flat;
-            btnSaveUser.ForeColor = Color.White;
-            btnSaveUser.Location = new Point(20, 275);
-            btnSaveUser.Name = "btnSaveUser";
-            btnSaveUser.Size = new Size(250, 44);
-            btnSaveUser.TabIndex = 4;
-            btnSaveUser.Text = "Save Changes";
-            btnSaveUser.UseVisualStyleBackColor = false;
+            label5.AutoSize = true;
+            label5.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            label5.Location = new Point(13, 330);
+            label5.Name = "label5";
+            label5.Size = new Size(65, 23);
+            label5.TabIndex = 4;
+            label5.Text = "Status:";
             // 
-            // tpSettings
+            // label4
             // 
-            tpSettings.Controls.Add(btnSaveSettings);
-            tpSettings.Controls.Add(txtSystemName);
-            tpSettings.Controls.Add(lblSystemName);
-            tpSettings.Location = new Point(4, 44);
-            tpSettings.Name = "tpSettings";
-            tpSettings.Size = new Size(992, 727);
-            tpSettings.TabIndex = 2;
-            tpSettings.Text = "System Settings";
-            tpSettings.UseVisualStyleBackColor = true;
+            label4.AutoSize = true;
+            label4.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            label4.Location = new Point(13, 275);
+            label4.Name = "label4";
+            label4.Size = new Size(50, 23);
+            label4.TabIndex = 3;
+            label4.Text = "Role:";
             // 
-            // btnSaveSettings
+            // label3
             // 
-            btnSaveSettings.BackColor = Color.FromArgb(52, 152, 219);
-            btnSaveSettings.FlatStyle = FlatStyle.Flat;
-            btnSaveSettings.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-            btnSaveSettings.ForeColor = Color.White;
-            btnSaveSettings.Location = new Point(30, 138);
-            btnSaveSettings.Name = "btnSaveSettings";
-            btnSaveSettings.Size = new Size(200, 56);
-            btnSaveSettings.TabIndex = 2;
-            btnSaveSettings.Text = "Save System Config";
-            btnSaveSettings.UseVisualStyleBackColor = false;
+            label3.AutoSize = true;
+            label3.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            label3.Location = new Point(13, 220);
+            label3.Name = "label3";
+            label3.Size = new Size(79, 23);
+            label3.TabIndex = 2;
+            label3.Text = "Phone #:";
             // 
-            // txtSystemName
+            // label2
             // 
-            txtSystemName.Font = new Font("Segoe UI", 11F);
-            txtSystemName.Location = new Point(30, 75);
-            txtSystemName.Name = "txtSystemName";
-            txtSystemName.Size = new Size(400, 32);
-            txtSystemName.TabIndex = 1;
+            label2.AutoSize = true;
+            label2.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            label2.Location = new Point(13, 165);
+            label2.Name = "label2";
+            label2.Size = new Size(59, 23);
+            label2.TabIndex = 1;
+            label2.Text = "Email:";
             // 
-            // lblSystemName
+            // label1
             // 
-            lblSystemName.AutoSize = true;
-            lblSystemName.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
-            lblSystemName.Location = new Point(26, 42);
-            lblSystemName.Name = "lblSystemName";
-            lblSystemName.Size = new Size(120, 23);
-            lblSystemName.TabIndex = 0;
-            lblSystemName.Text = "System Name:";
+            label1.AutoSize = true;
+            label1.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            label1.Location = new Point(13, 55);
+            label1.Name = "label1";
+            label1.Size = new Size(73, 23);
+            label1.TabIndex = 0;
+            label1.Text = "User ID:";
             // 
-            // AdminView
+            // AdminUserManagement
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
-            Controls.Add(tcAdmin);
+            Controls.Add(pnlMain);
             Controls.Add(pnlHeader);
-            Name = "AdminView";
-            Size = new Size(1000, 875);
+            Margin = new Padding(3, 4, 3, 4);
+            Name = "AdminUserManagement";
+            Size = new Size(1371, 800);
+            Load += AdminUserManagement_Load;
             pnlHeader.ResumeLayout(false);
             pnlHeader.PerformLayout();
-            tcAdmin.ResumeLayout(false);
-            tpUsers.ResumeLayout(false);
-            splitContainer1.Panel1.ResumeLayout(false);
-            splitContainer1.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)splitContainer1).EndInit();
-            splitContainer1.ResumeLayout(false);
+            pnlMain.ResumeLayout(false);
+            splitContainer.Panel1.ResumeLayout(false);
+            splitContainer.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)splitContainer).EndInit();
+            splitContainer.ResumeLayout(false);
+            pnlUserList.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dgvUsers).EndInit();
-            gbUserListActions.ResumeLayout(false);
-            pnlUserManagement.ResumeLayout(false);
-            gbUserDetails.ResumeLayout(false);
-            gbUserDetails.PerformLayout();
-            gbActions.ResumeLayout(false);
-            tpSettings.ResumeLayout(false);
-            tpSettings.PerformLayout();
+            contextMenuActions.ResumeLayout(false);
+            pnlUserDetails.ResumeLayout(false);
+            gbUserActions.ResumeLayout(false);
+            gbUserInfo.ResumeLayout(false);
+            gbUserInfo.PerformLayout();
             ResumeLayout(false);
         }
 
         #endregion
 
-        private System.Windows.Forms.Panel pnlHeader;
-        private System.Windows.Forms.Label lblTitle;
-        private System.Windows.Forms.TabControl tcAdmin;
-        private System.Windows.Forms.TabPage tpUsers;
-        private System.Windows.Forms.SplitContainer splitContainer1;
-        private System.Windows.Forms.DataGridView dgvUsers;
-        private System.Windows.Forms.GroupBox gbUserListActions;
-        private System.Windows.Forms.Button btnAddUser;
-        private System.Windows.Forms.Button btnEditUser;
-        private System.Windows.Forms.Button btnDeleteUser;
-        private System.Windows.Forms.Button btnRefresh;
-        private System.Windows.Forms.Panel pnlUserManagement;
-        private System.Windows.Forms.GroupBox gbUserDetails;
-        private System.Windows.Forms.TextBox txtEmail;
-        private System.Windows.Forms.Label lblEmail;
-        private System.Windows.Forms.TextBox txtUsername;
-        private System.Windows.Forms.Label lblUsername;
-        private System.Windows.Forms.TextBox txtFullName;
-        private System.Windows.Forms.Label lblFullName;
-        private System.Windows.Forms.ComboBox cbRole;
-        private System.Windows.Forms.Label lblRole;
-        private System.Windows.Forms.GroupBox gbActions;
-        private System.Windows.Forms.Button btnApprove;
-        private System.Windows.Forms.Button btnReject;
-        private System.Windows.Forms.Button btnDeactivate;
-        private System.Windows.Forms.Button btnResetPassword;
-        private System.Windows.Forms.Button btnSaveUser;
-        private System.Windows.Forms.TabPage tpSettings;
-        private System.Windows.Forms.Button btnSaveSettings;
-        private System.Windows.Forms.TextBox txtSystemName;
-        private System.Windows.Forms.Label lblSystemName;
+        private Panel pnlHeader;
+        private TextBox txtSearch;
+        private Button btnRefresh;
+        private Panel pnlMain;
+        private SplitContainer splitContainer;
+        private Panel pnlUserList;
+        private DataGridView dgvUsers;
+        private Panel pnlUserDetails;
+        private ToolTip toolTip;
+        private GroupBox gbUserInfo;
+        private Label lblCreatedDate;
+        private Label lblLastLogin;
+        private Label lblStatus;
+        private Label lblRole;
+        private Label lblEmail;
+        private Label lblFullName;
+        private Label lblUserId;
+        private Label label7;
+        private Label label6;
+        private Label label5;
+        private Label label4;
+        private Label label3;
+        private Label label2;
+        private Label label1;
+        private GroupBox gbUserActions;
+        private Button btnRemoveAccount;
+        private Button btnDisableAccount;
+        private Button btnEnableAccount;
+        private Button btnEditUser;
+        private DataGridViewCheckBoxColumn colSelect;
+        private DataGridViewTextBoxColumn colID;
+        private DataGridViewTextBoxColumn colFullName;
+        private DataGridViewTextBoxColumn colEmail;
+        private DataGridViewTextBoxColumn colRole;
+        private DataGridViewTextBoxColumn colStatus;
+        private DataGridViewTextBoxColumn colLastLogin;
+        private DataGridViewTextBoxColumn colCreatedDate;
+        private ContextMenuStrip contextMenuActions;
+        private ToolStripMenuItem enableToolStripMenuItem;
+        private ToolStripMenuItem disableToolStripMenuItem;
+        private ToolStripMenuItem editToolStripMenuItem;
+        private ToolStripMenuItem removeToolStripMenuItem;
     }
 }

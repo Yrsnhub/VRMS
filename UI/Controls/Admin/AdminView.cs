@@ -1,163 +1,105 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
 using System.Windows.Forms;
-using VRMS.Enums;
-using VRMS.Models.Accounts;
-using VRMS.Services.Account;
-using VRMS.UI.ApplicationService;
 
-namespace VRMS.Controls
+
+namespace VRMS.UI.Controls.Admin
 {
-    public partial class AdminView : UserControl
+    public partial class AdminUserManagement : UserControl
     {
-        private readonly UserService _userService;
-        private CheckBox chkShowInactive;
-        private ComboBox cmbRoleFilter;
-
-        // DEFAULT ctor — production usage
-        public AdminView()
-            : this(ApplicationServices.UserService)
+        public AdminUserManagement()
         {
-        }
-
-        // OPTIONAL ctor — unit testing / isolation
-        internal AdminView(UserService userService)
-        {
-            _userService = userService
-                ?? throw new ArgumentNullException(nameof(userService));
-
             InitializeComponent();
-            SetupGrids();
-            AddUserFilters();
-            WireEvents();
         }
 
-        private void SetupGrids()
+        // =====================================================
+        // LIFECYCLE
+        // =====================================================
+
+        private void AdminUserManagement_Load(object sender, EventArgs e)
         {
-            dgvUsers.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(245, 245, 245);
-            dgvUsers.AutoGenerateColumns = false;
-            dgvUsers.Columns.Clear();
-
-            dgvUsers.Columns.Add(new DataGridViewTextBoxColumn
-            {
-                HeaderText = "ID",
-                DataPropertyName = nameof(User.Id),
-                Width = 60
-            });
-
-            dgvUsers.Columns.Add(new DataGridViewTextBoxColumn
-            {
-                HeaderText = "Username",
-                DataPropertyName = nameof(User.Username),
-                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill,
-                FillWeight = 40
-            });
-
-            dgvUsers.Columns.Add(new DataGridViewTextBoxColumn
-            {
-                HeaderText = "Full Name",
-                DataPropertyName = nameof(User.FullName),
-                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill,
-                FillWeight = 60
-            });
-
-            dgvUsers.Columns.Add(new DataGridViewTextBoxColumn
-            {
-                HeaderText = "Role",
-                DataPropertyName = nameof(User.Role),
-                Width = 120
-            });
-
-            dgvUsers.Columns.Add(new DataGridViewCheckBoxColumn
-            {
-                HeaderText = "Active",
-                DataPropertyName = nameof(User.IsActive),
-                Width = 60
-            });
+            // Intentionally empty
+            // Designer-only state for now
         }
 
-        private void AddUserFilters()
+        // =====================================================
+        // HEADER
+        // =====================================================
+
+        private void txtSearch_TextChanged(object sender, EventArgs e)
         {
-            chkShowInactive = new CheckBox
-            {
-                Text = "Show inactive users",
-                Location = new Point(520, 25),
-                AutoSize = true
-            };
-
-            cmbRoleFilter = new ComboBox
-            {
-                Location = new Point(720, 22),
-                Width = 180,
-                DropDownStyle = ComboBoxStyle.DropDownList
-            };
-
-            cmbRoleFilter.Items.Add("All");
-            cmbRoleFilter.Items.AddRange(Enum.GetNames(typeof(UserRole)));
-            cmbRoleFilter.SelectedIndex = 0;
-
-            tpUsers.Controls.Add(chkShowInactive);
-            tpUsers.Controls.Add(cmbRoleFilter);
+            // Placeholder – logic will be added later
         }
 
-        private void WireEvents()
+        private void btnRefresh_Click(object sender, EventArgs e)
         {
-            Load += (_, __) => ReloadUsers();
-            chkShowInactive.CheckedChanged += (_, __) => ReloadUsers();
-            cmbRoleFilter.SelectedIndexChanged += (_, __) => ReloadUsers();
-            btnAddUser.Click += btnAddUser_Click;
-            btnEditUser.Click += btnEditUser_Click;
-            btnDeleteUser.Click += btnDeleteUser_Click;
-            btnRefresh.Click += (_, __) => ReloadUsers();
+            // Placeholder – logic will be added later
         }
 
-        private void ReloadUsers()
+        // =====================================================
+        // DATAGRIDVIEW
+        // =====================================================
+
+        private void dgvUsers_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            IEnumerable<User> users = chkShowInactive.Checked
-                ? _userService.ListUsers()
-                : _userService.ListActiveUsers();
-
-            if (cmbRoleFilter.SelectedItem is string roleText && roleText != "All")
-            {
-                var role = Enum.Parse<UserRole>(roleText);
-                users = users.Where(u => u.Role == role);
-            }
-
-            dgvUsers.DataSource = users.ToList();
+            // Placeholder
         }
 
-        private void btnAddUser_Click(object sender, EventArgs e)
-            => MessageBox.Show("Add User wiring is next.");
+        private void dgvUsers_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            // Placeholder
+        }
+
+        private void dgvUsers_SelectionChanged(object sender, EventArgs e)
+        {
+            // Placeholder
+        }
+
+        // =====================================================
+        // ACTION BUTTONS
+        // =====================================================
+
+        private void btnEnableAccount_Click(object sender, EventArgs e)
+        {
+            // Placeholder
+        }
+
+        private void btnDisableAccount_Click(object sender, EventArgs e)
+        {
+            // Placeholder
+        }
 
         private void btnEditUser_Click(object sender, EventArgs e)
-            => MessageBox.Show("Edit User wiring is next.");
-
-        private void btnDeleteUser_Click(object sender, EventArgs e)
         {
-            if (dgvUsers.CurrentRow?.DataBoundItem is not User user) return;
-
-            if (MessageBox.Show(
-                $"Deactivate '{user.Username}'?",
-                "Confirm",
-                MessageBoxButtons.YesNo) == DialogResult.Yes)
-            {
-                _userService.Deactivate(user.Id);
-                ReloadUsers();
-            }
+            // Placeholder
         }
 
-        private void splitContainer1_SplitterMoved(object sender, SplitterEventArgs e)
+        private void btnRemoveAccount_Click(object sender, EventArgs e)
         {
-            BeginInvoke((MethodInvoker)delegate
-            {
-                if (!dgvUsers.IsDisposed)
-                {
-                    dgvUsers.PerformLayout();
-                    dgvUsers.Refresh();
-                }
-            });
+            // Placeholder
+        }
+
+        // =====================================================
+        // CONTEXT MENU
+        // =====================================================
+
+        private void enableToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // Placeholder
+        }
+
+        private void disableToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // Placeholder
+        }
+
+        private void editToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // Placeholder
+        }
+
+        private void removeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // Placeholder
         }
     }
 }

@@ -19,7 +19,8 @@ using VRMS.UI.Controls.VehiclesView;
 using VRMS.Repositories.Reports;
 using VRMS.Services.Reports;
 using VRMS.UI.Controls.RentalsView;
-using VRMS.UI.Controls.Rental_ReservationCalendar; // ✅ REQUIRED
+using VRMS.UI.Controls.Rental_ReservationCalendar;
+using VRMS.UI.Controls.Admin; // Add this line to reference the AdminView control
 
 namespace VRMS.Forms
 {
@@ -42,10 +43,6 @@ namespace VRMS.Forms
             SetupForm();
         }
 
-        // =====================================================
-        // ROLE HELPERS
-        // =====================================================
-
         private bool IsCustomer()
         {
             return Program.CurrentUserRole.Equals("Customer", StringComparison.OrdinalIgnoreCase);
@@ -55,10 +52,6 @@ namespace VRMS.Forms
         {
             return Program.CurrentUserRole.Equals("Admin", StringComparison.OrdinalIgnoreCase);
         }
-
-        // =====================================================
-        // INITIAL SETUP
-        // =====================================================
 
         private void SetupForm()
         {
@@ -112,18 +105,10 @@ namespace VRMS.Forms
             );
         }
 
-        // =====================================================
-        // HEADER EVENTS
-        // =====================================================
-
         private void MainHeader_UserInfoClicked(object sender, EventArgs e)
         {
             NavigateToUserProfile();
         }
-
-        // =====================================================
-        // NAVIGATION SETUP
-        // =====================================================
 
         private void SetupButtonEvents()
         {
@@ -132,9 +117,8 @@ namespace VRMS.Forms
                 btnDashboard,
                 btnVehicles,
                 btnCustomers,
-
                 btnRentals,
-                btnRentalsCalendar, // ✅ CALENDAR BUTTON ADDED
+                btnRentalsCalendar,
                 btnHistory,
                 btnReports,
                 btnAdmin
@@ -188,10 +172,6 @@ namespace VRMS.Forms
             activeButton = button;
         }
 
-        // =====================================================
-        // NAVIGATION LOGIC
-        // =====================================================
-
         private void HandleNavigation(Button button)
         {
             switch (button.Name)
@@ -228,7 +208,6 @@ namespace VRMS.Forms
                     );
                     break;
 
-                // ✅ THIS IS THE ONLY NEW NAVIGATION CASE
                 case "btnRentalsCalendar":
                     ShowView(
                         new CalendarView(),
@@ -271,7 +250,7 @@ namespace VRMS.Forms
                     }
 
                     ShowView(
-                        new AdminView(_userService),
+                        new AdminUserManagement(), // Changed from AdminView to AdminUserManagement
                         "Administration",
                         "User & System Management"
                     );
@@ -318,10 +297,6 @@ namespace VRMS.Forms
                 mainHeader.SetTitle(title, subtitle);
             }
         }
-
-        // =====================================================
-        // LOGOUT
-        // =====================================================
 
         private void Logout()
         {
