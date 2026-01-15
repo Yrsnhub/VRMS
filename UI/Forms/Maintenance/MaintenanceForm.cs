@@ -53,7 +53,7 @@ namespace VRMS.UI.Forms.Maintenance
                 lblVehicleMake.Text = $"Make: {currentVehicle.Make}";
                 lblVehicleModel.Text = $"Model: {currentVehicle.Model}";
                 lblPlateNo.Text = currentVehicle.LicensePlate;
-                lblFormTitle.Text = $"Maintenance - {currentVehicle.Make} {currentVehicle.Model}";
+                
 
                 // Update button visibility
                 UpdateMarkAvailableButtonVisibility();

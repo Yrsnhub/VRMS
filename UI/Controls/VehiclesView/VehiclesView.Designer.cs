@@ -31,7 +31,6 @@
             DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             panelHeader = new Panel();
-            label1 = new Label();
             lblVehicleCount = new Label();
             panelToolbar = new Panel();
             btnUnderMaintenance = new Button();
@@ -39,6 +38,7 @@
             panelSearch = new Panel();
             txtSearch = new TextBox();
             cmbStatusFilter = new ComboBox();
+            btnRetire = new Button();
             btnDelete = new Button();
             btnEdit = new Button();
             btnAdd = new Button();
@@ -70,8 +70,6 @@
             panelPreviewHeader = new Panel();
             lblVehicleDetails = new Label();
             picVehiclePreview = new PictureBox();
-            btnRetire = new Button();
-            panelHeader.SuspendLayout();
             panelToolbar.SuspendLayout();
             panelSearch.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)splitContainerMain).BeginInit();
@@ -90,34 +88,21 @@
             // 
             // panelHeader
             // 
-            panelHeader.BackColor = Color.FromArgb(30, 60, 90);
-            panelHeader.Controls.Add(label1);
-            panelHeader.Controls.Add(lblVehicleCount);
+            panelHeader.BackColor = Color.White;
             panelHeader.Dock = DockStyle.Top;
             panelHeader.Location = new Point(0, 0);
             panelHeader.Name = "panelHeader";
             panelHeader.Size = new Size(1491, 70);
             panelHeader.TabIndex = 0;
             // 
-            // label1
-            // 
-            label1.AutoSize = true;
-            label1.Font = new Font("Segoe UI Semibold", 18F, FontStyle.Bold);
-            label1.ForeColor = Color.White;
-            label1.Location = new Point(20, 15);
-            label1.Name = "label1";
-            label1.Size = new Size(127, 41);
-            label1.TabIndex = 0;
-            label1.Text = "Vehicles";
-            // 
             // lblVehicleCount
             // 
             lblVehicleCount.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             lblVehicleCount.Font = new Font("Segoe UI", 10F);
-            lblVehicleCount.ForeColor = Color.FromArgb(200, 200, 200);
-            lblVehicleCount.Location = new Point(1291, 15);
+            lblVehicleCount.ForeColor = Color.FromArgb(64, 64, 64);
+            lblVehicleCount.Location = new Point(908, 3);
             lblVehicleCount.Name = "lblVehicleCount";
-            lblVehicleCount.Size = new Size(180, 40);
+            lblVehicleCount.Size = new Size(180, 25);
             lblVehicleCount.TabIndex = 1;
             lblVehicleCount.Text = "Total: 0 vehicles";
             lblVehicleCount.TextAlign = ContentAlignment.MiddleRight;
@@ -204,6 +189,21 @@
             cmbStatusFilter.Name = "cmbStatusFilter";
             cmbStatusFilter.Size = new Size(160, 28);
             cmbStatusFilter.TabIndex = 5;
+            // 
+            // btnRetire
+            // 
+            btnRetire.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnRetire.BackColor = Color.FromArgb(150, 150, 150);
+            btnRetire.FlatAppearance.BorderSize = 0;
+            btnRetire.FlatStyle = FlatStyle.Flat;
+            btnRetire.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
+            btnRetire.ForeColor = Color.White;
+            btnRetire.Location = new Point(637, 10);
+            btnRetire.Name = "btnRetire";
+            btnRetire.Size = new Size(100, 40);
+            btnRetire.TabIndex = 8;
+            btnRetire.Text = "♻ Retire";
+            btnRetire.UseVisualStyleBackColor = false;
             // 
             // btnDelete
             // 
@@ -295,11 +295,11 @@
             dgvVehicles.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
             dgvVehicles.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
             dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = Color.FromArgb(30, 60, 90);
+            dataGridViewCellStyle1.BackColor = Color.FromArgb(32, 191, 158);
             dataGridViewCellStyle1.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold);
             dataGridViewCellStyle1.ForeColor = Color.White;
             dataGridViewCellStyle1.Padding = new Padding(8, 0, 0, 0);
-            dataGridViewCellStyle1.SelectionBackColor = Color.FromArgb(30, 60, 90);
+            dataGridViewCellStyle1.SelectionBackColor = Color.FromArgb(32, 191, 158);
             dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
             dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
             dgvVehicles.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
@@ -331,6 +331,7 @@
             // panelStatusFilter
             // 
             panelStatusFilter.BackColor = Color.White;
+            panelStatusFilter.Controls.Add(lblVehicleCount);
             panelStatusFilter.Controls.Add(cmbAdvancedFilter);
             panelStatusFilter.Controls.Add(lblStatusFilter);
             panelStatusFilter.Dock = DockStyle.Top;
@@ -625,21 +626,6 @@
             picVehiclePreview.TabIndex = 0;
             picVehiclePreview.TabStop = false;
             // 
-            // btnRetire
-            // 
-            btnRetire.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            btnRetire.BackColor = Color.FromArgb(150, 150, 150);
-            btnRetire.FlatAppearance.BorderSize = 0;
-            btnRetire.FlatStyle = FlatStyle.Flat;
-            btnRetire.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
-            btnRetire.ForeColor = Color.White;
-            btnRetire.Location = new Point(637, 10);
-            btnRetire.Name = "btnRetire";
-            btnRetire.Size = new Size(100, 40);
-            btnRetire.TabIndex = 8;
-            btnRetire.Text = "♻ Retire";
-            btnRetire.UseVisualStyleBackColor = false;
-            // 
             // VehiclesView
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -650,8 +636,6 @@
             Controls.Add(panelHeader);
             Name = "VehiclesView";
             Size = new Size(1491, 800);
-            panelHeader.ResumeLayout(false);
-            panelHeader.PerformLayout();
             panelToolbar.ResumeLayout(false);
             panelSearch.ResumeLayout(false);
             panelSearch.PerformLayout();
@@ -676,7 +660,6 @@
         #endregion
 
         private Panel panelHeader;
-        private Label label1;
         private Panel panelToolbar;
         private SplitContainer splitContainerMain;
         private Panel panelVehicleList;

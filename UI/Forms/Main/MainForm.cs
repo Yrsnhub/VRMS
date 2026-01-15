@@ -132,7 +132,7 @@ namespace VRMS.Forms
                 btnDashboard,
                 btnVehicles,
                 btnCustomers,
-                btnReservation,
+
                 btnRentals,
                 btnRentalsCalendar, // ✅ CALENDAR BUTTON ADDED
                 btnHistory,
