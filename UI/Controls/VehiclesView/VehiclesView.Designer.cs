@@ -91,7 +91,7 @@
             // 
             // panelHeader
             // 
-            panelHeader.BackColor = Color.FromArgb(30, 60, 90);
+            panelHeader.BackColor = Color.White;
             panelHeader.Controls.Add(label1);
             panelHeader.Dock = DockStyle.Top;
             panelHeader.Location = new Point(0, 0);
@@ -102,8 +102,9 @@
             // label1
             // 
             label1.AutoSize = true;
+            label1.BackColor = Color.White;
             label1.Font = new Font("Segoe UI Semibold", 18F, FontStyle.Bold);
-            label1.ForeColor = Color.White;
+            label1.ForeColor = Color.Black;
             label1.Location = new Point(20, 15);
             label1.Name = "label1";
             label1.Size = new Size(127, 41);

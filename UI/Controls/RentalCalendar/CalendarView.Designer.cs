@@ -37,6 +37,7 @@
             colLicense = new DataGridViewTextBoxColumn();
             colModel = new DataGridViewTextBoxColumn();
             pnlCalendarCanvas = new Panel();
+            hScrollCalendar = new HScrollBar();
             toolTip = new ToolTip(components);
             pnlHeader.SuspendLayout();
             pnlMain.SuspendLayout();
@@ -159,6 +160,7 @@
             // splitContainer.Panel2
             // 
             splitContainer.Panel2.Controls.Add(pnlCalendarCanvas);
+            splitContainer.Panel2.Controls.Add(hScrollCalendar);
             splitContainer.Size = new Size(1371, 734);
             splitContainer.SplitterDistance = 286;
             splitContainer.SplitterWidth = 5;
@@ -274,10 +276,24 @@
             pnlCalendarCanvas.Location = new Point(0, 0);
             pnlCalendarCanvas.Margin = new Padding(3, 4, 3, 4);
             pnlCalendarCanvas.Name = "pnlCalendarCanvas";
-            pnlCalendarCanvas.Size = new Size(1080, 734);
+            pnlCalendarCanvas.Size = new Size(1080, 716);
             pnlCalendarCanvas.TabIndex = 0;
             pnlCalendarCanvas.Paint += pnlCalendarCanvas_Paint;
             pnlCalendarCanvas.Resize += pnlCalendarCanvas_Resize;
+            // 
+            // hScrollCalendar
+            // 
+            hScrollCalendar.Dock = DockStyle.Bottom;
+            hScrollCalendar.Height = 18;
+            hScrollCalendar.LargeChange = 300;
+            hScrollCalendar.Location = new Point(0, 716);
+            hScrollCalendar.Maximum = 300;
+            hScrollCalendar.Minimum = 0;
+            hScrollCalendar.Name = "hScrollCalendar";
+            hScrollCalendar.SmallChange = 45;
+            hScrollCalendar.Size = new Size(1080, 18);
+            hScrollCalendar.TabIndex = 1;
+            hScrollCalendar.Scroll += hScrollCalendar_Scroll;
             // 
             // CalendarView
             // 
@@ -320,5 +336,6 @@
         private Panel pnlCalendarCanvas;
         private ToolTip toolTip;
         private Panel pnlVehicleHeader;
+        private HScrollBar hScrollCalendar;
     }
 }
